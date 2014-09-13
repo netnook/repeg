@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 import net.netnook.qpeg.parsetree.Context;
 import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.ParseTree;
 import net.netnook.qpeg.parsetree.RuleNode;
 
 public interface ParsingRule extends ParsingExpression {
@@ -44,15 +43,6 @@ public interface ParsingRule extends ParsingExpression {
 		return name();
 	}
 
-	default ParseTree parse(CharSequence input) throws NoMatchException {
-		Context context = new Context(input);
-		ParseNode root = expression().parse(context);
-		if (root == null) {
-			throw new NoMatchException();
-		}
-		return new ParseTree(root);
-	}
-
 	@Override
 	default ParseNode parse(Context context) {
 		int startIndex = context.position();
@@ -66,5 +56,20 @@ public interface ParsingRule extends ParsingExpression {
 		result.setOutput(child.getOutput());
 
 		return result;
+	}
+
+	//	@Override
+	//	default ParsingExpression ignore() {
+	//		throw new UnsupportedOperationException();
+	//	}
+
+	@Override
+	default boolean isIgnore() {
+		return false;
+	}
+
+	@Override
+	default String alias() {
+		return null;
 	}
 }

@@ -1,9 +1,12 @@
 package net.netnook.qpeg.impl;
 
-public interface SimpleExpression extends ParsingExpression {
+public abstract class SimpleExpression extends ParsingExpressionBase {
 
-	default void accept(Visitor visitor) {
-		visitor.visit(this);
+	protected SimpleExpression(boolean ignore, String alias) {
+		super(ignore, alias);
 	}
 
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
 }

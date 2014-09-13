@@ -1,16 +1,49 @@
 package net.netnook.qpeg.impl;
 
+import net.netnook.qpeg.builder.BuildContext;
+import net.netnook.qpeg.builder.ParsingExpressionBuilder;
+import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.PredicateNode;
 import net.netnook.qpeg.parsetree.ParseNode;
+import net.netnook.qpeg.parsetree.PredicateNode;
 
-public abstract class Predicate implements SimpleExpression {
+public abstract class Predicate extends SimpleExpression {
 
-	public static TruePredicate match(ParsingExpression expression) {
-		return new TruePredicate(expression);
+	protected Predicate() {
+		super(true, null);
+	}
+
+	//	@Override
+	//	public ParsingExpression ignore() {
+	//		throw new UnsupportedOperationException();
+	//	}
+
+	public static TruePredicateBuilder match(ParsingExpressionBuilder expression) {
+		return new TruePredicateBuilder().expression(expression);
+	}
+
+	public static class TruePredicateBuilder extends ParsingExpressionBuilderBase {
+		private ParsingExpressionBuilder expression;
+
+		public TruePredicateBuilder expression(ParsingExpressionBuilder expression) {
+			this.expression = expression;
+			return this;
+		}
+
+		@Override
+		public TruePredicateBuilder name(String name) {
+			super.name(name);
+			return this;
+		}
+
+		@Override
+		public TruePredicate build(BuildContext ctxt) {
+			return new TruePredicate(expression.build(ctxt));
+		}
 	}
 
 	private static class TruePredicate extends Predicate {
+
 		private final ParsingExpression expression;
 
 		private TruePredicate(ParsingExpression expression) {
@@ -40,8 +73,28 @@ public abstract class Predicate implements SimpleExpression {
 		}
 	}
 
-	public static FalsePredicate not(ParsingExpression expression) {
-		return new FalsePredicate(expression);
+	public static FalsePredicateBuilder not(ParsingExpressionBuilder expression) {
+		return new FalsePredicateBuilder().expression(expression);
+	}
+
+	public static class FalsePredicateBuilder extends ParsingExpressionBuilderBase {
+		private ParsingExpressionBuilder expression;
+
+		public FalsePredicateBuilder expression(ParsingExpressionBuilder expression) {
+			this.expression = expression;
+			return this;
+		}
+
+		@Override
+		public FalsePredicateBuilder name(String name) {
+			super.name(name);
+			return this;
+		}
+
+		@Override
+		public FalsePredicate build(BuildContext ctxt) {
+			return new FalsePredicate(expression.build(ctxt));
+		}
 	}
 
 	private static class FalsePredicate extends Predicate {

@@ -2,11 +2,15 @@ package net.netnook.qpeg.impl;
 
 import java.util.List;
 
-public interface CompoundExpression extends ParsingExpression {
+public abstract class CompoundExpression extends ParsingExpressionBase {
 
-	List<ParsingExpression> parts();
+	protected CompoundExpression(boolean ignore, String alias) {
+		super(ignore, alias);
+	}
 
-	default void accept(Visitor visitor) {
+	public abstract List<ParsingExpression> parts();
+
+	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
 }

@@ -6,26 +6,70 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import net.netnook.qpeg.builder.BuildContext;
+import net.netnook.qpeg.builder.ParsingExpressionBuilder;
+import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.ChoiceNode;
 import net.netnook.qpeg.parsetree.Context;
 import net.netnook.qpeg.parsetree.ParseNode;
 
-public class Choice implements CompoundExpression {
+public class Choice extends CompoundExpression {
 
-	private static final Consumer<ChoiceNode> NO_OP = r -> {};
-
-	public static Choice of(ParsingExpression... expressions) {
-		return new Choice(expressions);
+	public static ChoiceBuilder of(ParsingExpressionBuilder... expressions) {
+		return new ChoiceBuilder().expressions(expressions);
 	}
+
+	public static class ChoiceBuilder extends ParsingExpressionBuilderBase {
+		private ParsingExpressionBuilder[] expressions;
+		private Consumer<? super ChoiceNode> onSuccess = DEFAULT_ON_SUCCESS;
+
+		public ChoiceBuilder expressions(ParsingExpressionBuilder[] expressions) {
+			this.expressions = expressions;
+			return this;
+		}
+
+		public ChoiceBuilder onSuccess(Consumer<? super ChoiceNode> onSuccess) {
+			this.onSuccess = onSuccess;
+			return this;
+		}
+
+		@Override
+		public ChoiceBuilder name(String name) {
+			super.name(name);
+			return this;
+		}
+
+		@Override
+		public ChoiceBuilder ignore(boolean ignore) {
+			super.ignore(ignore);
+			return this;
+		}
+
+		@Override
+		public ChoiceBuilder alias(String alias) {
+			super.alias(alias);
+			return this;
+		}
+
+		@Override
+		public Choice build(BuildContext ctxt) {
+			return new Choice(build(ctxt, expressions), onSuccess, ignore(), alias());
+		}
+	}
+
+	private static final Consumer<ChoiceNode> DEFAULT_ON_SUCCESS = choice -> {
+		choice.setOutput(choice.getChild().getOutput());
+	};
 
 	private final ParsingExpression[] expressions;
 	private final Consumer<? super ChoiceNode> onSuccess;
 
-	private Choice(ParsingExpression[] expressions) {
-		this(expressions, NO_OP);
-	}
+	//	private Choice(ParsingExpression[] expressions) {
+	//		this(expressions, DEFAULT_ON_SUCCESS, false, null);
+	//	}
 
-	private Choice(ParsingExpression[] expressions, Consumer<? super ChoiceNode> onSuccess) {
+	private Choice(ParsingExpression[] expressions, Consumer<? super ChoiceNode> onSuccess, boolean ignore, String alias) {
+		super(ignore, alias);
 		this.expressions = expressions;
 		this.onSuccess = onSuccess;
 	}
@@ -45,24 +89,35 @@ public class Choice implements CompoundExpression {
 	@Override
 	public ParseNode parse(Context context) {
 		int startPosition = context.position();
-		ChoiceNode result = null;
+
+		ParseNode child = null;
 		for (ParsingExpression expression : expressions) {
-			ParseNode child = expression.parse(context);
+			child = expression.parse(context);
 			if (child != null) {
-				result = new ChoiceNode(context, this, startPosition, context.position(), child);
 				break;
 			}
 			context.setPosition(startPosition);
 		}
 
-		if (result != null) {
-			onSuccess.accept(result);
+		if (child == null) {
+			return null;
+		} else if (child.isIgnore()) {
+			child = null;
 		}
+
+		ChoiceNode result = new ChoiceNode(context, this, startPosition, context.position(), child);
+
+		onSuccess.accept(result);
 
 		return result;
 	}
 
-	public Choice onSuccess(Consumer<? super ChoiceNode> onSuccess) {
-		return new Choice(expressions, onSuccess);
-	}
+	//	public Choice onSuccess(Consumer<? super ChoiceNode> onSuccess) {
+	//		return new Choice(expressions, onSuccess, ignore, alias);
+	//	}
+	//
+	//	@Override
+	//	public Choice ignore() {
+	//		return new Choice(expressions, onSuccess, true, alias);
+	//	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GrammarBuilder {
 
-	public static String buildGrammar(ParsingRule rule) {
+	public static String buildGrammar(ParsingExpression rule) {
 		StringBuilder buf = new StringBuilder();
 
 		RuleCollector ruleCollector = new RuleCollector();
@@ -48,6 +48,11 @@ public class GrammarBuilder {
 
 		@Override
 		public void visit(SimpleExpression expression) {
+			// no-op
+		}
+
+		@Override
+		public void visit(ReferenceExpression expression) {
 			// no-op
 		}
 

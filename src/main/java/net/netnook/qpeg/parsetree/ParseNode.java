@@ -32,8 +32,8 @@ public abstract class ParseNode {
 		System.out.println(buf.toString());
 	}
 
-	public Object getOutput() {
-		return output;
+	public <T> T getOutput() {
+		return (T) output;
 	}
 
 	public void setOutput(Object output) {
@@ -42,5 +42,9 @@ public abstract class ParseNode {
 
 	public CharSequence getText() {
 		return context.getInput(startPos, endPos);
+	}
+
+	public boolean isIgnore() {
+		return expression.isIgnore();
 	}
 }

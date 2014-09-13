@@ -17,7 +17,7 @@ public class ParseTree {
 		root.dump(depth);
 	}
 
-	public Object getOutput() {
+	public <T> T getOutput() {
 		return root.getOutput();
 	}
 }

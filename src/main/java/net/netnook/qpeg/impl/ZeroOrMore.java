@@ -3,22 +3,76 @@ package net.netnook.qpeg.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
+import net.netnook.qpeg.builder.BuildContext;
+import net.netnook.qpeg.builder.ParsingExpressionBuilder;
+import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.OptionalNode;
 import net.netnook.qpeg.parsetree.ParseNode;
 import net.netnook.qpeg.parsetree.ZeroOrModeNode;
 
-public class ZeroOrMore implements CompoundExpression {
+public class ZeroOrMore extends CompoundExpression {
 
-	public static ZeroOrMore of(ParsingExpression expression) {
-		return new ZeroOrMore(expression);
+	public static ZeroOrMoreBuilder of(ParsingExpressionBuilder expression) {
+		return new ZeroOrMoreBuilder().expression(expression);
 	}
 
-	private final ParsingExpression expression;
+	public static class ZeroOrMoreBuilder extends ParsingExpressionBuilderBase {
+		private ParsingExpressionBuilder expression;
+		private Function<? super ZeroOrModeNode, ParseNode> onSuccess = NO_OP;
 
-	private ZeroOrMore(ParsingExpression expression) {
+		public ZeroOrMoreBuilder expression(ParsingExpressionBuilder expression) {
+			this.expression = expression;
+			return this;
+		}
+
+		public ZeroOrMoreBuilder onSuccess(Function<? super ZeroOrModeNode, ParseNode> onSuccess) {
+			this.onSuccess = onSuccess;
+			return this;
+		}
+
+		@Override
+		public ZeroOrMoreBuilder name(String name) {
+			super.name(name);
+			return this;
+		}
+
+		@Override
+		public ZeroOrMoreBuilder ignore(boolean ignore) {
+			super.ignore(ignore);
+			return this;
+		}
+
+		@Override
+		public ZeroOrMoreBuilder alias(String alias) {
+			super.alias(alias);
+			return this;
+		}
+
+		@Override
+		public ZeroOrMore build(BuildContext ctxt) {
+			return new ZeroOrMore(expression.build(ctxt), onSuccess, ignore(), alias());
+		}
+	}
+
+	//	public static ZeroOrMore of(ParsingExpression expression) {
+	//		return new ZeroOrMore(expression, false, null);
+	//	}
+
+	private static final Function<? super ZeroOrModeNode, ParseNode> NO_OP = r -> r;
+
+	private final ParsingExpression expression;
+	private final Function<? super ZeroOrModeNode, ParseNode> onSuccess;
+
+	private ZeroOrMore(ParsingExpression expression, Function<? super ZeroOrModeNode, ParseNode> onSuccess, boolean ignore, String alias) {
+		super(ignore, alias);
 		this.expression = expression;
+		this.onSuccess = onSuccess;
+
+		if (expression instanceof Optional) {
+			throw new IllegalArgumentException("Cannot have optional content in repeating construct.");
+		}
 	}
 
 	@Override
@@ -46,14 +100,16 @@ public class ZeroOrMore implements CompoundExpression {
 				break;
 			}
 
-			if (child instanceof OptionalNode) {
-				// FIXME: validate when loading rule
-				throw new RuntimeException("OptionalNode returned in zero-or-more ... this will never end");
+			if (!child.isIgnore()) {
+				children.add(child);
 			}
-
-			children.add(child);
 		}
 
 		return new ZeroOrModeNode(context, this, startPosition, context.position(), children);
 	}
+
+	//	@Override
+	//	public ZeroOrMore ignore() {
+	//		return new ZeroOrMore(expression, true, alias);
+	//	}
 }
