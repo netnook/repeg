@@ -2,9 +2,8 @@ package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.CharacterNode;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
+import net.netnook.qpeg.parsetree.LeafNode2;
 
 public abstract class CharMatcher extends SimpleExpression {
 
@@ -23,12 +22,8 @@ public abstract class CharMatcher extends SimpleExpression {
 	private static final WhitespaceCharMatcherBuilder WHITESPACE_CHAR_MATCHER_BUILDER = new WhitespaceCharMatcherBuilder();
 	private static final WhitespaceCharMatcher WHITESPACE_CHAR_MATCHER = new WhitespaceCharMatcher(false, null);
 
-	//	public static WhitespaceCharMatcher whitespace() {
-	//		return WHITESPACE_CHAR_MATCHER;
-	//	}
-
 	protected CharMatcher(boolean ignore, String alias) {
-		super(ignore, alias);
+		super(ignore, alias, OnSuccessHandler.NO_OP);
 	}
 
 	private static class WhitespaceCharMatcher extends CharMatcher {
@@ -43,8 +38,8 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
-			int startPos = context.position();
+		public boolean parse(Context context) {
+			Context.Marker start = context.marker();
 
 			while (true) {
 				char found = context.peekChar();
@@ -56,17 +51,21 @@ public abstract class CharMatcher extends SimpleExpression {
 
 			int endPos = context.position();
 
-			if (endPos > startPos) {
-				return new CharacterNode(context, this, startPos, endPos);
+			if (endPos == start.inputPosition) {
+				return false;
 			}
 
-			return null;
-		}
+			// FIXME: Should something be added to the stack for whitespace
+			//context.lastStart(start);
 
-		//		@Override
-		//		public CharMatcher ignore() {
-		//			return new WhitespaceCharMatcher(true, alias);
-		//		}
+			//onSuccess.accept(context, start);
+
+			//context.push(new LeafNode2(context, this, startPos, endPos));
+
+			//onSuccess.accept(context, stackPosition); FIXME: handle on success !!!
+
+			return true;
+		}
 	}
 
 	public static SingleCharMatcherBuilder of(char c) {
@@ -88,6 +87,7 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
+		@Deprecated
 		public SingleCharMatcherBuilder ignore(boolean ignore) {
 			super.ignore(ignore);
 			return this;
@@ -105,10 +105,6 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 	}
 
-	//	public static CharMatcher of(char c) {
-	//		return new SingleCharMatcher(c, false, null);
-	//	}
-
 	private static class SingleCharMatcher extends CharMatcher {
 		private final char c;
 
@@ -123,20 +119,20 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
-			int startPos = context.position();
+		public boolean parse(Context context) {
+			Context.Marker start = context.marker();
 			char found = context.peekChar();
 			if (found != c) {
-				return null;
+				return false;
 			}
 			int endPos = context.incrementPosition();
-			return new CharacterNode(context, this, startPos, endPos);
-		}
 
-		//		@Override
-		//		public SingleCharMatcher ignore() {
-		//			return new SingleCharMatcher(c, true, alias);
-		//		}
+			// FIXME: what should the default be ?
+			context.push(new LeafNode2(context, this, start.inputPosition, endPos));
+			//context.push(new CharacterNode(context, this, startPos, endPos));
+			// FIXME: handle on success
+			return true;
+		}
 	}
 
 	public static AnyOfCharMatcherBuilder anyOf(String characters) {
@@ -145,17 +141,11 @@ public abstract class CharMatcher extends SimpleExpression {
 
 	public static class AnyOfCharMatcherBuilder extends ParsingExpressionBuilderBase {
 		private String characters;
-		//		private Function<? super OneOrMoreNode, ParseNode> onSuccess = NO_OP;
 
 		public AnyOfCharMatcherBuilder characters(String characters) {
 			this.characters = characters;
 			return this;
 		}
-
-		//		public AnyOfCharMatcherBuilder onSuccess(Function<? super OneOrMoreNode, ParseNode> onSuccess) {
-		//			this.onSuccess = onSuccess;
-		//			return this;
-		//		}
 
 		@Override
 		public AnyOfCharMatcherBuilder name(String name) {
@@ -181,10 +171,6 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 	}
 
-	//	public static CharMatcher anyOf(String characters) {
-	//		return new AnyOfCharMatcher(characters, false, null);
-	//	}
-
 	private static class AnyOfCharMatcher extends CharMatcher {
 		private final String characters;
 
@@ -199,48 +185,34 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
+		public boolean parse(Context context) {
 			int startPos = context.position();
 			char found = context.peekChar();
 			if (characters.indexOf(found) < 0) {
-				return null;
+				return false;
 			}
 			int endPos = context.incrementPosition();
-			return new CharacterNode(context, this, startPos, endPos);
+			// FIXME: what should the default be ?
+			context.push(new LeafNode2(context, this, startPos, endPos));
+			//context.push(new CharacterNode(context, this, startPos, endPos));
+			// FIXME: handle on sucess
+			return true;
 		}
-
-		//		@Override
-		//		public AnyOfCharMatcher ignore() {
-		//			return new AnyOfCharMatcher(characters, true, alias);
-		//		}
 	}
 
 	public static CharRangeMatcherBuilder inRange(char from, char to) {
 		return new CharRangeMatcherBuilder().range(from, to);
 	}
 
-	//
-	//	public static OneOrMore.OneOrMoreBuilder of(ParsingExpressionBuilder expression) {
-	//		return new OneOrMore.OneOrMoreBuilder().expression(expression);
-	//	}
-
 	public static class CharRangeMatcherBuilder extends ParsingExpressionBuilderBase {
 		private char from;
 		private char to;
-		//		private ParsingExpressionBuilder expression;
-		//		private Function<? super OneOrMoreNode, ParseNode> onSuccess = NO_OP;
 
 		public CharRangeMatcherBuilder range(char from, char to) {
 			this.from = from;
 			this.to = to;
-			//			this.expression = expression;
 			return this;
 		}
-
-		//		public CharRangeMatcherBuilder onSuccess(Function<? super OneOrMoreNode, ParseNode> onSuccess) {
-		//			this.onSuccess = onSuccess;
-		//			return this;
-		//		}
 
 		@Override
 		public CharRangeMatcherBuilder name(String name) {
@@ -266,10 +238,6 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 	}
 
-	//	public static CharMatcher inRange(char from, char to) {
-	//		return new CharRangeMatcher(from, to, false, null);
-	//	}
-
 	private static class CharRangeMatcher extends CharMatcher {
 		private final char from;
 		private final char to;
@@ -281,14 +249,19 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
+		public boolean parse(Context context) {
 			int startPos = context.position();
 			char found = context.peekChar();
 			if (!isMatch(found)) {
-				return null;
+				return false;
 			}
 			int endPos = context.incrementPosition();
-			return new CharacterNode(context, this, startPos, endPos);
+
+			//context.push(new CharacterNode(context, this, startPos, endPos));
+			// FIXME: what should the default be ?
+			context.push(new LeafNode2(context, this, startPos, endPos));
+			// FIXME: handle on success
+			return true;
 		}
 
 		private boolean isMatch(char found) {
@@ -299,10 +272,5 @@ public abstract class CharMatcher extends SimpleExpression {
 		public String buildGrammar() {
 			return "[" + from + "-" + to + "]";
 		}
-
-		//		@Override
-		//		public CharRangeMatcher ignore() {
-		//			return new CharRangeMatcher(from, to, true, alias);
-		//		}
 	}
 }

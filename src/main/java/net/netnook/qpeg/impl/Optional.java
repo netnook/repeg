@@ -2,14 +2,11 @@ package net.netnook.qpeg.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.OptionalNode;
-import net.netnook.qpeg.parsetree.ParseNode;
 
 public class Optional extends CompoundExpression {
 
@@ -19,14 +16,14 @@ public class Optional extends CompoundExpression {
 
 	public static class OptionalBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
-		private Consumer<OptionalNode> onSuccess = NO_OP;
+		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public OptionalBuilder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
-		public OptionalBuilder onSuccess(Consumer<OptionalNode> onSuccess) {
+		public OptionalBuilder onSuccess(OnSuccessHandler onSuccess) {
 			this.onSuccess = onSuccess;
 			return this;
 		}
@@ -55,24 +52,14 @@ public class Optional extends CompoundExpression {
 		}
 	}
 
-	private static final Consumer<OptionalNode> NO_OP = r -> {
-	};
-
-	//	public static Optional of(ParsingExpression expression) {
-	//		return new Optional(expression);
-	//	}
+	//	private static final Consumer<OptionalNode> NO_OP = r -> {
+	//	};
 
 	private final ParsingExpression expression;
-	private final Consumer<? super OptionalNode> onSuccess;
 
-	//	private Optional(ParsingExpression expression) {
-	//		this(expression, NO_OP, false, null);
-	//	}
-
-	private Optional(ParsingExpression expression, Consumer<? super OptionalNode> onSuccess, boolean ignore, String alias) {
-		super(ignore, alias);
+	private Optional(ParsingExpression expression, OnSuccessHandler onSuccess, boolean ignore, String alias) {
+		super(ignore, alias, onSuccess);
 		this.expression = expression;
-		this.onSuccess = onSuccess;
 	}
 
 	@Override
@@ -86,26 +73,27 @@ public class Optional extends CompoundExpression {
 	}
 
 	@Override
-	public ParseNode parse(Context context) {
-		int startPosition = context.position();
+	public boolean parse(Context context) {
+		Context.Marker marker = context.marker();
 
-		ParseNode child = expression.parse(context);
-		if (child == null) {
-			context.setPosition(startPosition);
-		} else if (child.isIgnore()) {
-			child = null;
+		boolean match = expression.parse(context);
+		if (!match) {
+			context.reset(marker);
 		}
 
-		OptionalNode result = new OptionalNode(context, this, startPosition, context.position(), child);
-		onSuccess.accept(result);
-		return result;
-	}
+		onSuccess.accept(context, marker);
+		//		List<ParseNode> children = context.popTo(stackPosition);
+		//		if (!isIgnore()) {
+		//			if (children.size() > 1) {
+		//				throw new IllegalStateException("More than one child for optional node !!!");
+		//			} else if (children.size() == 1) {
+		//				context.push(new OptionalNode(context, this, startPosition, context.position(), children.get(0)));
+		//			} else {
+		//				context.push(new OptionalNode(context, this, startPosition, context.position(), null));
+		//			}
+		//		}
 
-	//	public Optional onSuccess(Consumer<? super OptionalNode> onSuccess) {
-	//		return new Optional(expression, onSuccess, ignore, alias);
-	//	}
-	//
-	//	public Optional ignore() {
-	//		return new Optional(expression, onSuccess, true, alias);
-	//	}
+		// onSuccess.accept(result); FIXME: handle onSuccess
+		return true;
+	}
 }

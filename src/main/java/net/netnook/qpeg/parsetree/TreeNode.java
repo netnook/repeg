@@ -28,7 +28,7 @@ public abstract class TreeNode extends ParseNode {
 			buf.append("  ");
 		}
 
-		buf.append(expression.name());
+		buf.append(expression.getName());
 		buf.append(": ");
 		buf.append(expression.buildGrammar());
 		buf.append(" matched: ");

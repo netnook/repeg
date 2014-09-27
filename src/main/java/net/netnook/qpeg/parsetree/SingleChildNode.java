@@ -6,42 +6,10 @@ public abstract class SingleChildNode extends ParseNode {
 
 	protected final ParseNode child;
 
-	//	public TreeNode(Context context, ParsingExpression expression, int startPos, int endPos, ParseNode... children) {
-	//		this(context, expression, startPos, endPos, Arrays.asList(children));
-	//	}
-
 	public SingleChildNode(Context context, ParsingExpression expression, int startPos, int endPos, ParseNode child) {
 		super(context, expression, startPos, endPos);
 		this.child = child;
 	}
-
-	//	public ParseNode(ParsingExpression expression) {
-	//		this(expression, null, null);
-	//	}
-
-	//	public ParseNode(ParsingExpression expression, String string) {
-	//		this(expression, string, null);
-	//	}
-
-	//	public ParseNode(Context context, ParsingExpression expression, int startPos, int endPos, ParseNode... children) {
-	//		this(context, expression, startPos, endPos, children == null ? Collections.emptyList() : Arrays.asList(children));
-	//	}
-
-	//	public ParseNode(Context context, ParsingExpression expression, int startPos, int endPos, List<ParseNode> children) {
-	//		this.context = context;
-	//		this.expression = expression;
-	//		this.startPos = startPos;
-	//		this.endPos = endPos;
-	//		this.children = children;
-	//	}
-
-	//	public void add(ParseNode child) {
-	//		children.add(child);
-	//	}
-
-	//	public List<ParseNode> getChildren() {
-	//		return children;
-	//	}
 
 	public ParseNode getChild() {
 		return child;
@@ -54,7 +22,7 @@ public abstract class SingleChildNode extends ParseNode {
 			buf.append("  ");
 		}
 
-		buf.append(expression.name());
+		buf.append(expression.getName());
 		buf.append(": ");
 		buf.append(expression.buildGrammar());
 		buf.append(" matched: ");

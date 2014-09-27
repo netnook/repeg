@@ -3,8 +3,6 @@ package net.netnook.qpeg.impl;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.EndOfInputNode;
-import net.netnook.qpeg.parsetree.ParseNode;
 
 public abstract class Constant extends SimpleExpression {
 
@@ -33,21 +31,17 @@ public abstract class Constant extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
+		public boolean parse(Context context) {
 			if (context.peekChar() != EOICHAR) {
-				return null;
+				return false;
 			}
 
-			return new EndOfInputNode(context, this, context.position());
+			//return new EndOfInputNode(context, this, context.position());
+			return true;
 		}
-
-		//		@Override
-		//		public ParsingExpression ignore() {
-		//			throw new UnsupportedOperationException();
-		//		}
 	};
 
 	private Constant(boolean ignore, String alias) {
-		super(ignore, alias);
+		super(ignore, alias, OnSuccessHandler.NO_OP);
 	}
 }

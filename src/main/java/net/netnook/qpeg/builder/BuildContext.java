@@ -3,17 +3,18 @@ package net.netnook.qpeg.builder;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.netnook.qpeg.impl.ParsingExpression;
+import net.netnook.qpeg.impl.ParsingRule;
+import net.netnook.qpeg.impl.ParsingRuleBuilder;
 
 public class BuildContext {
 
-	private Map<Object, ParsingExpression> expressions = new HashMap<>();
+	private Map<ParsingRuleBuilder, ParsingRule> expressions = new HashMap<>();
 
-	public ParsingExpression getExpression(Object key) {
+	public ParsingRule getRule(ParsingRuleBuilder key) {
 		return expressions.get(key);
 	}
 
-	public void putExpression(Object key, ParsingExpression expression) {
+	public void putRule(ParsingRuleBuilder key, ParsingRule expression) {
 		expressions.put(key, expression);
 	}
 }

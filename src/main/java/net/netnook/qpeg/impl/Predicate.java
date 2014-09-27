@@ -4,19 +4,12 @@ import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.PredicateNode;
 
 public abstract class Predicate extends SimpleExpression {
 
 	protected Predicate() {
-		super(true, null);
+		super(true, null, null);
 	}
-
-	//	@Override
-	//	public ParsingExpression ignore() {
-	//		throw new UnsupportedOperationException();
-	//	}
 
 	public static TruePredicateBuilder match(ParsingExpressionBuilder expression) {
 		return new TruePredicateBuilder().expression(expression);
@@ -56,20 +49,23 @@ public abstract class Predicate extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
+		public boolean parse(Context context) {
 			int startPosition = context.position();
+			int stackPosition = context.stackPosition();
 
-			ParseNode child = expression.parse(context);
+			boolean match = expression.parse(context);
 
-			int endPosition = context.position();
+//			int endPosition = context.position();
 
 			context.setPosition(startPosition);
+			context.resetStack(stackPosition);
 
-			if (child == null) {
-				return null;
-			}
-
-			return new PredicateNode(context, this, startPosition, endPosition, child);
+			return match;
+//			if (match == null) {
+//				return null;
+//			}
+//
+//			return new PredicateNode(context, this, startPosition, endPosition, child);
 		}
 	}
 
@@ -110,18 +106,32 @@ public abstract class Predicate extends SimpleExpression {
 		}
 
 		@Override
-		public ParseNode parse(Context context) {
+		public boolean parse(Context context) {
 			int startPosition = context.position();
+			int stackPosition = context.stackPosition();
 
-			ParseNode child = expression.parse(context);
+			boolean match = expression.parse(context);
+
+			//			int endPosition = context.position();
 
 			context.setPosition(startPosition);
+			context.resetStack(stackPosition);
 
-			if (child != null) {
-				return null;
-			}
+			return !match;
 
-			return new PredicateNode(context, this, startPosition, startPosition, child);
+
+
+//			int startPosition = context.position();
+//
+//			ParseNode child = expression.parse(context);
+//
+//			context.setPosition(startPosition);
+//
+//			if (child != null) {
+//				return null;
+//			}
+//
+//			return new PredicateNode(context, this, startPosition, startPosition, child);
 		}
 	}
 

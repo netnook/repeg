@@ -26,10 +26,12 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 		return this;
 	}
 
+	@Deprecated
 	public boolean ignore() {
 		return ignore;
 	}
 
+	@Deprecated
 	public ParsingExpressionBuilderBase ignore(boolean ignore) {
 		this.ignore = ignore;
 		return this;

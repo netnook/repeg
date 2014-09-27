@@ -2,15 +2,14 @@ package net.netnook.qpeg.parsetree;
 
 import net.netnook.qpeg.impl.ParsingExpression;
 
-public abstract class ParseNode {
+public abstract class ParseNode2 {
 
 	protected final Context context;
 	protected final ParsingExpression expression;
 	protected final int startPos;
 	protected final int endPos;
-	private Object output;
 
-	public ParseNode(Context context, ParsingExpression expression, int startPos, int endPos) {
+	public ParseNode2(Context context, ParsingExpression expression, int startPos, int endPos) {
 		this.context = context;
 		this.expression = expression;
 		this.startPos = startPos;
@@ -32,19 +31,7 @@ public abstract class ParseNode {
 		System.out.println(buf.toString());
 	}
 
-	public <T> T getOutput() {
-		return (T) output;
-	}
-
-	public void setOutput(Object output) {
-		this.output = output;
-	}
-
 	public CharSequence getText() {
 		return context.getInput(startPos, endPos);
 	}
-
-//	public boolean isIgnore() {
-//		return expression.isIgnore();
-//	}
 }

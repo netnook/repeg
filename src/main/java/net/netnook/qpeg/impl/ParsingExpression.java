@@ -1,13 +1,21 @@
 package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.ParseTree;
 
 public interface ParsingExpression extends Visitable {
 
-	default ParsingExpression internalGetExpression() {
-		return this;
+//	OnSuccessHandler DEFAULT_ON_SUCCESS = (ctxt,start) -> {
+//		int stackEndPosition = ctxt.stackPosition();
+//		if (start.stackPosition == stackEndPosition) {
+//			ctxt.push(new LeafNode2(ctxt, null, -1, -1));
+//		} else {
+//			List<Object> popped = ctxt.popTo(start.stackPosition);
+//			ctxt.push(new TreeNode2(ctxt, null, -1, -1, popped));
+//		}
+//	};
+
+	default String getName() {
+		return getClass().getSimpleName();
 	}
 
 	String buildGrammar();
@@ -19,28 +27,11 @@ public interface ParsingExpression extends Visitable {
 	 * there was not match.
 	 *
 	 * @param context parsing context.
-	 * @return resulting node or {@code null} if no match.
+	 * @return {@code true} if match successful
 	 */
-	ParseNode parse(Context context);
-
-	default ParseTree parse(CharSequence input) throws NoMatchException {
-		Context context = new Context(input);
-		ParseNode root = parse(context);
-		if (root == null) {
-			throw new NoMatchException();
-		}
-		return new ParseTree(root);
-	}
-
-	//	ParsingExpression onSuccess(Consumer<? super ParsingExpression> onSuccess);
-
-	default String name() {
-		return getClass().getSimpleName();
-	}
+	boolean parse(Context context);
 
 	default boolean isIgnore() {
 		return false;
 	}
-
-	//	ParsingExpression ignore();
 }

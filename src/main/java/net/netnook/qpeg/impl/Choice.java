@@ -2,16 +2,13 @@ package net.netnook.qpeg.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.ChoiceNode;
 import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
 
 public class Choice extends CompoundExpression {
 
@@ -21,14 +18,14 @@ public class Choice extends CompoundExpression {
 
 	public static class ChoiceBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder[] expressions;
-		private Consumer<? super ChoiceNode> onSuccess = DEFAULT_ON_SUCCESS;
+		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public ChoiceBuilder expressions(ParsingExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}
 
-		public ChoiceBuilder onSuccess(Consumer<? super ChoiceNode> onSuccess) {
+		public ChoiceBuilder onSuccess(OnSuccessHandler onSuccess) {
 			this.onSuccess = onSuccess;
 			return this;
 		}
@@ -57,21 +54,15 @@ public class Choice extends CompoundExpression {
 		}
 	}
 
-	private static final Consumer<ChoiceNode> DEFAULT_ON_SUCCESS = choice -> {
-		choice.setOutput(choice.getChild().getOutput());
-	};
+//	private static final Consumer<ChoiceNode> DEFAULT_ON_SUCCESS = choice -> {
+//		choice.setOutput(choice.getChild().getOutput());
+//	};
 
 	private final ParsingExpression[] expressions;
-	private final Consumer<? super ChoiceNode> onSuccess;
 
-	//	private Choice(ParsingExpression[] expressions) {
-	//		this(expressions, DEFAULT_ON_SUCCESS, false, null);
-	//	}
-
-	private Choice(ParsingExpression[] expressions, Consumer<? super ChoiceNode> onSuccess, boolean ignore, String alias) {
-		super(ignore, alias);
+	private Choice(ParsingExpression[] expressions, OnSuccessHandler onSuccess, boolean ignore, String alias) {
+		super(ignore, alias, onSuccess);
 		this.expressions = expressions;
-		this.onSuccess = onSuccess;
 	}
 
 	@Override
@@ -87,37 +78,45 @@ public class Choice extends CompoundExpression {
 	}
 
 	@Override
-	public ParseNode parse(Context context) {
-		int startPosition = context.position();
+	public boolean parse(Context context) {
+		Context.Marker marker = context.marker();
 
-		ParseNode child = null;
+		//ParseNode child = null;
+		boolean match = false;
 		for (ParsingExpression expression : expressions) {
-			child = expression.parse(context);
-			if (child != null) {
+			match = match || expression.parse(context);
+			if (match) {
 				break;
 			}
-			context.setPosition(startPosition);
+			context.reset(marker);
 		}
 
-		if (child == null) {
-			return null;
-		} else if (child.isIgnore()) {
-			child = null;
+		if (!match) {
+			// Note: not necessary as done as part of loop above
+			// context.setPosition(stackPosition);
+			// context.resetStack(stackPosition);
+			return false;
 		}
 
-		ChoiceNode result = new ChoiceNode(context, this, startPosition, context.position(), child);
+//		List<Object> children = context.popTo(stackPosition);
+		onSuccess.accept(context, marker);
 
-		onSuccess.accept(result);
+//		context.resetStack(stackPosition);
+//		if (!isIgnore()) {
+//			onSuccess
+//			context.push(new TreeNode2(context, this, startPosition, context.position(), children));
+////			if (children.size() > 1) {
+////				throw new IllegalStateException("More than one child for choice node !!!");
+////			} else if (children.size() == 1) {
+////				context.push(new TreeNode2(context, this, startPosition, context.position(), children.get(0)));
+////			} else {
+////				context.push(new ChoiceNode(context, this, startPosition, context.position(), null));
+////			}
+//		}
 
-		return result;
+		// FIXME: todo
+		//onSuccess.accept(result);
+
+		return true;
 	}
-
-	//	public Choice onSuccess(Consumer<? super ChoiceNode> onSuccess) {
-	//		return new Choice(expressions, onSuccess, ignore, alias);
-	//	}
-	//
-	//	@Override
-	//	public Choice ignore() {
-	//		return new Choice(expressions, onSuccess, true, alias);
-	//	}
 }

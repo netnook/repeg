@@ -16,8 +16,8 @@ public class GrammarBuilder {
 		Collections.sort(rules, ParsingRule.SORT_BY_NAME_WITH_START_FIRST);
 
 		ruleCollector.getRules().stream().forEach(r -> {
-			buf.append(r.name()).append(" <- ");
-			buf.append(r.expression().buildGrammar()).append("\n\n");
+			buf.append(r.getName()).append(" <- ");
+			buf.append(r.getExpression().buildGrammar()).append("\n\n");
 		});
 
 		return buf.toString();
@@ -35,10 +35,7 @@ public class GrammarBuilder {
 
 			rules.add(rule);
 
-			ParsingExpression expression = rule.internalGetExpression();
-			if (expression != this) {
-				expression.accept(this);
-			}
+			rule.getExpression().accept(this);
 		}
 
 		@Override
@@ -48,11 +45,6 @@ public class GrammarBuilder {
 
 		@Override
 		public void visit(SimpleExpression expression) {
-			// no-op
-		}
-
-		@Override
-		public void visit(ReferenceExpression expression) {
 			// no-op
 		}
 
