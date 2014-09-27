@@ -6,7 +6,7 @@ import java.util.List;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public class OneOrMore extends CompoundExpression {
 
@@ -16,48 +16,34 @@ public class OneOrMore extends CompoundExpression {
 
 	public static class OneOrMoreBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
-		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public OneOrMoreBuilder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
+		@Override
 		public OneOrMoreBuilder onSuccess(OnSuccessHandler onSuccess) {
-			this.onSuccess = onSuccess;
+			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public OneOrMoreBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public OneOrMoreBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public OneOrMoreBuilder alias(String alias) {
-			super.alias(alias);
+		public OneOrMoreBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public OneOrMore build(BuildContext ctxt) {
-			return new OneOrMore(expression.build(ctxt), onSuccess, ignore(), alias());
+			return new OneOrMore(this, expression.build(ctxt));
 		}
 	}
 
-//	private static final Function<? super OneOrMoreNode, ParseNode> NO_OP = r -> r;
-
 	private final ParsingExpression expression;
 
-	private OneOrMore(ParsingExpression expression, OnSuccessHandler onSuccess, boolean ignore, String alias) {
-		super(ignore, alias, onSuccess);
+	private OneOrMore(OneOrMoreBuilder builder, ParsingExpression expression) {
+		super(builder);
 		this.expression = expression;
 
 		if (expression.isIgnore()) {
@@ -80,42 +66,29 @@ public class OneOrMore extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker startMarker = context.marker();
+		Marker startMarker = context.marker();
 
-		int matchCount = 0;
-//		List<ParseNode> children = new ArrayList<>();
+		int successCount = 0;
 
 		while (true) {
-			Context.Marker fallbackMarker = context.marker();
+			Marker fallbackMarker = context.marker();
 
-			boolean match = expression.parse(context);
+			boolean success = expression.parse(context);
 
-			if (!match) {
+			if (!success) {
 				context.reset(fallbackMarker);
 				break;
 			}
 
-			matchCount++;
-
-//			if (!child.isIgnore()) {
-//				children.add(child);
-//			}
+			successCount++;
 		}
 
-		if (matchCount == 0) {
-			// Note: not necessary as done as part of loop above
-			// context.setPosition(stackPosition);
-			// context.resetStack(stackPosition);
+		if (successCount == 0) {
 			return false;
 		}
 
-		onSuccess.accept(context, startMarker);
-//		List<ParseNode> children = context.popTo(stackPosition);
-//		if (!isIgnore()) {
-//			context.push(new OneOrMoreNode(context, this, startPosition, context.position(), children));
-//		}
+		onSuccess(context, startMarker);
 
-		//return onSuccess.apply(result); FIXME: do onsuccess
 		return true;
 	}
 }

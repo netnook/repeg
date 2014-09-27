@@ -1,39 +1,28 @@
 package net.netnook.qpeg.builder;
 
+import net.netnook.qpeg.impl.OnSuccessHandler;
 import net.netnook.qpeg.impl.ParsingExpression;
 
 public abstract class ParsingExpressionBuilderBase implements ParsingExpressionBuilder {
 
-	private String name;
-	private String alias;
 	private boolean ignore;
+	private OnSuccessHandler onSuccess;
 
-	public String name() {
-		return name;
-	}
-
-	public ParsingExpressionBuilderBase name(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public String alias() {
-		return alias;
-	}
-
-	public ParsingExpressionBuilderBase alias(String alias) {
-		this.alias = alias;
-		return this;
-	}
-
-	@Deprecated
-	public boolean ignore() {
+	public boolean isIgnore() {
 		return ignore;
 	}
 
-	@Deprecated
-	public ParsingExpressionBuilderBase ignore(boolean ignore) {
-		this.ignore = ignore;
+	public ParsingExpressionBuilderBase ignore() {
+		this.ignore = true;
+		return this;
+	}
+
+	public OnSuccessHandler getOnSuccess() {
+		return onSuccess;
+	}
+
+	public ParsingExpressionBuilderBase onSuccess(OnSuccessHandler onSuccess) {
+		this.onSuccess = onSuccess;
 		return this;
 	}
 

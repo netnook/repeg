@@ -2,8 +2,7 @@ package net.netnook.qpeg.impl;
 
 import java.util.Comparator;
 
-import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseTree2;
+import net.netnook.qpeg.parsetree.ParseTree;
 
 public class ParsingRule implements ParsingExpression {
 
@@ -46,11 +45,6 @@ public class ParsingRule implements ParsingExpression {
 	}
 
 	@Override
-	public String alias() {
-		return null;
-	}
-
-	@Override
 	public boolean parse(Context context) {
 		return expression.parse(context);
 	}
@@ -60,27 +54,15 @@ public class ParsingRule implements ParsingExpression {
 		visitor.visit(this);
 	}
 
-	public ParseTree2 parse(CharSequence input) throws NoMatchException {
+	public ParseTree parse(CharSequence input) throws NoMatchException {
 		Context context = new Context(input);
-		boolean match = parse(context);
+		boolean success = parse(context);
 
-		if (!match) {
+		if (!success) {
 			throw new NoMatchException();
 		}
 
-		return new ParseTree2(context, this, 0, context.position(), context.popTo(0));
-		//		ParseNode root;
-		//
-		//		List<Object> children = context.popTo(0);
-		//		if (children.size() > 1) {
-		//			throw new IllegalStateException("More than one child for parseTree !!!");
-		//		} else if (children.size() == 1) {
-		//			root = children.get(0);
-		//		} else {
-		//			root = null;
-		//		}
-		//
-		//		return new ParseTree(root);
+		return new ParseTree(context, this, 0, context.position(), context.getStack());
 	}
 
 	@Override

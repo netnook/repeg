@@ -6,7 +6,7 @@ import java.util.List;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public class Optional extends CompoundExpression {
 
@@ -16,49 +16,34 @@ public class Optional extends CompoundExpression {
 
 	public static class OptionalBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
-		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public OptionalBuilder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
+		@Override
 		public OptionalBuilder onSuccess(OnSuccessHandler onSuccess) {
-			this.onSuccess = onSuccess;
+			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public OptionalBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public OptionalBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public OptionalBuilder alias(String alias) {
-			super.alias(alias);
+		public OptionalBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public Optional build(BuildContext ctxt) {
-			return new Optional(expression.build(ctxt), onSuccess, ignore(), alias());
+			return new Optional(this, expression.build(ctxt));
 		}
 	}
 
-	//	private static final Consumer<OptionalNode> NO_OP = r -> {
-	//	};
-
 	private final ParsingExpression expression;
 
-	private Optional(ParsingExpression expression, OnSuccessHandler onSuccess, boolean ignore, String alias) {
-		super(ignore, alias, onSuccess);
+	private Optional(OptionalBuilder builder, ParsingExpression expression) {
+		super(builder);
 		this.expression = expression;
 	}
 
@@ -74,26 +59,15 @@ public class Optional extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker marker = context.marker();
+		Marker startMarker = context.marker();
 
-		boolean match = expression.parse(context);
-		if (!match) {
-			context.reset(marker);
+		boolean success = expression.parse(context);
+		if (!success) {
+			context.reset(startMarker);
 		}
 
-		onSuccess.accept(context, marker);
-		//		List<ParseNode> children = context.popTo(stackPosition);
-		//		if (!isIgnore()) {
-		//			if (children.size() > 1) {
-		//				throw new IllegalStateException("More than one child for optional node !!!");
-		//			} else if (children.size() == 1) {
-		//				context.push(new OptionalNode(context, this, startPosition, context.position(), children.get(0)));
-		//			} else {
-		//				context.push(new OptionalNode(context, this, startPosition, context.position(), null));
-		//			}
-		//		}
+		onSuccess(context, startMarker);
 
-		// onSuccess.accept(result); FIXME: handle onSuccess
 		return true;
 	}
 }

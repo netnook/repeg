@@ -3,12 +3,15 @@ package net.netnook.qpeg.impl;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public abstract class Predicate extends SimpleExpression {
 
-	protected Predicate() {
-		super(true, null, null);
+	protected Predicate(ParsingExpressionBuilderBase builder) {
+		super(builder);
+		if (!builder.isIgnore()) {
+			throw new IllegalStateException();
+		}
 	}
 
 	public static TruePredicateBuilder match(ParsingExpressionBuilder expression) {
@@ -24,14 +27,18 @@ public abstract class Predicate extends SimpleExpression {
 		}
 
 		@Override
-		public TruePredicateBuilder name(String name) {
-			super.name(name);
-			return this;
+		public TruePredicateBuilder ignore() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public TruePredicateBuilder onSuccess(OnSuccessHandler onSuccess) {
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public TruePredicate build(BuildContext ctxt) {
-			return new TruePredicate(expression.build(ctxt));
+			return new TruePredicate(this, expression.build(ctxt));
 		}
 	}
 
@@ -39,7 +46,8 @@ public abstract class Predicate extends SimpleExpression {
 
 		private final ParsingExpression expression;
 
-		private TruePredicate(ParsingExpression expression) {
+		private TruePredicate(TruePredicateBuilder builder, ParsingExpression expression) {
+			super(builder);
 			this.expression = expression;
 		}
 
@@ -50,22 +58,13 @@ public abstract class Predicate extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			int startPosition = context.position();
-			int stackPosition = context.stackPosition();
+			Marker marker = context.marker();
 
-			boolean match = expression.parse(context);
+			boolean success = expression.parse(context);
 
-//			int endPosition = context.position();
+			context.reset(marker);
 
-			context.setPosition(startPosition);
-			context.resetStack(stackPosition);
-
-			return match;
-//			if (match == null) {
-//				return null;
-//			}
-//
-//			return new PredicateNode(context, this, startPosition, endPosition, child);
+			return success;
 		}
 	}
 
@@ -82,21 +81,26 @@ public abstract class Predicate extends SimpleExpression {
 		}
 
 		@Override
-		public FalsePredicateBuilder name(String name) {
-			super.name(name);
-			return this;
+		public FalsePredicateBuilder ignore() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public FalsePredicateBuilder onSuccess(OnSuccessHandler onSuccess) {
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public FalsePredicate build(BuildContext ctxt) {
-			return new FalsePredicate(expression.build(ctxt));
+			return new FalsePredicate(this, expression.build(ctxt));
 		}
 	}
 
 	private static class FalsePredicate extends Predicate {
 		private final ParsingExpression expression;
 
-		private FalsePredicate(ParsingExpression expression) {
+		private FalsePredicate(FalsePredicateBuilder builder, ParsingExpression expression) {
+			super(builder);
 			this.expression = expression;
 		}
 
@@ -107,31 +111,13 @@ public abstract class Predicate extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			int startPosition = context.position();
-			int stackPosition = context.stackPosition();
+			Marker marker = context.marker();
 
-			boolean match = expression.parse(context);
+			boolean success = !expression.parse(context);
 
-			//			int endPosition = context.position();
+			context.reset(marker);
 
-			context.setPosition(startPosition);
-			context.resetStack(stackPosition);
-
-			return !match;
-
-
-
-//			int startPosition = context.position();
-//
-//			ParseNode child = expression.parse(context);
-//
-//			context.setPosition(startPosition);
-//
-//			if (child != null) {
-//				return null;
-//			}
-//
-//			return new PredicateNode(context, this, startPosition, startPosition, child);
+			return success;
 		}
 	}
 

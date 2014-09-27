@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public class Choice extends CompoundExpression {
 
@@ -18,50 +18,34 @@ public class Choice extends CompoundExpression {
 
 	public static class ChoiceBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder[] expressions;
-		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public ChoiceBuilder expressions(ParsingExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}
 
+		@Override
 		public ChoiceBuilder onSuccess(OnSuccessHandler onSuccess) {
-			this.onSuccess = onSuccess;
+			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public ChoiceBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public ChoiceBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public ChoiceBuilder alias(String alias) {
-			super.alias(alias);
+		public ChoiceBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public Choice build(BuildContext ctxt) {
-			return new Choice(build(ctxt, expressions), onSuccess, ignore(), alias());
+			return new Choice(this, build(ctxt, expressions));
 		}
 	}
 
-//	private static final Consumer<ChoiceNode> DEFAULT_ON_SUCCESS = choice -> {
-//		choice.setOutput(choice.getChild().getOutput());
-//	};
-
 	private final ParsingExpression[] expressions;
 
-	private Choice(ParsingExpression[] expressions, OnSuccessHandler onSuccess, boolean ignore, String alias) {
-		super(ignore, alias, onSuccess);
+	private Choice(ChoiceBuilder builder, ParsingExpression[] expressions) {
+		super(builder);
 		this.expressions = expressions;
 	}
 
@@ -79,43 +63,22 @@ public class Choice extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker marker = context.marker();
+		Marker startMarker = context.marker();
 
-		//ParseNode child = null;
-		boolean match = false;
+		boolean success = false;
 		for (ParsingExpression expression : expressions) {
-			match = match || expression.parse(context);
-			if (match) {
+			success = expression.parse(context);
+			if (success) {
 				break;
 			}
-			context.reset(marker);
+			context.reset(startMarker);
 		}
 
-		if (!match) {
-			// Note: not necessary as done as part of loop above
-			// context.setPosition(stackPosition);
-			// context.resetStack(stackPosition);
+		if (!success) {
 			return false;
 		}
 
-//		List<Object> children = context.popTo(stackPosition);
-		onSuccess.accept(context, marker);
-
-//		context.resetStack(stackPosition);
-//		if (!isIgnore()) {
-//			onSuccess
-//			context.push(new TreeNode2(context, this, startPosition, context.position(), children));
-////			if (children.size() > 1) {
-////				throw new IllegalStateException("More than one child for choice node !!!");
-////			} else if (children.size() == 1) {
-////				context.push(new TreeNode2(context, this, startPosition, context.position(), children.get(0)));
-////			} else {
-////				context.push(new ChoiceNode(context, this, startPosition, context.position(), null));
-////			}
-//		}
-
-		// FIXME: todo
-		//onSuccess.accept(result);
+		onSuccess(context, startMarker);
 
 		return true;
 	}

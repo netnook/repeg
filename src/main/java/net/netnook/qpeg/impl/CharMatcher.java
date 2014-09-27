@@ -2,71 +2,33 @@ package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.LeafNode2;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public abstract class CharMatcher extends SimpleExpression {
 
-	public static WhitespaceCharMatcherBuilder whitespace() {
-		return WHITESPACE_CHAR_MATCHER_BUILDER;
+	protected CharMatcher(ParsingExpressionBuilderBase builder) {
+		super(builder);
 	}
 
-	public static class WhitespaceCharMatcherBuilder extends ParsingExpressionBuilderBase {
-
-		@Override
-		public WhitespaceCharMatcher build(BuildContext ctxt) {
-			return WHITESPACE_CHAR_MATCHER;
+	@Override
+	public boolean parse(Context context) {
+		Marker start = context.marker();
+		char found = context.peekChar();
+		if (!isMatch(found)) {
+			return false;
 		}
+		context.incrementPosition();
+
+		if (!ignore) {
+			context.mark(start);
+			context.pushText(start);
+			onSuccess.accept(context);
+		}
+
+		return true;
 	}
 
-	private static final WhitespaceCharMatcherBuilder WHITESPACE_CHAR_MATCHER_BUILDER = new WhitespaceCharMatcherBuilder();
-	private static final WhitespaceCharMatcher WHITESPACE_CHAR_MATCHER = new WhitespaceCharMatcher(false, null);
-
-	protected CharMatcher(boolean ignore, String alias) {
-		super(ignore, alias, OnSuccessHandler.NO_OP);
-	}
-
-	private static class WhitespaceCharMatcher extends CharMatcher {
-
-		@Override
-		public String buildGrammar() {
-			return "[:w:]";
-		}
-
-		WhitespaceCharMatcher(boolean ignore, String alias) {
-			super(ignore, alias);
-		}
-
-		@Override
-		public boolean parse(Context context) {
-			Context.Marker start = context.marker();
-
-			while (true) {
-				char found = context.peekChar();
-				if (!Character.isWhitespace(found)) {
-					break;
-				}
-				context.incrementPosition();
-			}
-
-			int endPos = context.position();
-
-			if (endPos == start.inputPosition) {
-				return false;
-			}
-
-			// FIXME: Should something be added to the stack for whitespace
-			//context.lastStart(start);
-
-			//onSuccess.accept(context, start);
-
-			//context.push(new LeafNode2(context, this, startPos, endPos));
-
-			//onSuccess.accept(context, stackPosition); FIXME: handle on success !!!
-
-			return true;
-		}
-	}
+	protected abstract boolean isMatch(char found);
 
 	public static SingleCharMatcherBuilder of(char c) {
 		return new SingleCharMatcherBuilder().character(c);
@@ -81,36 +43,23 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public SingleCharMatcherBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		@Deprecated
-		public SingleCharMatcherBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public SingleCharMatcherBuilder alias(String alias) {
-			super.alias(alias);
+		public SingleCharMatcherBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public SingleCharMatcher build(BuildContext ctxt) {
-			return new SingleCharMatcher(c, ignore(), alias());
+			return new SingleCharMatcher(this);
 		}
 	}
 
 	private static class SingleCharMatcher extends CharMatcher {
 		private final char c;
 
-		private SingleCharMatcher(char c, boolean ignore, String alias) {
-			super(ignore, alias);
-			this.c = c;
+		private SingleCharMatcher(SingleCharMatcherBuilder builder) {
+			super(builder);
+			this.c = builder.c;
 		}
 
 		@Override
@@ -119,19 +68,8 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public boolean parse(Context context) {
-			Context.Marker start = context.marker();
-			char found = context.peekChar();
-			if (found != c) {
-				return false;
-			}
-			int endPos = context.incrementPosition();
-
-			// FIXME: what should the default be ?
-			context.push(new LeafNode2(context, this, start.inputPosition, endPos));
-			//context.push(new CharacterNode(context, this, startPos, endPos));
-			// FIXME: handle on success
-			return true;
+		protected boolean isMatch(char found) {
+			return found == c;
 		}
 	}
 
@@ -148,35 +86,23 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public AnyOfCharMatcherBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public AnyOfCharMatcherBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public AnyOfCharMatcherBuilder alias(String alias) {
-			super.alias(alias);
+		public AnyOfCharMatcherBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public AnyOfCharMatcher build(BuildContext ctxt) {
-			return new AnyOfCharMatcher(characters, ignore(), alias());
+			return new AnyOfCharMatcher(this);
 		}
 	}
 
 	private static class AnyOfCharMatcher extends CharMatcher {
 		private final String characters;
 
-		private AnyOfCharMatcher(String characters, boolean ignore, String alias) {
-			super(ignore, alias);
-			this.characters = characters;
+		private AnyOfCharMatcher(AnyOfCharMatcherBuilder builder) {
+			super(builder);
+			this.characters = builder.characters;
 		}
 
 		@Override
@@ -185,18 +111,8 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public boolean parse(Context context) {
-			int startPos = context.position();
-			char found = context.peekChar();
-			if (characters.indexOf(found) < 0) {
-				return false;
-			}
-			int endPos = context.incrementPosition();
-			// FIXME: what should the default be ?
-			context.push(new LeafNode2(context, this, startPos, endPos));
-			//context.push(new CharacterNode(context, this, startPos, endPos));
-			// FIXME: handle on sucess
-			return true;
+		protected boolean isMatch(char found) {
+			return characters.indexOf(found) >= 0;
 		}
 	}
 
@@ -215,26 +131,14 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public CharRangeMatcherBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public CharRangeMatcherBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public CharRangeMatcherBuilder alias(String alias) {
-			super.alias(alias);
+		public CharRangeMatcherBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public CharRangeMatcher build(BuildContext ctxt) {
-			return new CharRangeMatcher(from, to, ignore(), alias());
+			return new CharRangeMatcher(this);
 		}
 	}
 
@@ -242,29 +146,14 @@ public abstract class CharMatcher extends SimpleExpression {
 		private final char from;
 		private final char to;
 
-		private CharRangeMatcher(char from, char to, boolean ignore, String alias) {
-			super(ignore, alias);
-			this.from = from;
-			this.to = to;
+		private CharRangeMatcher(CharRangeMatcherBuilder builder) {
+			super(builder);
+			this.from = builder.from;
+			this.to = builder.to;
 		}
 
 		@Override
-		public boolean parse(Context context) {
-			int startPos = context.position();
-			char found = context.peekChar();
-			if (!isMatch(found)) {
-				return false;
-			}
-			int endPos = context.incrementPosition();
-
-			//context.push(new CharacterNode(context, this, startPos, endPos));
-			// FIXME: what should the default be ?
-			context.push(new LeafNode2(context, this, startPos, endPos));
-			// FIXME: handle on success
-			return true;
-		}
-
-		private boolean isMatch(char found) {
+		protected boolean isMatch(char found) {
 			return found >= from && found <= to;
 		}
 

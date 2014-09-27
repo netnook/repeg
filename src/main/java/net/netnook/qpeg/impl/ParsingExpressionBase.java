@@ -1,24 +1,24 @@
 package net.netnook.qpeg.impl;
 
+import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
+
 public abstract class ParsingExpressionBase implements ParsingExpression {
 
 	protected final boolean ignore;
-	protected final String alias;
 	protected final OnSuccessHandler onSuccess;
 
-	protected ParsingExpressionBase(boolean ignore, String alias, OnSuccessHandler onSuccess) {
-		this.ignore = ignore;
-		this.alias = alias;
-		this.onSuccess = onSuccess;
-	}
+	protected ParsingExpressionBase(ParsingExpressionBuilderBase builder) {
+		if (builder.isIgnore() && builder.getOnSuccess() != null) {
+			throw new IllegalArgumentException("Cannot have ignore=true and an onSuccess handler at same time");
+		}
 
-	public final boolean isIgnore() {
-		return ignore;
+		this.ignore = builder.isIgnore();
+		this.onSuccess = (builder.getOnSuccess() == null) ? OnSuccessHandler.NO_OP : builder.getOnSuccess();
 	}
 
 	@Override
-	public String alias() {
-		return alias;
+	public final boolean isIgnore() {
+		return ignore;
 	}
 
 	@Override

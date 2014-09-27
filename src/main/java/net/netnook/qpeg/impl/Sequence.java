@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public class Sequence extends CompoundExpression {
 
@@ -18,51 +18,35 @@ public class Sequence extends CompoundExpression {
 
 	public static class SequenceBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder[] expressions;
-		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public SequenceBuilder expressions(ParsingExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}
 
+		@Override
 		public SequenceBuilder onSuccess(OnSuccessHandler onSuccess) {
-			this.onSuccess = onSuccess;
+			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public SequenceBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public SequenceBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public SequenceBuilder alias(String alias) {
-			super.alias(alias);
+		public SequenceBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public Sequence build(BuildContext ctxt) {
-			return new Sequence(build(ctxt, expressions), onSuccess, ignore(), alias());
+			return new Sequence(this, build(ctxt, expressions));
 		}
 	}
 
-//	private static final OnSuccessHandler NO_OP = (r,i) -> {};
-
 	private final ParsingExpression[] expressions;
-//	private final OnSuccessHandler onSuccess;
 
-	private Sequence(ParsingExpression[] expressions, OnSuccessHandler onSuccess, boolean ignore, String alias) {
-		super(ignore, alias, onSuccess);
+	private Sequence(SequenceBuilder builder, ParsingExpression[] expressions) {
+		super(builder);
 		this.expressions = expressions;
-//		this.onSuccess = onSuccess;
 	}
 
 	@Override
@@ -79,38 +63,22 @@ public class Sequence extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker marker = context.marker();
+		Marker startMarker = context.marker();
 
-//		List<ParseNode> children = new ArrayList<>();
-
-		boolean match = true;
+		boolean success = true;
 		for (ParsingExpression expression : expressions) {
-			match = match && expression.parse(context);
-			if (!match) {
+			success = expression.parse(context);
+			if (!success) {
 				break;
 			}
-//			if (!expression.isIgnore()) {
-//				context.push();
-//				children.add(child);
-//			}
 		}
 
-		if (!match) {
-			context.reset(marker);
+		if (!success) {
 			return false;
 		}
 
-//		List<ParseNode> children = context.popTo(stackPosition);
+		onSuccess(context, startMarker);
 
-		onSuccess.accept(context, marker);
-
-//		context.resetStack(stackPosition);
-
-//		if (!isIgnore()) {
-//			context.push(new SequenceNode(context, this, startPosition, context.position(), children));
-//		}
-
-		//return onSuccess.apply(result);
 		return true;
 	}
 }

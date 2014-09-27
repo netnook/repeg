@@ -1,13 +1,7 @@
 package net.netnook.qpeg.impl;
 
-import java.util.List;
-import java.util.function.Function;
-
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.ValueNode;
 
 public abstract class ParserFactoryBase {
 
@@ -17,20 +11,18 @@ public abstract class ParserFactoryBase {
 
 	protected abstract ParsingRuleBuilder getStartRule();
 
-	public static final ParsingExpressionBuilderBase IGNORED_WS = Optional.of(CharMatcher.whitespace()).ignore(true);
+	public static final ParsingExpressionBuilderBase IGNORED_WS = Optional.of(CharSequenceMatcher.whitespace().ignore()).ignore();
 
-	public static final OnSuccessHandler TEXT_TO_INTEGER = (context, start) -> {
-		context.resetStack(start.stackPosition);
-		String text = context.getInput(start.inputPosition, context.position()).toString();
+	public static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
+		context.resetStackToMark();
+		String text = context.getInputFromMark().toString();
 		int value = Integer.parseInt(text);
 		context.push(value);
 	};
 
-	public static final Function<? super ParseNode, ParseNode> REPLACE_WITH_VALUE_NODE = node -> new ValueNode(node, node.getOutput());
-
 	public static OnSuccessHandler orElse(Object defaultValue) {
-		return (Context context, Context.Marker start) -> {
-			int len = context.stackPosition() - start.stackPosition;
+		return (Context context) -> {
+			int len = context.stackSizeFromMark();
 			Object value;
 			if (len == 0) {
 				value = defaultValue;
@@ -43,17 +35,11 @@ public abstract class ParserFactoryBase {
 		};
 	}
 
-	public static OnSuccessHandler setToOutputOfChild(int childIdx) {
-		return (Context context, Context.Marker start) -> {
-			List<Object> children = context.popTo(start.stackPosition);
-			context.push(children.get(childIdx));
-		};
-	}
-
 	public static OnSuccessHandler replaceWithValueFrom(int childIdx) {
-		return (context, start) -> {
-			List<Object> results = context.popTo(start.stackPosition);
-			context.push(results.get(childIdx));
+		return (context) -> {
+			Object o = context.getFromMark(childIdx);
+			context.resetStackToMark();
+			context.push(o);
 		};
 	}
 

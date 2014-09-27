@@ -2,14 +2,11 @@ package net.netnook.qpeg.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
-import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.ZeroOrModeNode;
+import net.netnook.qpeg.impl.Context.Marker;
 
 public class ZeroOrMore extends CompoundExpression {
 
@@ -19,48 +16,34 @@ public class ZeroOrMore extends CompoundExpression {
 
 	public static class ZeroOrMoreBuilder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
-		private OnSuccessHandler onSuccess = OnSuccessHandler.NO_OP;
 
 		public ZeroOrMoreBuilder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
+		@Override
 		public ZeroOrMoreBuilder onSuccess(OnSuccessHandler onSuccess) {
-			this.onSuccess = onSuccess;
+			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public ZeroOrMoreBuilder name(String name) {
-			super.name(name);
-			return this;
-		}
-
-		@Override
-		public ZeroOrMoreBuilder ignore(boolean ignore) {
-			super.ignore(ignore);
-			return this;
-		}
-
-		@Override
-		public ZeroOrMoreBuilder alias(String alias) {
-			super.alias(alias);
+		public ZeroOrMoreBuilder ignore() {
+			super.ignore();
 			return this;
 		}
 
 		@Override
 		public ZeroOrMore build(BuildContext ctxt) {
-			return new ZeroOrMore(expression.build(ctxt), onSuccess, ignore(), alias());
+			return new ZeroOrMore(this, expression.build(ctxt));
 		}
 	}
 
-	private static final Function<? super ZeroOrModeNode, ParseNode> NO_OP = r -> r;
-
 	private final ParsingExpression expression;
 
-	private ZeroOrMore(ParsingExpression expression, OnSuccessHandler onSuccess, boolean ignore, String alias) {
-		super(ignore, alias, onSuccess);
+	private ZeroOrMore(ZeroOrMoreBuilder builder, ParsingExpression expression) {
+		super(builder);
 		this.expression = expression;
 
 		if (expression instanceof Optional) {
@@ -80,41 +63,21 @@ public class ZeroOrMore extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker startMarker = context.marker();
-
-//		int matchCount = 0;
-		//		List<ParseNode> children = new ArrayList<>();
+		Marker startMarker = context.marker();
 
 		while (true) {
-			Context.Marker fallbackMarker = context.marker();
+			Marker fallbackMarker = context.marker();
 
-			boolean match = expression.parse(context);
+			boolean success = expression.parse(context);
 
-			if (!match) {
+			if (!success) {
 				context.reset(fallbackMarker);
 				break;
 			}
-
-//			matchCount++;
-
-			//			if (!child.isIgnore()) {
-			//				children.add(child);
-			//			}
 		}
 
-//		if (matchCount == 0) {
-//			// context.setPosition(startPosition);  Not necessary since will have been reset in while loop
-//			return false;
-//		}
+		onSuccess(context, startMarker);
 
-		onSuccess.accept(context, startMarker);
-
-//		List<ParseNode> children = context.popTo(stackPosition);
-//		if (!isIgnore()) {
-//			context.push(new ZeroOrModeNode(context, this, startPosition, context.position(), children));
-//		}
-
-		//return onSuccess.apply(result); FIXME: do onsuccess
 		return true;
 	}
 }

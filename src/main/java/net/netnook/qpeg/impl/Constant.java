@@ -2,7 +2,6 @@ package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.parsetree.Context;
 
 public abstract class Constant extends SimpleExpression {
 
@@ -16,9 +15,19 @@ public abstract class Constant extends SimpleExpression {
 		public ParsingExpression build(BuildContext ctxt) {
 			return EOI;
 		}
+
+		@Override
+		public ParsingExpressionBuilderBase ignore() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ParsingExpressionBuilderBase onSuccess(OnSuccessHandler onSuccess) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
-	public static final ParsingExpression EOI = new Constant(true, null) {
+	public static final ParsingExpression EOI = new Constant(EOI_BUILDER) {
 
 		@Override
 		public void accept(Visitor visitor) {
@@ -35,13 +44,11 @@ public abstract class Constant extends SimpleExpression {
 			if (context.peekChar() != EOICHAR) {
 				return false;
 			}
-
-			//return new EndOfInputNode(context, this, context.position());
 			return true;
 		}
 	};
 
-	private Constant(boolean ignore, String alias) {
-		super(ignore, alias, OnSuccessHandler.NO_OP);
+	private Constant(ParsingExpressionBuilderBase builder) {
+		super(builder);
 	}
 }

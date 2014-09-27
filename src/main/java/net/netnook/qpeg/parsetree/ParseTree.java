@@ -1,23 +1,13 @@
 package net.netnook.qpeg.parsetree;
 
-public class ParseTree {
+import java.util.List;
 
-	private final ParseNode root;
+import net.netnook.qpeg.impl.Context;
+import net.netnook.qpeg.impl.ParsingExpression;
 
-	public ParseTree(ParseNode root) {
-		this.root = root;
-	}
+public class ParseTree extends TreeNode {
 
-	public ParseNode getRoot() {
-		return root;
-	}
-
-	public void dump() {
-		int depth = 0;
-		root.dump(depth);
-	}
-
-	public <T> T getOutput() {
-		return root.getOutput();
+	public ParseTree(Context context, ParsingExpression expression, int startPos, int endPos, List<Object> children) {
+		super(context, expression, startPos, endPos, children);
 	}
 }
