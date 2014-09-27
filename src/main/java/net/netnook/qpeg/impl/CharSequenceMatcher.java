@@ -2,7 +2,6 @@ package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.impl.Context.Marker;
 
 public abstract class CharSequenceMatcher extends SimpleExpression {
 
@@ -35,25 +34,22 @@ public abstract class CharSequenceMatcher extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			Marker start = context.marker();
+			context.mark();
 
 			while (true) {
-				char found = context.peekChar();
+				char found = context.consumeChar();
 				if (!isMatch(found)) {
+					context.rewindPosition(1);
 					break;
 				}
-				context.incrementPosition();
 			}
 
-			int endPos = context.position();
-
-			if (endPos == start.inputPosition) {
+			if (context.inputLength() == 0) {
 				return false;
 			}
 
 			if (!ignore) {
-				context.mark(start);
-				context.pushText(start);
+				context.pushCurrentText();
 				onSuccess.accept(context);
 			}
 
@@ -99,16 +95,15 @@ public abstract class CharSequenceMatcher extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			Marker start = context.marker();
+			context.mark();
 			for (int i = 0; i < str.length(); i++) {
-				if (context.nextChar() != str.charAt(i)) {
+				if (context.consumeChar() != str.charAt(i)) {
 					return false;
 				}
 			}
 
 			if (!ignore) {
-				context.mark(start);
-				context.pushText(start);
+				context.pushCurrentText();
 				onSuccess.accept(context);
 			}
 

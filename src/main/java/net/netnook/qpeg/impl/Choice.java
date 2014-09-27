@@ -63,7 +63,7 @@ public class Choice extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker startMarker = context.marker();
+		Marker startMarker = context.mark();
 
 		boolean success = false;
 		for (ParsingExpression expression : expressions) {
@@ -71,7 +71,7 @@ public class Choice extends CompoundExpression {
 			if (success) {
 				break;
 			}
-			context.reset(startMarker);
+			context.resetTo(startMarker);
 		}
 
 		if (!success) {

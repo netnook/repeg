@@ -3,7 +3,6 @@ package net.netnook.qpeg.impl;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.impl.Context.Marker;
 
 public abstract class Predicate extends SimpleExpression {
 
@@ -58,11 +57,11 @@ public abstract class Predicate extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			Marker marker = context.marker();
+			Context.Marker marker = context.mark();
 
 			boolean success = expression.parse(context);
 
-			context.reset(marker);
+			context.resetTo(marker);
 
 			return success;
 		}
@@ -111,11 +110,11 @@ public abstract class Predicate extends SimpleExpression {
 
 		@Override
 		public boolean parse(Context context) {
-			Marker marker = context.marker();
+			Context.Marker marker = context.mark();
 
 			boolean success = !expression.parse(context);
 
-			context.reset(marker);
+			context.resetTo(marker);
 
 			return success;
 		}

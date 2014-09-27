@@ -2,7 +2,6 @@ package net.netnook.qpeg.impl;
 
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.impl.Context.Marker;
 
 public abstract class CharMatcher extends SimpleExpression {
 
@@ -12,16 +11,14 @@ public abstract class CharMatcher extends SimpleExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker start = context.marker();
-		char found = context.peekChar();
+		context.mark();
+		char found = context.consumeChar();
 		if (!isMatch(found)) {
 			return false;
 		}
-		context.incrementPosition();
 
 		if (!ignore) {
-			context.mark(start);
-			context.pushText(start);
+			context.pushCurrentText();
 			onSuccess.accept(context);
 		}
 
@@ -73,34 +70,34 @@ public abstract class CharMatcher extends SimpleExpression {
 		}
 	}
 
-	public static AnyOfCharMatcherBuilder anyOf(String characters) {
-		return new AnyOfCharMatcherBuilder().characters(characters);
+	public static OneOfCharMatcherBuilder oneOf(String characters) {
+		return new OneOfCharMatcherBuilder().characters(characters);
 	}
 
-	public static class AnyOfCharMatcherBuilder extends ParsingExpressionBuilderBase {
+	public static class OneOfCharMatcherBuilder extends ParsingExpressionBuilderBase {
 		private String characters;
 
-		public AnyOfCharMatcherBuilder characters(String characters) {
+		public OneOfCharMatcherBuilder characters(String characters) {
 			this.characters = characters;
 			return this;
 		}
 
 		@Override
-		public AnyOfCharMatcherBuilder ignore() {
+		public OneOfCharMatcherBuilder ignore() {
 			super.ignore();
 			return this;
 		}
 
 		@Override
-		public AnyOfCharMatcher build(BuildContext ctxt) {
-			return new AnyOfCharMatcher(this);
+		public OneOfCharMatcher build(BuildContext ctxt) {
+			return new OneOfCharMatcher(this);
 		}
 	}
 
-	private static class AnyOfCharMatcher extends CharMatcher {
+	private static class OneOfCharMatcher extends CharMatcher {
 		private final String characters;
 
-		private AnyOfCharMatcher(AnyOfCharMatcherBuilder builder) {
+		private OneOfCharMatcher(OneOfCharMatcherBuilder builder) {
 			super(builder);
 			this.characters = builder.characters;
 		}

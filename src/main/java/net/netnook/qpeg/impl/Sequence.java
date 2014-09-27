@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import net.netnook.qpeg.builder.BuildContext;
 import net.netnook.qpeg.builder.ParsingExpressionBuilder;
 import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.impl.Context.Marker;
 
 public class Sequence extends CompoundExpression {
 
@@ -63,7 +62,7 @@ public class Sequence extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker startMarker = context.marker();
+		Context.Marker startMarker = context.mark();
 
 		boolean success = true;
 		for (ParsingExpression expression : expressions) {

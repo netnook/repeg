@@ -18,6 +18,7 @@ public abstract class ParseNode {
 	}
 
 	public CharSequence getText() {
-		return context.getInput(startPos, endPos);
+		throw new UnsupportedOperationException();
+		//return context.getInput(startPos, endPos);
 	}
 }

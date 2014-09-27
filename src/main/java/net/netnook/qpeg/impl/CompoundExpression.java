@@ -18,10 +18,10 @@ public abstract class CompoundExpression extends ParsingExpressionBase {
 	}
 
 	protected void onSuccess(Context context, Marker startMarker) {
+		context.mark(startMarker);
 		if (ignore) {
-			context.resetStack(startMarker);
+			context.clear();
 		} else {
-			context.mark(startMarker);
 			onSuccess.accept(context);
 		}
 	}

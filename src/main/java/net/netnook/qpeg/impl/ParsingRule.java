@@ -2,8 +2,6 @@ package net.netnook.qpeg.impl;
 
 import java.util.Comparator;
 
-import net.netnook.qpeg.parsetree.ParseTree;
-
 public class ParsingRule implements ParsingExpression {
 
 	public static final Comparator<? super ParsingRule> SORT_BY_NAME_WITH_START_FIRST = (Comparator<ParsingRule>) (r1, r2) -> {
@@ -54,15 +52,27 @@ public class ParsingRule implements ParsingExpression {
 		visitor.visit(this);
 	}
 
-	public ParseTree parse(CharSequence input) throws NoMatchException {
+	public <T> T parse(CharSequence input) throws NoMatchException {
 		Context context = new Context(input);
+		Context.Marker start = context.mark();
+
 		boolean success = parse(context);
 
 		if (!success) {
 			throw new NoMatchException();
 		}
 
-		return new ParseTree(context, this, 0, context.position(), context.getStack());
+		context.mark(start);
+
+		int count = context.size();
+
+		if (count == 0) {
+			return null;
+		} else if (count == 1) {
+			return context.get(0);
+		} else {
+			return (T) context.getAll();
+		}
 	}
 
 	@Override

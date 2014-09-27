@@ -8,18 +8,19 @@ public class Context {
 	private static final int DEFAULT_INITIAL_STACK_CAPACITY = 64;
 
 	public static class Marker {
-		public final int inputPosition;
-		public final int stackPosition;
+		private final int position;
+		private final int stackSize;
 
-		private Marker(int inputPosition, int stackPosition) {
-			this.inputPosition = inputPosition;
-			this.stackPosition = stackPosition;
+		private Marker(int position, int stackSize) {
+			this.position = position;
+			this.stackSize = stackSize;
 		}
 	}
 
 	private final CharSequence input;
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
 	private int position;
+
 	private Marker mark;
 
 	public Context(CharSequence input) {
@@ -27,25 +28,58 @@ public class Context {
 		this.position = 0;
 	}
 
-	public Marker marker() {
-		return new Marker(position, stack.size());
-	}
-
-	public void reset(Marker marker) {
-		position = marker.inputPosition;
-		truncateStack(marker.stackPosition);
+	public Marker mark() {
+		mark = new Marker(position, stack.size());
+		return mark;
 	}
 
 	public void mark(Marker marker) {
 		this.mark = marker;
 	}
 
-	public char nextChar() {
+	public void resetTo(Marker marker) {
+		resetPositionTo(marker);
+		resetStackTo(marker);
+		mark = null;
+	}
+
+	/**
+	 * Mark relative operation
+	 *
+	 * @return
+	 */
+	public CharSequence getCurrentText() {
+		return getInputFrom(mark);
+	}
+
+	private CharSequence getInputFrom(Marker start) {
+		return input.subSequence(start.position, position);
+	}
+
+	/**
+	 * Mark relative operation
+	 *
+	 * @return
+	 */
+	public int inputLength() {
+		return inputLengthFrom(mark);
+	}
+
+	private int inputLengthFrom(Marker marker) {
+		int result = position - marker.position;
+		if (result < 0) {
+			throw new IllegalArgumentException("Marker position is after current position.");
+		}
+		return result;
+	}
+
+	public char consumeChar() {
 		if (position < input.length()) {
 			char c = input.charAt(position);
 			position++;
 			return c;
 		} else {
+			position++;
 			return Constant.EOICHAR;
 		}
 	}
@@ -58,74 +92,79 @@ public class Context {
 		}
 	}
 
-	public int incrementPosition() {
+	public void incrementPosition() {
 		position++;
-		return position;
 	}
 
-	public int position() {
-		return position;
+	public void rewindPosition(int count) {
+		position -= count;
+		if (position < 0 || position < mark.position) {
+			throw new IllegalArgumentException("Cannot rewind beyond start !");
+		}
 	}
 
-	//	public Marker lastStart() {
-	//		return lastStart;
-	//	}
-	//
-	//	public void lastStart(Marker lastStart) {
-	//		this.lastStart = lastStart;
-	//	}
-
-	public void setPosition(int position) {
-		this.position = position;
+	public void resetPositionTo(Marker marker) {
+		this.position = marker.position;
 	}
 
-	public CharSequence getInput(int start, int end) {
-		return input.subSequence(start, end);
+	/**
+	 * Mark relative operation
+	 *
+	 * @return
+	 */
+	public int size() {
+		return sizeFrom(mark);
 	}
 
-	public CharSequence getInputFrom(Marker start) {
-		return input.subSequence(start.inputPosition, position);
+	private int sizeFrom(Marker marker) {
+		return stack.size() - marker.stackSize;
 	}
 
-	public CharSequence getInputFromMark() {
-		return getInputFrom(mark);
-	}
-
-	public void pushText(Marker start) {
-		push(getInputFrom(start));
+	/**
+	 * Mark relative operation
+	 */
+	public void pushCurrentText() {
+		push(getCurrentText());
 	}
 
 	public void push(Object o) {
 		stack.add(o);
 	}
 
+	/**
+	 * Mark relative operation
+	 */
 	public <T> T pop() {
+		if (size() <= 0) {
+			throw new IllegalStateException("Cannot pop beyond current mark");
+		}
 		return (T) stack.remove(stack.size() - 1);
 	}
 
-	public int stackPosition() {
-		return stack.size();
+	/**
+	 * Mark relative operation
+	 */
+	public <T> T get(int offset) {
+		return (T) stack.get(mark.stackSize + offset);
 	}
 
-	public <T> T getFromMark(int offset) {
-		return (T) stack.get(mark.stackPosition + offset);
-	}
-
-	public void replaceFromMark(Object value) {
-		resetStackToMark();
+	/**
+	 * Mark relative operation
+	 */
+	public void replaceWith(Object value) {
+		clear();
 		push(value);
 	}
 
-	public void resetStackToMark() {
-		resetStack(mark);
+	/**
+	 * Mark relative operation
+	 */
+	public void clear() {
+		resetStackTo(mark);
 	}
 
-	public void resetStack(Marker marker) {
-		truncateStack(marker.stackPosition);
-	}
-
-	public int stackSizeFromMark() {
-		return stackPosition() - mark.stackPosition;
+	private void resetStackTo(Marker marker) {
+		truncateStack(marker.stackSize);
 	}
 
 	// FIXME: better way to truncate stack ??
@@ -135,7 +174,15 @@ public class Context {
 		}
 	}
 
-	public <T> List<T> getStack() {
-		return new ArrayList(stack);
+	/**
+	 * Mark relative operation
+	 */
+	public <T> List<T> getAll() {
+		int count = size();
+		List<T> result = new ArrayList<>(count);
+		for (int i = 0; i < count; i++) {
+			result.add(get(i));
+		}
+		return result;
 	}
 }
