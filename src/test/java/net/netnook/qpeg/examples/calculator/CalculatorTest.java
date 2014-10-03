@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import net.netnook.qpeg.impl.GrammarBuilder;
-import net.netnook.qpeg.impl.NoMatchException;
-import net.netnook.qpeg.impl.ParsingRule;
+import net.netnook.qpeg.expressions.GrammarBuilder;
+import net.netnook.qpeg.expressions.NoMatchException;
+import net.netnook.qpeg.expressions.ParsingRule;
 
 public class CalculatorTest {
 

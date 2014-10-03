@@ -1,8 +1,19 @@
-package net.netnook.qpeg.impl;
+package net.netnook.qpeg;
 
-import net.netnook.qpeg.builder.BuildContext;
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
-import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.CharMatcher;
+import net.netnook.qpeg.expressions.CharSequenceMatcher;
+import net.netnook.qpeg.expressions.Choice;
+import net.netnook.qpeg.expressions.Constant;
+import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.Optional;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.ParsingRule;
+import net.netnook.qpeg.expressions.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.Repetition;
+import net.netnook.qpeg.expressions.Sequence;
 
 public abstract class ParserFactoryBase {
 

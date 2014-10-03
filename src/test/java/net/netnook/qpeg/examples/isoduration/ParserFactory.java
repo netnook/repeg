@@ -3,9 +3,9 @@ package net.netnook.qpeg.examples.isoduration;
 import java.time.Duration;
 import java.time.Period;
 
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
-import net.netnook.qpeg.impl.ParserFactoryBase;
-import net.netnook.qpeg.impl.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.ParserFactoryBase;
+import net.netnook.qpeg.expressions.ParsingRuleBuilder;
 
 public class ParserFactory extends ParserFactoryBase {
 

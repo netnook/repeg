@@ -1,7 +1,4 @@
-package net.netnook.qpeg.impl;
-
-import net.netnook.qpeg.builder.BuildContext;
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
+package net.netnook.qpeg.expressions;
 
 public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 

@@ -1,8 +1,4 @@
-package net.netnook.qpeg.impl;
-
-import net.netnook.qpeg.builder.BuildContext;
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
-import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
+package net.netnook.qpeg.expressions;
 
 public abstract class Predicate extends SimpleExpression {
 

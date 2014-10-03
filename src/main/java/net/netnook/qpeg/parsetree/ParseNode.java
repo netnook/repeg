@@ -1,7 +1,7 @@
 package net.netnook.qpeg.parsetree;
 
-import net.netnook.qpeg.impl.Context;
-import net.netnook.qpeg.impl.ParsingExpression;
+import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.ParsingExpression;
 
 public abstract class ParseNode {
 

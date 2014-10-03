@@ -1,10 +1,10 @@
-package net.netnook.qpeg.builder;
+package net.netnook.qpeg.expressions;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import net.netnook.qpeg.impl.ParsingRule;
-import net.netnook.qpeg.impl.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.ParsingRule;
+import net.netnook.qpeg.expressions.ParsingRuleBuilder;
 
 public class BuildContext {
 

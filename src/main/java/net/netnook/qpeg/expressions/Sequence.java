@@ -1,13 +1,9 @@
-package net.netnook.qpeg.impl;
+package net.netnook.qpeg.expressions;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import net.netnook.qpeg.builder.BuildContext;
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
-import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
 
 public class Sequence extends CompoundExpression {
 

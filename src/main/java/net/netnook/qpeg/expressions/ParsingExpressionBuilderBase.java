@@ -1,7 +1,4 @@
-package net.netnook.qpeg.builder;
-
-import net.netnook.qpeg.impl.OnSuccessHandler;
-import net.netnook.qpeg.impl.ParsingExpression;
+package net.netnook.qpeg.expressions;
 
 public abstract class ParsingExpressionBuilderBase implements ParsingExpressionBuilder {
 

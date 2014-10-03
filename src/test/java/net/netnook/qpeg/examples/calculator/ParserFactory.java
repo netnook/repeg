@@ -1,8 +1,8 @@
 package net.netnook.qpeg.examples.calculator;
 
-import net.netnook.qpeg.builder.ParsingExpressionBuilder;
-import net.netnook.qpeg.impl.ParserFactoryBase;
-import net.netnook.qpeg.impl.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.ParserFactoryBase;
+import net.netnook.qpeg.expressions.ParsingRuleBuilder;
 
 public class ParserFactory extends ParserFactoryBase {
 

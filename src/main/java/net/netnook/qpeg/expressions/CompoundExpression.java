@@ -1,9 +1,8 @@
-package net.netnook.qpeg.impl;
+package net.netnook.qpeg.expressions;
 
 import java.util.List;
 
-import net.netnook.qpeg.builder.ParsingExpressionBuilderBase;
-import net.netnook.qpeg.impl.Context.Marker;
+import net.netnook.qpeg.expressions.Context.Marker;
 
 public abstract class CompoundExpression extends ParsingExpressionBase {
 

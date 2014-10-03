@@ -1,4 +1,4 @@
-package net.netnook.qpeg.impl;
+package net.netnook.qpeg.expressions;
 
 public interface Visitor {
 

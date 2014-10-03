@@ -1,6 +1,4 @@
-package net.netnook.qpeg.builder;
-
-import net.netnook.qpeg.impl.ParsingExpression;
+package net.netnook.qpeg.expressions;
 
 public interface ParsingExpressionBuilder {
 
