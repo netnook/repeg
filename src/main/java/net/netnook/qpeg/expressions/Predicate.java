@@ -1,119 +1,70 @@
 package net.netnook.qpeg.expressions;
 
-public abstract class Predicate extends SimpleExpression {
+public final class Predicate extends SimpleExpression {
 
-	protected Predicate(ParsingExpressionBuilderBase builder) {
+	protected final ParsingExpression expression;
+	protected final boolean invert;
+
+	protected Predicate(Builder builder, ParsingExpression expression) {
 		super(builder);
 		if (!builder.isIgnore()) {
 			throw new IllegalStateException();
 		}
+		this.expression = expression;
+		this.invert = builder.invert;
 	}
 
-	public static TruePredicateBuilder match(ParsingExpressionBuilder expression) {
-		return new TruePredicateBuilder().expression(expression);
+	@Override
+	public boolean parse(Context context) {
+		Context.Marker marker = context.mark();
+
+		boolean match = expression.parse(context);
+
+		boolean success = invert ^ match;
+
+		context.resetTo(marker);
+
+		return success;
 	}
 
-	public static class TruePredicateBuilder extends ParsingExpressionBuilderBase {
+	@Override
+	public String buildGrammar() {
+		return invert  //
+				? "!(" + expression.buildGrammar() + ")" //
+				: "&(" + expression.buildGrammar() + ")";
+	}
+
+	public static Builder match(ParsingExpressionBuilder expression) {
+		return new Builder().expression(expression, false);
+	}
+
+	public static Builder not(ParsingExpressionBuilder expression) {
+		return new Builder().expression(expression, true);
+	}
+
+	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
+		private boolean invert;
 
-		public TruePredicateBuilder expression(ParsingExpressionBuilder expression) {
+		public Builder expression(ParsingExpressionBuilder expression, boolean invert) {
 			this.expression = expression;
+			this.invert = invert;
 			return this;
 		}
 
 		@Override
-		public TruePredicateBuilder ignore() {
+		public Builder ignore() {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public TruePredicateBuilder onSuccess(OnSuccessHandler onSuccess) {
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public TruePredicate build(BuildContext ctxt) {
-			return new TruePredicate(this, expression.build(ctxt));
+		public Predicate build(BuildContext ctxt) {
+			return new Predicate(this, expression.build(ctxt));
 		}
 	}
-
-	private static class TruePredicate extends Predicate {
-
-		private final ParsingExpression expression;
-
-		private TruePredicate(TruePredicateBuilder builder, ParsingExpression expression) {
-			super(builder);
-			this.expression = expression;
-		}
-
-		@Override
-		public String buildGrammar() {
-			return "&(" + expression.buildGrammar() + ")";
-		}
-
-		@Override
-		public boolean parse(Context context) {
-			Context.Marker marker = context.mark();
-
-			boolean success = expression.parse(context);
-
-			context.resetTo(marker);
-
-			return success;
-		}
-	}
-
-	public static FalsePredicateBuilder not(ParsingExpressionBuilder expression) {
-		return new FalsePredicateBuilder().expression(expression);
-	}
-
-	public static class FalsePredicateBuilder extends ParsingExpressionBuilderBase {
-		private ParsingExpressionBuilder expression;
-
-		public FalsePredicateBuilder expression(ParsingExpressionBuilder expression) {
-			this.expression = expression;
-			return this;
-		}
-
-		@Override
-		public FalsePredicateBuilder ignore() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public FalsePredicateBuilder onSuccess(OnSuccessHandler onSuccess) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public FalsePredicate build(BuildContext ctxt) {
-			return new FalsePredicate(this, expression.build(ctxt));
-		}
-	}
-
-	private static class FalsePredicate extends Predicate {
-		private final ParsingExpression expression;
-
-		private FalsePredicate(FalsePredicateBuilder builder, ParsingExpression expression) {
-			super(builder);
-			this.expression = expression;
-		}
-
-		@Override
-		public String buildGrammar() {
-			return "!(" + expression.buildGrammar() + ")";
-		}
-
-		@Override
-		public boolean parse(Context context) {
-			Context.Marker marker = context.mark();
-
-			boolean success = !expression.parse(context);
-
-			context.resetTo(marker);
-
-			return success;
-		}
-	}
-
 }
