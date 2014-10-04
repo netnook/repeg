@@ -7,26 +7,26 @@ import java.util.stream.Stream;
 
 public class Sequence extends CompoundExpression {
 
-	public static SequenceBuilder of(ParsingExpressionBuilder... expressions) {
-		return new SequenceBuilder().expressions(expressions);
+	public static Builder of(ParsingExpressionBuilder... expressions) {
+		return new Builder().expressions(expressions);
 	}
 
-	public static class SequenceBuilder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder[] expressions;
 
-		public SequenceBuilder expressions(ParsingExpressionBuilder[] expressions) {
+		public Builder expressions(ParsingExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}
 
 		@Override
-		public SequenceBuilder onSuccess(OnSuccessHandler onSuccess) {
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
 			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public SequenceBuilder ignore() {
+		public Builder ignore() {
 			super.ignore();
 			return this;
 		}
@@ -39,7 +39,7 @@ public class Sequence extends CompoundExpression {
 
 	private final ParsingExpression[] expressions;
 
-	private Sequence(SequenceBuilder builder, ParsingExpression[] expressions) {
+	private Sequence(Builder builder, ParsingExpression[] expressions) {
 		super(builder);
 		this.expressions = expressions;
 	}

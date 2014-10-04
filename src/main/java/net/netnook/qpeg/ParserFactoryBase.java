@@ -27,23 +27,23 @@ public abstract class ParserFactoryBase {
 		return Constant.EOI_BUILDER;
 	}
 
-	protected static Sequence.SequenceBuilder sequence(ParsingExpressionBuilder... expressions) {
+	protected static Sequence.Builder sequence(ParsingExpressionBuilder... expressions) {
 		return Sequence.of(expressions);
 	}
 
-	protected static Choice.ChoiceBuilder choice(ParsingExpressionBuilder... expressions) {
+	protected static Choice.Builder choice(ParsingExpressionBuilder... expressions) {
 		return Choice.of(expressions);
 	}
 
-	protected static Repetition.RepetitionBuilder zeroOrMore(ParsingExpressionBuilder expression) {
+	protected static Repetition.Builder zeroOrMore(ParsingExpressionBuilder expression) {
 		return Repetition.zeroOrMore(expression);
 	}
 
-	protected static Repetition.RepetitionBuilder oneOrMore(ParsingExpressionBuilder expression) {
+	protected static Repetition.Builder oneOrMore(ParsingExpressionBuilder expression) {
 		return Repetition.oneOrMore(expression);
 	}
 
-	protected static Optional.OptionalBuilder optional(ParsingExpressionBuilder expression) {
+	protected static Optional.Builder optional(ParsingExpressionBuilder expression) {
 		return Optional.of(expression);
 	}
 

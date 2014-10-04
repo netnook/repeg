@@ -7,26 +7,26 @@ import net.netnook.qpeg.expressions.Context.Marker;
 
 public class Optional extends CompoundExpression {
 
-	public static OptionalBuilder of(ParsingExpressionBuilder expression) {
-		return new OptionalBuilder().expression(expression);
+	public static Builder of(ParsingExpressionBuilder expression) {
+		return new Builder().expression(expression);
 	}
 
-	public static class OptionalBuilder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 
-		public OptionalBuilder expression(ParsingExpressionBuilder expression) {
+		public Builder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
 		@Override
-		public OptionalBuilder onSuccess(OnSuccessHandler onSuccess) {
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
 			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public OptionalBuilder ignore() {
+		public Builder ignore() {
 			super.ignore();
 			return this;
 		}
@@ -39,7 +39,7 @@ public class Optional extends CompoundExpression {
 
 	private final ParsingExpression expression;
 
-	private Optional(OptionalBuilder builder, ParsingExpression expression) {
+	private Optional(Builder builder, ParsingExpression expression) {
 		super(builder);
 		this.expression = expression;
 	}

@@ -7,45 +7,45 @@ import net.netnook.qpeg.expressions.Context.Marker;
 
 public class Repetition extends CompoundExpression {
 
-	public static RepetitionBuilder zeroOrMore(ParsingExpressionBuilder expression) {
-		return new RepetitionBuilder() //
+	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
+		return new Builder() //
 				.expression(expression);
 	}
 
-	public static RepetitionBuilder oneOrMore(ParsingExpressionBuilder expression) {
-		return new RepetitionBuilder() //
+	public static Builder oneOrMore(ParsingExpressionBuilder expression) {
+		return new Builder() //
 				.expression(expression) //
 				.minCount(1);
 	}
 
-	public static class RepetitionBuilder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 		private int minCount = 0;
 		private int maxCount = Integer.MAX_VALUE;
 
-		public RepetitionBuilder expression(ParsingExpressionBuilder expression) {
+		public Builder expression(ParsingExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}
 
 		@Override
-		public RepetitionBuilder onSuccess(OnSuccessHandler onSuccess) {
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
 			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public RepetitionBuilder ignore() {
+		public Builder ignore() {
 			super.ignore();
 			return this;
 		}
 
-		public RepetitionBuilder minCount(int minCount) {
+		public Builder minCount(int minCount) {
 			this.minCount = minCount;
 			return this;
 		}
 
-		public RepetitionBuilder maxCount(int maxCount) {
+		public Builder maxCount(int maxCount) {
 			this.maxCount = maxCount;
 			return this;
 		}
@@ -60,7 +60,7 @@ public class Repetition extends CompoundExpression {
 	private final int minCount;
 	private final int maxCount;
 
-	private Repetition(RepetitionBuilder builder, ParsingExpression expression) {
+	private Repetition(Builder builder, ParsingExpression expression) {
 		super(builder);
 		this.expression = expression;
 		this.minCount = builder.minCount;

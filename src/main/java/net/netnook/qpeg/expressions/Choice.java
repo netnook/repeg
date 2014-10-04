@@ -9,26 +9,26 @@ import net.netnook.qpeg.expressions.Context.Marker;
 
 public class Choice extends CompoundExpression {
 
-	public static ChoiceBuilder of(ParsingExpressionBuilder... expressions) {
-		return new ChoiceBuilder().expressions(expressions);
+	public static Builder of(ParsingExpressionBuilder... expressions) {
+		return new Builder().expressions(expressions);
 	}
 
-	public static class ChoiceBuilder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder[] expressions;
 
-		public ChoiceBuilder expressions(ParsingExpressionBuilder[] expressions) {
+		public Builder expressions(ParsingExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}
 
 		@Override
-		public ChoiceBuilder onSuccess(OnSuccessHandler onSuccess) {
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
 			super.onSuccess(onSuccess);
 			return this;
 		}
 
 		@Override
-		public ChoiceBuilder ignore() {
+		public Builder ignore() {
 			super.ignore();
 			return this;
 		}
@@ -41,7 +41,7 @@ public class Choice extends CompoundExpression {
 
 	private final ParsingExpression[] expressions;
 
-	private Choice(ChoiceBuilder builder, ParsingExpression[] expressions) {
+	private Choice(Builder builder, ParsingExpression[] expressions) {
 		super(builder);
 		this.expressions = expressions;
 	}
