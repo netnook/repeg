@@ -1,8 +1,14 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import net.netnook.qpeg.expressions.CompoundExpression;
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.ParsingRule;
+import net.netnook.qpeg.expressions.SimpleExpression;
+import net.netnook.qpeg.expressions.Visitor;
 
 public class GrammarBuilder {
 
