@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Context {
 
+	public static final int END_OF_INPUT = -1;
+
 	private static final int DEFAULT_INITIAL_STACK_CAPACITY = 64;
 
 	public static class Marker {
@@ -73,22 +75,22 @@ public class Context {
 		return result;
 	}
 
-	public char consumeChar() {
+	public int consumeChar() {
 		if (position < input.length()) {
 			char c = input.charAt(position);
 			position++;
 			return c;
 		} else {
 			position++;
-			return Constant.EOICHAR;
+			return END_OF_INPUT;
 		}
 	}
 
-	public char peekChar() {
+	public int peekChar() {
 		if (position < input.length()) {
 			return input.charAt(position);
 		} else {
-			return Constant.EOICHAR;
+			return END_OF_INPUT;
 		}
 	}
 

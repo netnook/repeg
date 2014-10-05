@@ -18,7 +18,7 @@ public abstract class CharTester {
 		return new WhitespaceCharTester();
 	}
 
-	public abstract boolean isMatch(char c);
+	public abstract boolean isMatch(int c);
 
 	public abstract String buildGrammar();
 
@@ -30,7 +30,7 @@ public abstract class CharTester {
 		}
 
 		@Override
-		public boolean isMatch(char test) {
+		public boolean isMatch(int test) {
 			return test == c;
 		}
 
@@ -48,7 +48,7 @@ public abstract class CharTester {
 		}
 
 		@Override
-		public boolean isMatch(char test) {
+		public boolean isMatch(int test) {
 			return characters.indexOf(test) >= 0;
 		}
 
@@ -68,7 +68,7 @@ public abstract class CharTester {
 		}
 
 		@Override
-		public boolean isMatch(char test) {
+		public boolean isMatch(int test) {
 			return test >= from && test <= to;
 		}
 
@@ -81,7 +81,7 @@ public abstract class CharTester {
 	private static class WhitespaceCharTester extends CharTester {
 
 		@Override
-		public boolean isMatch(char test) {
+		public boolean isMatch(int test) {
 			return Character.isWhitespace(test);
 		}
 

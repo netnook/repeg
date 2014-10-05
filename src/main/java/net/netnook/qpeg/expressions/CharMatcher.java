@@ -78,8 +78,9 @@ public final class CharMatcher extends SimpleExpression {
 
 		int count = 0;
 		while (count < maxCount) {
-			char found = context.consumeChar();
+			int found = context.consumeChar();
 
+			// FIXME: unicode handling ?
 			boolean match = matcher.isMatch(found);
 			if (!match) {
 				context.rewindPosition(1);

@@ -3,8 +3,8 @@ package net.netnook.qpeg;
 import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CharMatcher;
 import net.netnook.qpeg.expressions.Choice;
-import net.netnook.qpeg.expressions.Constant;
 import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.EoiMatcher;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.Optional;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
@@ -24,8 +24,8 @@ public abstract class ParserFactoryBase {
 
 	protected abstract ParsingRuleBuilder getStartRule();
 
-	protected static Constant.EoiBuilder endOfInput() {
-		return Constant.EOI_BUILDER;
+	protected static EoiMatcher.Builder endOfInput() {
+		return EoiMatcher.instance();
 	}
 
 	protected static Sequence.Builder sequence(ParsingExpressionBuilder... expressions) {
