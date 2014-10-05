@@ -1,5 +1,7 @@
 package net.netnook.qpeg.expressions;
 
+import net.netnook.qpeg.expressions.Context.Marker;
+
 public abstract class ParsingExpressionBase implements ParsingExpression {
 
 	protected final boolean ignore;
@@ -12,6 +14,15 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 
 		this.ignore = builder.isIgnore();
 		this.onSuccess = (builder.getOnSuccess() == null) ? OnSuccessHandler.NO_OP : builder.getOnSuccess();
+	}
+
+	protected final void onSuccess(Context context, Marker startMarker) {
+		context.mark(startMarker);
+		if (ignore) {
+			context.clear();
+		} else {
+			onSuccess.accept(context);
+		}
 	}
 
 	@Override

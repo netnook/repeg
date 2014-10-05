@@ -2,7 +2,6 @@ package net.netnook.qpeg;
 
 import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CharMatcher;
-import net.netnook.qpeg.expressions.CharSequenceMatcher;
 import net.netnook.qpeg.expressions.Choice;
 import net.netnook.qpeg.expressions.Constant;
 import net.netnook.qpeg.expressions.Context;
@@ -16,6 +15,8 @@ import net.netnook.qpeg.expressions.Repetition;
 import net.netnook.qpeg.expressions.Sequence;
 
 public abstract class ParserFactoryBase {
+
+	private static final ParsingExpressionBuilderBase IGNORED_WS = CharMatcher.whitespace().minCount(0).maxCountUnbounded().ignore();
 
 	public ParsingRule build() {
 		return getStartRule().build(new BuildContext());
@@ -47,23 +48,21 @@ public abstract class ParserFactoryBase {
 		return Optional.of(expression);
 	}
 
-	protected static CharMatcher.CharRangeMatcherBuilder characterInRange(char from, char to) {
+	protected static CharMatcher.Builder characterInRange(char from, char to) {
 		return CharMatcher.inRange(from, to);
 	}
 
-	protected static CharMatcher.SingleCharMatcherBuilder character(char c) {
+	protected static CharMatcher.Builder character(char c) {
 		return CharMatcher.of(c);
 	}
 
-	protected static CharMatcher.OneOfCharMatcherBuilder oneOf(String characters) {
+	protected static CharMatcher.Builder oneOf(String characters) {
 		return CharMatcher.oneOf(characters);
 	}
 
 	protected static ParsingExpressionBuilder ignoredWhitespace() {
 		return IGNORED_WS;
 	}
-
-	private static final ParsingExpressionBuilderBase IGNORED_WS = Optional.of(CharSequenceMatcher.whitespace().ignore()).ignore();
 
 	public static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
 		context.clear();

@@ -10,7 +10,6 @@ public final class Predicate extends SimpleExpression {
 		return new Builder().expression(expression, true);
 	}
 
-
 	public static class Builder extends ParsingExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 		private boolean invert;

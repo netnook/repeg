@@ -3,9 +3,6 @@ package net.netnook.qpeg.expressions;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.netnook.qpeg.expressions.ParsingRule;
-import net.netnook.qpeg.expressions.ParsingRuleBuilder;
-
 public class BuildContext {
 
 	private Map<ParsingRuleBuilder, ParsingRule> expressions = new HashMap<>();
