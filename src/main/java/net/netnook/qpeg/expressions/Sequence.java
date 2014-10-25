@@ -59,11 +59,7 @@ public class Sequence extends CompoundExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		onExpressionEnter(context);
-
-		Marker startMarker = context.updateMark();
-
+	protected boolean parseImpl(Context context, Marker startMarker) {
 		boolean success = true;
 		for (ParsingExpression expression : expressions) {
 			success = expression.parse(context);
@@ -71,9 +67,6 @@ public class Sequence extends CompoundExpression {
 				break;
 			}
 		}
-
-		onExpressionExit(context, startMarker, success);
-
 		return success;
 	}
 }

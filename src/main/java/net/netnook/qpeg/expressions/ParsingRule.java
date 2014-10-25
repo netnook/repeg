@@ -49,12 +49,8 @@ public class ParsingRule extends ParsingExpressionBase {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		Marker startMarker = context.updateMark();
-		onExpressionEnter(context);
-		boolean success = expression.parse(context);
-		onExpressionExit(context, startMarker, success);
-		return success;
+	protected boolean parseImpl(Context context, Marker startMarker) {
+		return expression.parse(context);
 	}
 
 	@Override

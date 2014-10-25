@@ -73,11 +73,7 @@ public final class CharMatcher extends SimpleExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		onExpressionEnter(context);
-
-		Marker startMarker = context.updateMark();
-
+	protected boolean parseImpl(Context context, Marker startMarker) {
 		int count = 0;
 		while (count < maxCount) {
 			int found = context.consumeChar();
@@ -96,8 +92,6 @@ public final class CharMatcher extends SimpleExpression {
 		if (success && !ignore) {
 			context.pushCurrentText();
 		}
-
-		onExpressionExit(context, startMarker, success);
 
 		return success;
 	}

@@ -90,11 +90,7 @@ public class Repetition extends CompoundExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		onExpressionEnter(context);
-
-		Marker startMarker = context.updateMark();
-
+	protected boolean parseImpl(Context context, Marker startMarker) {
 		int successCount = 0;
 
 		while (successCount < maxCount) {
@@ -110,11 +106,7 @@ public class Repetition extends CompoundExpression {
 			successCount++;
 		}
 
-		boolean success = successCount >= minCount;
-
-		onExpressionExit(context, startMarker, success);
-
-		return success;
+		return successCount >= minCount;
 	}
 }
 

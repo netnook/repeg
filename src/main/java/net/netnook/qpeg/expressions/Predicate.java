@@ -51,18 +51,12 @@ public final class Predicate extends SimpleExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		onExpressionEnter(context);
-
-		Marker marker = context.updateMark();
-
+	protected boolean parseImpl(Context context, Marker startMarker) {
 		boolean match = expression.parse(context);
 
 		boolean success = invert ^ match;
 
-		context.resetTo(marker);
-
-		onExpressionExit(context, marker, success);
+		context.resetTo(startMarker);
 
 		return success;
 	}

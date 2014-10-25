@@ -35,11 +35,7 @@ public class StringMatcher extends SimpleExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		onExpressionEnter(context);
-
-		Marker startMarker = context.updateMark();
-
+	protected boolean parseImpl(Context context, Marker startMarker) {
 		boolean success = true;
 		for (int i = 0; i < str.length(); i++) {
 			if (context.consumeChar() != str.charAt(i)) {
@@ -51,8 +47,6 @@ public class StringMatcher extends SimpleExpression {
 		if (success && !ignore) {
 			context.pushCurrentText();
 		}
-
-		onExpressionExit(context, startMarker, success);
 
 		return success;
 	}

@@ -49,15 +49,7 @@ public class EoiMatcher extends SimpleExpression {
 	}
 
 	@Override
-	public boolean parse(Context context) {
-		Marker startMarker = context.updateMark();
-
-		onExpressionEnter(context);
-
-		boolean success = context.peekChar() == Context.END_OF_INPUT;
-
-		onExpressionExit(context, startMarker, success);
-
-		return success;
+	protected boolean parseImpl(Context context, Marker startMarker) {
+		return context.peekChar() == Context.END_OF_INPUT;
 	}
 }
