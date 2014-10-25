@@ -60,14 +60,13 @@ public class Choice extends CompoundExpression {
 
 	@Override
 	protected boolean parseImpl(Context context, Marker startMarker) {
-		boolean success = false;
 		for (ParsingExpression expression : expressions) {
-			success = expression.parse(context);
+			boolean success = expression.parse(context);
 			if (success) {
-				break;
+				return true;
 			}
 			context.resetTo(startMarker);
 		}
-		return success;
+		return false;
 	}
 }

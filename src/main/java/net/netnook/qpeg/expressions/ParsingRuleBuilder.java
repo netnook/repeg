@@ -15,7 +15,6 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 			ParsingRule rule = new ParsingRule(this);
 			ctxt.putRule(this, rule);
 
-			// FIXME: but the reference expression is then not immutable !!!
 			rule.setExpression(expression().build(ctxt));
 
 			return rule;

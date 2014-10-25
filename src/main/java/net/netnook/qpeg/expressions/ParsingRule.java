@@ -49,11 +49,6 @@ public class ParsingRule extends ParsingExpressionBase {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
-		return expression.parse(context);
-	}
-
-	@Override
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
@@ -86,6 +81,11 @@ public class ParsingRule extends ParsingExpressionBase {
 		} else {
 			return (T) context.getAll();
 		}
+	}
+
+	@Override
+	protected boolean parseImpl(Context context, Marker startMarker) {
+		return expression.parse(context);
 	}
 
 	public ParseTree parseTree(CharSequence input) throws NoMatchException {

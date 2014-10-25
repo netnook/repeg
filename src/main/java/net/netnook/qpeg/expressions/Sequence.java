@@ -60,13 +60,12 @@ public class Sequence extends CompoundExpression {
 
 	@Override
 	protected boolean parseImpl(Context context, Marker startMarker) {
-		boolean success = true;
 		for (ParsingExpression expression : expressions) {
-			success = expression.parse(context);
+			boolean success = expression.parse(context);
 			if (!success) {
-				break;
+				return false;
 			}
 		}
-		return success;
+		return true;
 	}
 }

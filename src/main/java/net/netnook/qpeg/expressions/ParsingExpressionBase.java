@@ -39,7 +39,6 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 		context.mark(startMarker);
 
 		if (success) {
-			// FIXME Should be ignored by parent !!!!
 			if (ignore) {
 				context.clear();
 			} else {
