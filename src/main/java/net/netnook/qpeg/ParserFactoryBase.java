@@ -18,6 +18,13 @@ public abstract class ParserFactoryBase {
 
 	private static final ParsingExpressionBuilderBase IGNORED_WS = CharMatcher.whitespace().minCount(0).maxCountUnbounded().ignore();
 
+	private static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
+		context.clear();
+		String text = context.getCurrentText().toString();
+		int value = Integer.parseInt(text);
+		context.push(value);
+	};
+
 	public ParsingRule build() {
 		return getStartRule().build(new BuildContext());
 	}
@@ -64,12 +71,9 @@ public abstract class ParserFactoryBase {
 		return IGNORED_WS;
 	}
 
-	public static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
-		context.clear();
-		String text = context.getCurrentText().toString();
-		int value = Integer.parseInt(text);
-		context.push(value);
-	};
+	protected static OnSuccessHandler textToInteger() {
+		return TEXT_TO_INTEGER;
+	}
 
 	public static OnSuccessHandler orElse(Object defaultValue) {
 		return (Context context) -> {
@@ -85,13 +89,4 @@ public abstract class ParserFactoryBase {
 			context.push(value);
 		};
 	}
-
-	public static OnSuccessHandler replaceWithValueFrom(int childIdx) {
-		return (context) -> {
-			Object o = context.get(childIdx);
-			context.clear();
-			context.push(o);
-		};
-	}
-
 }

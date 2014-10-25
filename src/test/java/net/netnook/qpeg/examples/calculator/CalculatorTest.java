@@ -77,14 +77,14 @@ public class CalculatorTest {
 
 	@Test
 	public void parseTree() throws NoMatchException {
-		ParseTree result = rule.parseTree("1 * 2 + 3");
+		ParseTree result = rule.parseTree("11 * 2 + 333");
 		System.out.println("tree: " + result);
 	}
 
 	@Test
 	@Ignore
 	public void parseWithLogging() throws NoMatchException {
-		rule.parse("1 * 2 + 3", LoggingParseListener.skipIgnore());
+		rule.parse("1 * 2 + 3", LoggingParseListener.builder().skipIgnore(true).build());
 	}
 
 	@Test

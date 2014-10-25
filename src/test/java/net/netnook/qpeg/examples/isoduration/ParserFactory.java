@@ -69,7 +69,7 @@ public class ParserFactory extends ParserFactoryBase {
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return oneOrMore(characterInRange('0', '9').ignore()).onSuccess(TEXT_TO_INTEGER);
+				return oneOrMore(characterInRange('0', '9').ignore()).onSuccess(textToInteger());
 			}
 		};
 	}

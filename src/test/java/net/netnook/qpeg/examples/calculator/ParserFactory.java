@@ -121,13 +121,7 @@ public class ParserFactory extends ParserFactoryBase {
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return oneOrMore(Digit).onSuccess(TEXT_TO_INTEGER);
-			}
-		}, //
-		Digit {
-			@Override
-			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').ignore();
+				return characterInRange('0', '9').maxCountUnbounded().onSuccess(textToInteger());
 			}
 		}
 	}
