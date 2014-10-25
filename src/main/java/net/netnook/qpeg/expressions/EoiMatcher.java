@@ -1,5 +1,7 @@
 package net.netnook.qpeg.expressions;
 
+import net.netnook.qpeg.expressions.Context.Marker;
+
 public class EoiMatcher extends SimpleExpression {
 
 	private static final Builder EOI_BUILDER = new Builder();
@@ -48,9 +50,14 @@ public class EoiMatcher extends SimpleExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		if (context.peekChar() != Context.END_OF_INPUT) {
-			return false;
-		}
-		return true;
+		Marker startMarker = context.updateMark();
+
+		onExpressionEnter(context);
+
+		boolean success = context.peekChar() == Context.END_OF_INPUT;
+
+		onExpressionExit(context, startMarker, success);
+
+		return success;
 	}
 }

@@ -17,8 +17,12 @@ public abstract class ParseNode {
 		this.endPos = endPos;
 	}
 
-	public CharSequence getText() {
-		throw new UnsupportedOperationException();
-		//return context.getInput(startPos, endPos);
+	@Override
+	public final String toString() {
+		StringBuilder buf = new StringBuilder();
+		dump(buf, "");
+		return buf.toString();
 	}
+
+	protected abstract void dump(StringBuilder buf, String prefix);
 }

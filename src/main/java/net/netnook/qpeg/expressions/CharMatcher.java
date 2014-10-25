@@ -74,7 +74,9 @@ public final class CharMatcher extends SimpleExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker startMarker = context.mark();
+		onExpressionEnter(context);
+
+		Marker startMarker = context.updateMark();
 
 		int count = 0;
 		while (count < maxCount) {
@@ -91,12 +93,11 @@ public final class CharMatcher extends SimpleExpression {
 
 		boolean success = (count >= minCount); // NOTE: no maxCount check - not possible due to loop condition above
 
-		if (success) {
-			if (!ignore) {
-				context.pushCurrentText();
-			}
-			onSuccess(context, startMarker);
+		if (success && !ignore) {
+			context.pushCurrentText();
 		}
+
+		onExpressionExit(context, startMarker, success);
 
 		return success;
 	}

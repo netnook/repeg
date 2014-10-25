@@ -3,6 +3,8 @@ package net.netnook.qpeg.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.netnook.qpeg.util.ParseListener;
+
 public class Context {
 
 	public static final int END_OF_INPUT = -1;
@@ -17,21 +19,46 @@ public class Context {
 			this.position = position;
 			this.stackSize = stackSize;
 		}
+
+		public int position() {
+			return position;
+		}
 	}
 
 	private final CharSequence input;
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
-	private int position;
 
+	private int position;
 	private Marker mark;
+	private ParseListener listener = ParseListener.NO_OP;
 
 	public Context(CharSequence input) {
 		this.input = input;
 		this.position = 0;
 	}
 
+	public int position() {
+		return position;
+	}
+
+	public void setListener(ParseListener listener) {
+		this.listener = listener;
+	}
+
+	public ParseListener getListener() {
+		return listener;
+	}
+
+	public Marker updateMark() {
+		mark = buildMarker();
+		return mark;
+	}
+
+	public Marker buildMarker() {
+		return new Marker(position, stack.size());
+	}
+
 	public Marker mark() {
-		mark = new Marker(position, stack.size());
 		return mark;
 	}
 
@@ -56,6 +83,10 @@ public class Context {
 
 	private CharSequence getInputFrom(Marker start) {
 		return input.subSequence(start.position, position);
+	}
+
+	public CharSequence getInput(int start, int end) {
+		return input.subSequence(start, end);
 	}
 
 	/**

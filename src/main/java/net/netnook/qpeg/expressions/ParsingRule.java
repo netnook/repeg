@@ -2,6 +2,11 @@ package net.netnook.qpeg.expressions;
 
 import java.util.Comparator;
 
+import net.netnook.qpeg.expressions.Context.Marker;
+import net.netnook.qpeg.parsetree.ParseTree;
+import net.netnook.qpeg.util.ParseListener;
+import net.netnook.qpeg.util.ParseTreeBuilder;
+
 public class ParsingRule extends ParsingExpressionBase {
 
 	public static final Comparator<? super ParsingRule> SORT_BY_NAME_WITH_START_FIRST = (Comparator<ParsingRule>) (r1, r2) -> {
@@ -45,7 +50,11 @@ public class ParsingRule extends ParsingExpressionBase {
 
 	@Override
 	public boolean parse(Context context) {
-		return expression.parse(context);
+		Marker startMarker = context.updateMark();
+		onExpressionEnter(context);
+		boolean success = expression.parse(context);
+		onExpressionExit(context, startMarker, success);
+		return success;
 	}
 
 	@Override
@@ -54,11 +63,18 @@ public class ParsingRule extends ParsingExpressionBase {
 	}
 
 	public <T> T parse(CharSequence input) throws NoMatchException {
+		return parse(input, ParseListener.NO_OP);
+	}
+
+	public <T> T parse(CharSequence input, ParseListener listener) throws NoMatchException {
 		Context context = new Context(input);
-		Context.Marker start = context.mark();
+		context.setListener(listener);
+
+		Marker start = context.updateMark();
 
 		boolean success = parse(context);
 
+		// FIXME: check that end of input was reached ?
 		if (!success) {
 			throw new NoMatchException();
 		}
@@ -74,6 +90,23 @@ public class ParsingRule extends ParsingExpressionBase {
 		} else {
 			return (T) context.getAll();
 		}
+	}
+
+	public ParseTree parseTree(CharSequence input) throws NoMatchException {
+		Context context = new Context(input);
+
+		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
+
+		context.setListener(parseTreeBuilder);
+
+		boolean success = parse(context);
+
+		// FIXME: check that end of input was reached ?
+		if (!success) {
+			throw new NoMatchException();
+		}
+
+		return parseTreeBuilder.getParseTree();
 	}
 
 	@Override

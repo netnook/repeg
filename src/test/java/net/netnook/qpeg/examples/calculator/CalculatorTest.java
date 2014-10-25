@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import net.netnook.qpeg.expressions.NoMatchException;
 import net.netnook.qpeg.expressions.ParsingRule;
+import net.netnook.qpeg.parsetree.ParseTree;
 import net.netnook.qpeg.util.GrammarBuilder;
+import net.netnook.qpeg.util.LoggingParseListener;
 
 public class CalculatorTest {
 
@@ -71,6 +73,18 @@ public class CalculatorTest {
 	private void test(String input, int expected) throws NoMatchException {
 		int result = rule.parse(input);
 		assertThat(result).isEqualTo(expected);
+	}
+
+	@Test
+	public void parseTree() throws NoMatchException {
+		ParseTree result = rule.parseTree("1 * 2 + 3");
+		System.out.println("tree: " + result);
+	}
+
+	@Test
+	@Ignore
+	public void parseWithLogging() throws NoMatchException {
+		rule.parse("1 * 2 + 3", LoggingParseListener.skipIgnore());
 	}
 
 	@Test

@@ -2,12 +2,16 @@ package net.netnook.qpeg.parsetree;
 
 import java.util.List;
 
-import net.netnook.qpeg.expressions.Context;
-import net.netnook.qpeg.expressions.ParsingExpression;
+public class ParseTree {
 
-public class ParseTree extends TreeNode {
+	private final List<Object> children;
 
-	public ParseTree(Context context, ParsingExpression expression, int startPos, int endPos, List<Object> children) {
-		super(context, expression, startPos, endPos, children);
+	public ParseTree(List<Object> children) {
+		this.children = children;
+	}
+
+	@Override
+	public String toString() {
+		return "ParseTree{" + "children=" + children + '}';
 	}
 }

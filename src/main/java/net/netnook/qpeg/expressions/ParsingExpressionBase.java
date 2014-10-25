@@ -16,13 +16,23 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 		this.onSuccess = (builder.getOnSuccess() == null) ? OnSuccessHandler.NO_OP : builder.getOnSuccess();
 	}
 
-	protected final void onSuccess(Context context, Marker startMarker) {
+	protected void onExpressionEnter(Context context) {
+		context.getListener().onExpressionEnter(this, context);
+	}
+
+	protected void onExpressionExit(Context context, Marker startMarker, boolean success) {
 		context.mark(startMarker);
-		if (ignore) {
-			context.clear();
-		} else {
-			onSuccess.accept(context);
+
+		if (success) {
+			// FIXME Should be ignored by parent !!!!
+			if (ignore) {
+				context.clear();
+			} else {
+				onSuccess.accept(context);
+			}
 		}
+
+		context.getListener().onExpressionExit(this, context, success);
 	}
 
 	@Override

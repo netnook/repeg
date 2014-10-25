@@ -1,5 +1,7 @@
 package net.netnook.qpeg.expressions;
 
+import net.netnook.qpeg.expressions.Context.Marker;
+
 public final class Predicate extends SimpleExpression {
 
 	public static Builder match(ParsingExpressionBuilder expression) {
@@ -50,13 +52,17 @@ public final class Predicate extends SimpleExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Context.Marker marker = context.mark();
+		onExpressionEnter(context);
+
+		Marker marker = context.updateMark();
 
 		boolean match = expression.parse(context);
 
 		boolean success = invert ^ match;
 
 		context.resetTo(marker);
+
+		onExpressionExit(context, marker, success);
 
 		return success;
 	}

@@ -56,14 +56,16 @@ public class Optional extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker startMarker = context.mark();
+		onExpressionEnter(context);
+
+		Marker startMarker = context.updateMark();
 
 		boolean success = expression.parse(context);
 		if (!success) {
 			context.resetTo(startMarker);
 		}
 
-		onSuccess(context, startMarker);
+		onExpressionExit(context, startMarker, true);
 
 		return true;
 	}

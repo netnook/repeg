@@ -91,12 +91,14 @@ public class Repetition extends CompoundExpression {
 
 	@Override
 	public boolean parse(Context context) {
-		Marker startMarker = context.mark();
+		onExpressionEnter(context);
+
+		Marker startMarker = context.updateMark();
 
 		int successCount = 0;
 
-		while (true) {
-			Marker fallbackMarker = context.mark();
+		while (successCount < maxCount) {
+			Marker fallbackMarker = context.updateMark();
 
 			boolean success = expression.parse(context);
 
@@ -108,13 +110,11 @@ public class Repetition extends CompoundExpression {
 			successCount++;
 		}
 
-		if (successCount < minCount || successCount > maxCount) {
-			return false;
-		}
+		boolean success = successCount >= minCount;
 
-		onSuccess(context, startMarker);
+		onExpressionExit(context, startMarker, success);
 
-		return true;
+		return success;
 	}
 }
 

@@ -85,7 +85,7 @@ public class IsoDurationTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 10000; i++) {
-				rule.parse("123456");
+				rule.parse("P1Y2M3DT4H5M6S");
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");
