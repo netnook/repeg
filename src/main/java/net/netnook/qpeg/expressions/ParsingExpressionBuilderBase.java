@@ -5,6 +5,7 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 	private boolean ignore;
 	private OnSuccessHandler onSuccess;
 
+	@Override
 	public boolean isIgnore() {
 		return ignore;
 	}
@@ -14,6 +15,7 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 		return this;
 	}
 
+	@Override
 	public OnSuccessHandler getOnSuccess() {
 		return onSuccess;
 	}

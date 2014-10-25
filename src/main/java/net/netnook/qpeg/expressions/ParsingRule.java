@@ -2,7 +2,7 @@ package net.netnook.qpeg.expressions;
 
 import java.util.Comparator;
 
-public class ParsingRule implements ParsingExpression {
+public class ParsingRule extends ParsingExpressionBase {
 
 	public static final Comparator<? super ParsingRule> SORT_BY_NAME_WITH_START_FIRST = (Comparator<ParsingRule>) (r1, r2) -> {
 		String name1 = r1.getName();
@@ -21,8 +21,9 @@ public class ParsingRule implements ParsingExpression {
 	// FIXME: is there a way to make this final too ?
 	private ParsingExpression expression;
 
-	public ParsingRule(String name) {
-		this.name = name;
+	public ParsingRule(ParsingRuleBuilder builder) {
+		super(builder);
+		this.name = builder.name();
 	}
 
 	public String getName() {

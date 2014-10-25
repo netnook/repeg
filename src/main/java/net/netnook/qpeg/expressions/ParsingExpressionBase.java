@@ -7,7 +7,7 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 	protected final boolean ignore;
 	protected final OnSuccessHandler onSuccess;
 
-	protected ParsingExpressionBase(ParsingExpressionBuilderBase builder) {
+	protected ParsingExpressionBase(ParsingExpressionBuilder builder) {
 		if (builder.isIgnore() && builder.getOnSuccess() != null) {
 			throw new IllegalArgumentException("Cannot have ignore=true and an onSuccess handler at same time");
 		}

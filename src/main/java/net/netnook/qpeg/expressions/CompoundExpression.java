@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class CompoundExpression extends ParsingExpressionBase {
 
-	protected CompoundExpression(ParsingExpressionBuilderBase builder) {
+	protected CompoundExpression(ParsingExpressionBuilder builder) {
 		super(builder);
 	}
 
@@ -13,5 +13,4 @@ public abstract class CompoundExpression extends ParsingExpressionBase {
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
-
 }

@@ -12,7 +12,7 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 		if (expression != null) {
 			return expression;
 		} else {
-			ParsingRule rule = new ParsingRule(name());
+			ParsingRule rule = new ParsingRule(this);
 			ctxt.putRule(this, rule);
 
 			// FIXME: but the reference expression is then not immutable !!!
@@ -20,5 +20,15 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 
 			return rule;
 		}
+	}
+
+	@Override
+	default OnSuccessHandler getOnSuccess() {
+		return OnSuccessHandler.NO_OP;
+	}
+
+	@Override
+	default boolean isIgnore() {
+		return false;
 	}
 }

@@ -2,7 +2,7 @@ package net.netnook.qpeg.expressions;
 
 public abstract class SimpleExpression extends ParsingExpressionBase {
 
-	protected SimpleExpression(ParsingExpressionBuilderBase builder) {
+	protected SimpleExpression(ParsingExpressionBuilder builder) {
 		super(builder);
 	}
 
