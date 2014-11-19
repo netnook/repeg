@@ -1,4 +1,4 @@
-package net.netnook.qpeg.util;
+package net.netnook.qpeg.parsetree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import net.netnook.qpeg.parsetree.LeafNode;
 import net.netnook.qpeg.parsetree.ParseNode;
 import net.netnook.qpeg.parsetree.ParseTree;
 import net.netnook.qpeg.parsetree.TreeNode;
+import net.netnook.qpeg.util.ParseListener;
 
 public class ParseTreeBuilder implements ParseListener {
 
@@ -43,6 +44,7 @@ public class ParseTreeBuilder implements ParseListener {
 	}
 
 	private List<ParseNode> popToMarker() {
+		// FIXME: consider a some stack implementation which can be reused between here and Context
 		int count = sizeToMarker();
 
 		List<ParseNode> results = new ArrayList<>(count);

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import net.netnook.qpeg.expressions.NoMatchException;
 import net.netnook.qpeg.expressions.ParsingRule;
+import net.netnook.qpeg.parsetree.ParseTreeBuilder;
 import net.netnook.qpeg.util.GrammarBuilder;
 
 public class IsoDurationTest {
@@ -76,6 +77,15 @@ public class IsoDurationTest {
 		Period period = Period.of(years, months, days);
 		Duration duration = Duration.ofSeconds((hours * 3600) + (minutes * 60) + seconds);
 		return IsoDuration.of(period, duration);
+	}
+
+	@Test
+	@Ignore
+	public void parseTree() throws NoMatchException {
+		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
+		IsoDuration result = rule.parse("P1Y2M3DT4H5M6S", parseTreeBuilder);
+		assertThat(result).isEqualTo(isoDuration(1, 2, 3, 4, 5, 6));
+		System.out.println("tree: " + parseTreeBuilder.getParseTree());
 	}
 
 	@Test

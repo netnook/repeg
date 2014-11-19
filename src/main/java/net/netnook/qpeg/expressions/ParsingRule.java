@@ -3,9 +3,7 @@ package net.netnook.qpeg.expressions;
 import java.util.Comparator;
 
 import net.netnook.qpeg.expressions.Context.Marker;
-import net.netnook.qpeg.parsetree.ParseTree;
 import net.netnook.qpeg.util.ParseListener;
-import net.netnook.qpeg.util.ParseTreeBuilder;
 
 public class ParsingRule extends ParsingExpressionBase {
 
@@ -86,23 +84,6 @@ public class ParsingRule extends ParsingExpressionBase {
 	@Override
 	protected boolean parseImpl(Context context, Marker startMarker) {
 		return expression.parse(context);
-	}
-
-	public ParseTree parseTree(CharSequence input) throws NoMatchException {
-		Context context = new Context(input);
-
-		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
-
-		context.setListener(parseTreeBuilder);
-
-		boolean success = parse(context);
-
-		// FIXME: check that end of input was reached ?
-		if (!success) {
-			throw new NoMatchException();
-		}
-
-		return parseTreeBuilder.getParseTree();
 	}
 
 	@Override
