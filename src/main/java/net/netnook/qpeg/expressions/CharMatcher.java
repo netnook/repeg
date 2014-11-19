@@ -98,6 +98,25 @@ public final class CharMatcher extends SimpleExpression {
 
 	@Override
 	public String buildGrammar() {
-		return "'" + matcher.buildGrammar() + "'";
+		StringBuilder buf = new StringBuilder();
+		buf.append('\'').append(matcher.buildGrammar()).append('\'');
+
+		if (minCount == 1 && maxCount == 1) {
+			// no-op
+		} else if (maxCount == Integer.MAX_VALUE) {
+			if (minCount == 0) {
+				buf.append('*');
+			} else if (minCount == 1) {
+				buf.append('+');
+			} else {
+				buf.append('{').append(minCount).append(",}");
+			}
+		} else if (minCount == maxCount) {
+			buf.append('{').append(minCount).append('}');
+		} else {
+			buf.append('{').append(minCount).append(',').append(maxCount).append('}');
+		}
+
+		return buf.toString();
 	}
 }
