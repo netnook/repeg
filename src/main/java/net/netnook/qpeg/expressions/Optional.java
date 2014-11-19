@@ -32,7 +32,7 @@ public class Optional extends CompoundExpression {
 		}
 
 		@Override
-		public Optional build(BuildContext ctxt) {
+		public Optional doBuild(BuildContext ctxt) {
 			return new Optional(this, expression.build(ctxt));
 		}
 	}

@@ -4,6 +4,7 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 
 	private boolean ignore;
 	private OnSuccessHandler onSuccess;
+	private ParsingExpression built;
 
 	@Override
 	public boolean isIgnore() {
@@ -24,6 +25,16 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 		this.onSuccess = onSuccess;
 		return this;
 	}
+
+	@Override
+	public final ParsingExpression build(BuildContext ctxt) {
+		if (built == null) {
+			built = doBuild(ctxt);
+		}
+		return built;
+	}
+
+	protected abstract ParsingExpression doBuild(BuildContext ctxt);
 
 	protected static ParsingExpression[] build(BuildContext ctxt, ParsingExpressionBuilder[] builders) {
 		ParsingExpression[] results = new ParsingExpression[builders.length];

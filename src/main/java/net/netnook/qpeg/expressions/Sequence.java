@@ -34,7 +34,7 @@ public class Sequence extends CompoundExpression {
 		}
 
 		@Override
-		public Sequence build(BuildContext ctxt) {
+		public Sequence doBuild(BuildContext ctxt) {
 			return new Sequence(this, build(ctxt, expressions));
 		}
 	}

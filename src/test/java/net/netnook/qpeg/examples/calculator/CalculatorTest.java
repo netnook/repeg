@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import net.netnook.qpeg.expressions.NoMatchException;
 import net.netnook.qpeg.expressions.ParsingRule;
-import net.netnook.qpeg.parsetree.ParseTree;
 import net.netnook.qpeg.parsetree.ParseTreeBuilder;
 import net.netnook.qpeg.util.GrammarBuilder;
 import net.netnook.qpeg.util.LoggingParseListener;

@@ -33,7 +33,7 @@ public final class Predicate extends SimpleExpression {
 		}
 
 		@Override
-		public Predicate build(BuildContext ctxt) {
+		public Predicate doBuild(BuildContext ctxt) {
 			return new Predicate(this, expression.build(ctxt));
 		}
 	}

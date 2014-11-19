@@ -17,7 +17,10 @@ public class StringMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public StringMatcher build(BuildContext ctxt) {
+		public StringMatcher doBuild(BuildContext ctxt) {
+			if (!isIgnore() && getOnSuccess() == null) {
+				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
+			}
 			return new StringMatcher(this);
 		}
 	}
@@ -37,18 +40,11 @@ public class StringMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(Context context, Marker startMarker) {
-		boolean success = true;
 		for (int i = 0; i < str.length(); i++) {
 			if (context.consumeChar() != str.charAt(i)) {
-				success = false;
-				break;
+				return false;
 			}
 		}
-
-		if (success && !ignore) {
-			context.pushCurrentText();
-		}
-
-		return success;
+		return true;
 	}
 }

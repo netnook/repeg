@@ -34,7 +34,7 @@ public class Choice extends CompoundExpression {
 		}
 
 		@Override
-		public Choice build(BuildContext ctxt) {
+		public Choice doBuild(BuildContext ctxt) {
 			return new Choice(this, build(ctxt, expressions));
 		}
 	}

@@ -5,10 +5,6 @@ import java.util.List;
 
 import net.netnook.qpeg.expressions.Context;
 import net.netnook.qpeg.expressions.ParsingExpression;
-import net.netnook.qpeg.parsetree.LeafNode;
-import net.netnook.qpeg.parsetree.ParseNode;
-import net.netnook.qpeg.parsetree.ParseTree;
-import net.netnook.qpeg.parsetree.TreeNode;
 import net.netnook.qpeg.util.ParseListener;
 
 public class ParseTreeBuilder implements ParseListener {

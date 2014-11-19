@@ -51,7 +51,7 @@ public class Repetition extends CompoundExpression {
 		}
 
 		@Override
-		public Repetition build(BuildContext ctxt) {
+		public Repetition doBuild(BuildContext ctxt) {
 			return new Repetition(this, expression.build(ctxt));
 		}
 	}

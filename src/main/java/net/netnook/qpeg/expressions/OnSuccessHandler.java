@@ -7,5 +7,7 @@ public interface OnSuccessHandler {
 		// no-op
 	};
 
+	OnSuccessHandler PUSH_TEXT_TO_STACK = Context::pushCurrentText;
+
 	void accept(Context context);
 }

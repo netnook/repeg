@@ -19,7 +19,7 @@ public class EoiMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParsingExpression build(BuildContext ctxt) {
+		public ParsingExpression doBuild(BuildContext ctxt) {
 			return instance;
 		}
 

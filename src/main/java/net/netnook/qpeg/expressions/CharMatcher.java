@@ -62,10 +62,14 @@ public final class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public CharMatcher build(BuildContext ctxt) {
+		public CharMatcher doBuild(BuildContext ctxt) {
 			if (minCount > maxCount) {
 				// FIXME: create specific exception
 				throw new RuntimeException("Invalid expression: minCount > maxCount");
+			}
+
+			if (!isIgnore() && getOnSuccess() == null) {
+				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
 			}
 			return new CharMatcher(this);
 		}
@@ -97,13 +101,7 @@ public final class CharMatcher extends SimpleExpression {
 			count++;
 		}
 
-		boolean success = (count >= minCount); // NOTE: no maxCount check - not possible due to loop condition above
-
-		if (success && !ignore) {
-			context.pushCurrentText();
-		}
-
-		return success;
+		return (count >= minCount); // NOTE: no maxCount check - not necessary due to loop condition above
 	}
 
 	@Override
