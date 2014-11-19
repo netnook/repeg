@@ -1,23 +1,28 @@
 package net.netnook.qpeg.expressions;
 
 import net.netnook.qpeg.expressions.Context.Marker;
+import net.netnook.qpeg.expressions.chars.CharTester;
 
 public final class CharMatcher extends SimpleExpression {
 
-	public static Builder of(char c) {
-		return new Builder().matcher(CharTester.of(c));
+	public static Builder any() {
+		return new Builder().matcher(CharTester.any());
 	}
 
-	public static Builder oneOf(String characters) {
-		return new Builder().matcher(CharTester.oneOf(characters));
+	public static Builder whitespace() {
+		return new Builder().matcher(CharTester.isWhitespace());
+	}
+
+	public static Builder is(char c) {
+		return new Builder().matcher(CharTester.is(c));
+	}
+
+	public static Builder in(String characters) {
+		return new Builder().matcher(CharTester.in(characters));
 	}
 
 	public static Builder inRange(char from, char to) {
 		return new Builder().matcher(CharTester.inRange(from, to));
-	}
-
-	public static Builder whitespace() {
-		return new Builder().matcher(CharTester.whitespace());
 	}
 
 	public static class Builder extends ParsingExpressionBuilderBase {
@@ -33,6 +38,11 @@ public final class CharMatcher extends SimpleExpression {
 		@Override
 		public Builder ignore() {
 			super.ignore();
+			return this;
+		}
+
+		public Builder invert() {
+			this.matcher = this.matcher.invert();
 			return this;
 		}
 
@@ -99,7 +109,7 @@ public final class CharMatcher extends SimpleExpression {
 	@Override
 	public String buildGrammar() {
 		StringBuilder buf = new StringBuilder();
-		buf.append('\'').append(matcher.buildGrammar()).append('\'');
+		buf.append(matcher.buildGrammar());
 
 		if (minCount == 1 && maxCount == 1) {
 			// no-op

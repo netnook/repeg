@@ -31,6 +31,7 @@ public class StringMatcher extends SimpleExpression {
 
 	@Override
 	public String buildGrammar() {
+		// FIXME: escape ' character.
 		return "'" + str + "'";
 	}
 

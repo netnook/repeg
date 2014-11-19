@@ -55,16 +55,20 @@ public abstract class ParserFactoryBase {
 		return Optional.of(expression);
 	}
 
+	protected static CharMatcher.Builder anyCharacter() {
+		return CharMatcher.any();
+	}
+
 	protected static CharMatcher.Builder characterInRange(char from, char to) {
 		return CharMatcher.inRange(from, to);
 	}
 
 	protected static CharMatcher.Builder character(char c) {
-		return CharMatcher.of(c);
+		return CharMatcher.is(c);
 	}
 
-	protected static CharMatcher.Builder oneOf(String characters) {
-		return CharMatcher.oneOf(characters);
+	protected static CharMatcher.Builder characterIn(String characters) {
+		return CharMatcher.in(characters);
 	}
 
 	protected static ParsingExpressionBuilder ignoredWhitespace() {
