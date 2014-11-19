@@ -43,4 +43,10 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 		}
 		return results;
 	}
+
+	protected void validate(boolean valid, String message) {
+		if (!valid) {
+			throw new InvalidExpressionException(message);
+		}
+	}
 }
