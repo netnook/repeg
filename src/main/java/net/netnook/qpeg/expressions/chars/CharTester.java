@@ -10,6 +10,10 @@ public abstract class CharTester {
 		return CharIsWhitespaceTester.INSTANCE;
 	}
 
+	public static CharTester horizontalWhitespace() {
+		return HorizontalWhitespaceTester.INSTANCE;
+	}
+
 	public static CharTester is(char c) {
 		return new CharIsTester(c);
 	}

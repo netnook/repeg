@@ -4,6 +4,10 @@ import net.netnook.qpeg.expressions.chars.CharTester;
 
 public final class CharMatcher extends SimpleExpression {
 
+	public static Builder of(CharTester charTester) {
+		return new Builder().matcher(charTester);
+	}
+
 	public static Builder any() {
 		return new Builder().matcher(CharTester.any());
 	}
@@ -45,6 +49,25 @@ public final class CharMatcher extends SimpleExpression {
 			return this;
 		}
 
+		public Builder zeroOrMore() {
+			minCount(0);
+			maxUnbounded();
+			return this;
+		}
+
+		public Builder oneOrMore() {
+			minCount(1);
+			maxUnbounded();
+			return this;
+		}
+
+		public Builder count(int count) {
+			validate(count >= 1, "Invalid expression: count must be >= 1");
+			this.minCount = count;
+			this.maxCount = count;
+			return this;
+		}
+
 		public Builder minCount(int minCount) {
 			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
 			this.minCount = minCount;
@@ -57,7 +80,7 @@ public final class CharMatcher extends SimpleExpression {
 			return this;
 		}
 
-		public Builder maxCountUnbounded() {
+		public Builder maxUnbounded() {
 			this.maxCount = Integer.MAX_VALUE;
 			return this;
 		}
@@ -93,7 +116,7 @@ public final class CharMatcher extends SimpleExpression {
 			int found = context.consumeChar();
 
 			// FIXME: unicode handling ?
-			boolean match = matcher.isMatch(found);
+			boolean match = (found != RootContext.END_OF_INPUT) && matcher.isMatch(found);
 			if (!match) {
 				context.rewindInput();
 				break;

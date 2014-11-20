@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import net.netnook.qpeg.expressions.RootContext;
-
 public class CharAnyTesterTest {
 
 	@Test
@@ -15,7 +13,6 @@ public class CharAnyTesterTest {
 		assertThat(tester.isMatch(' ')).isTrue();
 		assertThat(tester.isMatch('\t')).isTrue();
 		assertThat(tester.isMatch('c')).isTrue();
-		assertThat(tester.isMatch(RootContext.END_OF_INPUT)).isFalse();
 	}
 
 	@Test

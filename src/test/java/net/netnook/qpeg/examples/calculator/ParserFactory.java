@@ -121,7 +121,7 @@ public class ParserFactory extends ParserFactoryBase {
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').maxCountUnbounded().onSuccess(textToInteger());
+				return characterInRange('0', '9').maxUnbounded().onSuccess(textToInteger());
 			}
 		}
 	}

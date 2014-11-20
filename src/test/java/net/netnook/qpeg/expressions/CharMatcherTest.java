@@ -74,7 +74,7 @@ public class CharMatcherTest extends BaseMatcherTest {
 	public void test_max_chars() {
 		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
 				.minCount(2) //
-				.maxCountUnbounded() //
+				.maxUnbounded() //
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
@@ -88,7 +88,7 @@ public class CharMatcherTest extends BaseMatcherTest {
 	@Test
 	public void test_invert() {
 		ParsingExpression expression = CharMatcher.inRange('c', 'e') //
-				.maxCountUnbounded() //
+				.maxUnbounded() //
 				.invert() //
 				.build(buildContext);
 
@@ -130,11 +130,11 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.buildGrammar()//
 		).isEqualTo("[a-f]?");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(0).maxCountUnbounded().build(buildContext)//
+				.minCount(0).maxUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]*");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(1).maxCountUnbounded().build(buildContext)//
+				.minCount(1).maxUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]+");
 		assertThat(CharMatcher.inRange('a', 'f') //
@@ -146,7 +146,7 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,7}");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(2).maxCountUnbounded().build(buildContext)//
+				.minCount(2).maxUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,}");
 	}
@@ -170,5 +170,26 @@ public class CharMatcherTest extends BaseMatcherTest {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: max count");
 		CharMatcher.any().maxCount(-5);
+	}
+
+	@Test
+	public void invalid_bounds_negative_count() {
+		thrown.expect(InvalidExpressionException.class);
+		thrown.expectMessage("Invalid expression: count");
+		CharMatcher.any().count(-3);
+	}
+
+	@Test
+	public void test_eoi() {
+		ParsingExpression expression = CharMatcher.any() //
+				.build(buildContext);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("a");
+		assertPositionIs(2);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("b");
+		assertPositionIs(3);
 	}
 }

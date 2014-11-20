@@ -2,8 +2,8 @@ package net.netnook.qpeg.parsetree;
 
 import java.util.List;
 
-import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.RootContext;
 
 public class TreeNode extends ParseNode {
 

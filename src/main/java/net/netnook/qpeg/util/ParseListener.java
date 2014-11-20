@@ -1,7 +1,7 @@
 package net.netnook.qpeg.util;
 
-import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.RootContext;
 
 public interface ParseListener {
 

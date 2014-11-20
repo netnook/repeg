@@ -1,7 +1,5 @@
 package net.netnook.qpeg.expressions.chars;
 
-import net.netnook.qpeg.expressions.RootContext;
-
 class CharAnyTester extends CharTester {
 
 	static final CharAnyTester INSTANCE = new CharAnyTester();
@@ -12,7 +10,7 @@ class CharAnyTester extends CharTester {
 
 	@Override
 	public boolean isMatch(int test) {
-		return test != RootContext.END_OF_INPUT;
+		return true;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package net.netnook.qpeg;
 import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CharMatcher;
 import net.netnook.qpeg.expressions.Choice;
+import net.netnook.qpeg.expressions.Context;
 import net.netnook.qpeg.expressions.EoiMatcher;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.Optional;
@@ -10,13 +11,15 @@ import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.Predicate;
 import net.netnook.qpeg.expressions.Repetition;
 import net.netnook.qpeg.expressions.Sequence;
-import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.StringMatcher;
+import net.netnook.qpeg.expressions.chars.CharTester;
 
 public abstract class ParserFactoryBase {
 
-	private static final ParsingExpressionBuilderBase IGNORED_WS = CharMatcher.whitespace().minCount(0).maxCountUnbounded().ignore();
+	private static final ParsingExpressionBuilderBase IGNORED_WS = CharMatcher.whitespace().minCount(0).maxUnbounded().ignore();
 
 	private static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
 		context.clearStack();
@@ -55,6 +58,21 @@ public abstract class ParserFactoryBase {
 		return Optional.of(expression);
 	}
 
+	protected static Predicate.Builder not(ParsingExpressionBuilder expression) {
+		return Predicate.not(expression);
+	}
+
+	protected static ParsingExpressionBuilder endOfLineOrInput() {
+		return choice( //
+				crlf().ignore(), //
+				endOfInput() //
+		);
+	}
+
+	protected static CharMatcher.Builder crlf() {
+		return CharMatcher.in("\r\n").minCount(1).maxCount(2);
+	}
+
 	protected static CharMatcher.Builder anyCharacter() {
 		return CharMatcher.any();
 	}
@@ -67,6 +85,10 @@ public abstract class ParserFactoryBase {
 		return CharMatcher.is(c);
 	}
 
+	protected static StringMatcher.Builder string(String string) {
+		return StringMatcher.of(string);
+	}
+
 	protected static CharMatcher.Builder characterIn(String characters) {
 		return CharMatcher.in(characters);
 	}
@@ -75,11 +97,23 @@ public abstract class ParserFactoryBase {
 		return IGNORED_WS;
 	}
 
+	protected static CharMatcher.Builder horizontalWhitespace() {
+		return CharMatcher.of(CharTester.horizontalWhitespace());
+	}
+
 	protected static OnSuccessHandler textToInteger() {
 		return TEXT_TO_INTEGER;
 	}
 
-	public static OnSuccessHandler orElse(Object defaultValue) {
+	public static OnSuccessHandler pushText() {
+		return (Context context) -> context.push(context.getCharSequence());
+	}
+
+	public static OnSuccessHandler push(Object value) {
+		return (Context context) -> context.push(value);
+	}
+
+	public static OnSuccessHandler orElsePush(Object defaultValue) {
 		return (Context context) -> {
 			if (context.stackSize() == 0) {
 				context.push(defaultValue);

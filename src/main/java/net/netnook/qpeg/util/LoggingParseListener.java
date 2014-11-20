@@ -2,8 +2,8 @@ package net.netnook.qpeg.util;
 
 import java.util.function.Consumer;
 
-import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.RootContext;
 
 public class LoggingParseListener implements ParseListener {
 
@@ -55,6 +55,7 @@ public class LoggingParseListener implements ParseListener {
 		buf.append(" success=").append(success);
 		buf.append(" text='").append(context.getInput(startPosition)).append("'");
 		print(buf.toString());
+
 		depth--;
 	}
 
