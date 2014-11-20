@@ -155,7 +155,7 @@ public class RepetitionTest extends BaseMatcherTest {
 	}
 
 	@Test
-	public void invalid_optional_expression_in_repetion() {
+	public void invalid_optional_expression_in_repetition() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Cannot have optional content in repeating construct");
 		Repetition.of(Optional.of(isA)).build(buildContext);

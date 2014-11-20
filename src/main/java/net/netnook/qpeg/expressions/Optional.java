@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.netnook.qpeg.expressions.Context.Marker;
@@ -46,7 +46,7 @@ public class Optional extends CompoundExpression {
 
 	@Override
 	public List<ParsingExpression> parts() {
-		return Arrays.asList(expression);
+		return Collections.singletonList(expression);
 	}
 
 	@Override

@@ -1,8 +1,11 @@
 package net.netnook.qpeg.expressions;
 
+import java.util.Collections;
+import java.util.List;
+
 import net.netnook.qpeg.expressions.Context.Marker;
 
-public final class Predicate extends SimpleExpression {
+public final class Predicate extends CompoundExpression {
 
 	public static Builder match(ParsingExpressionBuilder expression) {
 		return new Builder().expression(expression, false);
@@ -45,6 +48,11 @@ public final class Predicate extends SimpleExpression {
 		super(builder);
 		this.expression = expression;
 		this.invert = builder.invert;
+	}
+
+	@Override
+	public List<ParsingExpression> parts() {
+		return Collections.singletonList(expression);
 	}
 
 	@Override
