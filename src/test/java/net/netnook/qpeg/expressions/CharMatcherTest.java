@@ -9,9 +9,7 @@ public class CharMatcherTest extends BaseMatcherTest {
 
 	@Before
 	public void init() {
-		context = new Context("-abcdefgh-");
-		context.consumeChar();
-		buildContext = new BuildContext();
+		buildContext("-abcdefgh-").consumeChar();
 	}
 
 	@Test
@@ -45,11 +43,11 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("b");
+		assertNewOnStack("b");
 		assertPositionIs(3);
 	}
 
@@ -61,15 +59,15 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("abcd");
+		assertNewOnStack("abcd");
 		assertPositionIs(5);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("ef");
+		assertNewOnStack("ef");
 		assertPositionIs(7);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 	}
 
 	@Test
@@ -80,11 +78,11 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("abcdef");
+		assertNewOnStack("abcdef");
 		assertPositionIs(7);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 	}
 
 	@Test
@@ -95,11 +93,11 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("ab");
+		assertNewOnStack("ab");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 	}
 
 	@Test
@@ -110,15 +108,15 @@ public class CharMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(5);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(7);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 	}
 
 	@Test

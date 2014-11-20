@@ -14,11 +14,7 @@ public class ChoiceTest extends BaseMatcherTest {
 	public void init() {
 		isA = CharMatcher.is('a');
 		isB = CharMatcher.is('b');
-
-		context = new Context("-abcd-");
-		context.consumeChar();
-
-		buildContext = new BuildContext();
+		buildContext("-abcd-").consumeChar();
 	}
 
 	@Test
@@ -40,11 +36,11 @@ public class ChoiceTest extends BaseMatcherTest {
 		ParsingExpression expression = Choice.of(isA, isB).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("b");
+		assertNewOnStack("b");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -57,11 +53,11 @@ public class ChoiceTest extends BaseMatcherTest {
 		ParsingExpression expression = Choice.of(isB, isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("b");
+		assertNewOnStack("b");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -71,20 +67,17 @@ public class ChoiceTest extends BaseMatcherTest {
 
 	@Test
 	public void test_on_success() {
-		context = new Context("-abcd-");
-		context.consumeChar();
-
 		ParsingExpression expression = Choice.of(isA, isB) //
 				.onSuccess(onSuccessCounter) //
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 		assertThat(successCount).isEqualTo(1);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("b");
+		assertNewOnStack("b");
 		assertPositionIs(3);
 		assertThat(successCount).isEqualTo(2);
 
@@ -96,19 +89,16 @@ public class ChoiceTest extends BaseMatcherTest {
 
 	@Test
 	public void test_ignore() {
-		context = new Context("-abcd-");
-		context.consumeChar();
-
 		ParsingExpression expression = Choice.of(isA, isB) //
 				.ignore() //
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();

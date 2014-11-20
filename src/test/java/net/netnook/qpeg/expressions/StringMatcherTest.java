@@ -9,9 +9,7 @@ public class StringMatcherTest extends BaseMatcherTest {
 
 	@Before
 	public void init() {
-		context = new Context("-one-two-three-");
-		context.consumeChar();
-		buildContext = new BuildContext();
+		buildContext("-one-two-three-").consumeChar();
 	}
 
 	@Test
@@ -20,11 +18,11 @@ public class StringMatcherTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("one");
+		assertNewOnStack("one");
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 	}
 
 	@Test

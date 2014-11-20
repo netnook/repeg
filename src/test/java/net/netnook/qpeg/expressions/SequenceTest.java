@@ -14,11 +14,7 @@ public class SequenceTest extends BaseMatcherTest {
 	public void init() {
 		isA = CharMatcher.is('a');
 		isB = CharMatcher.is('b');
-
-		context = new Context("-ababXX-");
-		context.consumeChar();
-
-		buildContext = new BuildContext();
+		buildContext("-ababXX-").consumeChar();
 	}
 
 	@Test
@@ -40,11 +36,11 @@ public class SequenceTest extends BaseMatcherTest {
 		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(5);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -54,13 +50,12 @@ public class SequenceTest extends BaseMatcherTest {
 
 	@Test
 	public void test_sequence_fail_on_first() {
-		context = new Context("-abX-");
-		context.consumeChar();
+		buildContext("-abX-").consumeChar();
 
 		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -70,13 +65,12 @@ public class SequenceTest extends BaseMatcherTest {
 
 	@Test
 	public void test_sequence_fail_on_second() {
-		context = new Context("-abaX-");
-		context.consumeChar();
+		buildContext("-abaX-").consumeChar();
 
 		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -91,12 +85,12 @@ public class SequenceTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(3);
 		assertThat(successCount).isEqualTo(1);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "b");
+		assertNewOnStack("a", "b");
 		assertPositionIs(5);
 		assertThat(successCount).isEqualTo(2);
 
@@ -113,11 +107,11 @@ public class SequenceTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(5);
 
 		assertThat(expression.parse(context)).isFalse();

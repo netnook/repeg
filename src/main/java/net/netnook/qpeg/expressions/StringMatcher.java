@@ -1,7 +1,5 @@
 package net.netnook.qpeg.expressions;
 
-import net.netnook.qpeg.expressions.Context.Marker;
-
 public class StringMatcher extends SimpleExpression {
 
 	public static Builder of(String str) {
@@ -38,7 +36,7 @@ public class StringMatcher extends SimpleExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		for (int i = 0; i < str.length(); i++) {
 			if (context.consumeChar() != str.charAt(i)) {
 				return false;

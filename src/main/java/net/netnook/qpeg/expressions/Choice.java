@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.netnook.qpeg.expressions.Context.Marker;
-
 public class Choice extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder... expressions) {
@@ -59,13 +57,13 @@ public class Choice extends CompoundExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		for (ParsingExpression expression : expressions) {
 			boolean success = expression.parse(context);
 			if (success) {
 				return true;
 			}
-			context.resetTo(startMarker);
+			context.resetTo(startPosition, startStackIdx);
 		}
 		return false;
 	}

@@ -12,11 +12,7 @@ public class OptionalTest extends BaseMatcherTest {
 	@Before
 	public void init() {
 		isA = CharMatcher.is('a');
-
-		context = new Context("-abcd-");
-		context.consumeChar();
-
-		buildContext = new BuildContext();
+		buildContext("-abcd-").consumeChar();
 	}
 
 	@Test
@@ -37,15 +33,15 @@ public class OptionalTest extends BaseMatcherTest {
 		ParsingExpression expression = Optional.of(isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertFullStackContains("a");
@@ -53,20 +49,17 @@ public class OptionalTest extends BaseMatcherTest {
 
 	@Test
 	public void test_on_success() {
-		context = new Context("-abcd-");
-		context.consumeChar();
-
 		ParsingExpression expression = Optional.of(isA) //
 				.onSuccess(onSuccessCounter) //
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(2);
 		assertThat(successCount).isEqualTo(1);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 		assertThat(successCount).isEqualTo(2);
 
@@ -75,19 +68,16 @@ public class OptionalTest extends BaseMatcherTest {
 
 	@Test
 	public void test_ignore() {
-		context = new Context("-abcd-");
-		context.consumeChar();
-
 		ParsingExpression expression = Optional.of(isA) //
 				.ignore() //
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertFullStackContains();

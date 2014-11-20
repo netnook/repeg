@@ -3,7 +3,6 @@ package net.netnook.qpeg;
 import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CharMatcher;
 import net.netnook.qpeg.expressions.Choice;
-import net.netnook.qpeg.expressions.Context;
 import net.netnook.qpeg.expressions.EoiMatcher;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.Optional;
@@ -13,14 +12,15 @@ import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
 import net.netnook.qpeg.expressions.Repetition;
 import net.netnook.qpeg.expressions.Sequence;
+import net.netnook.qpeg.expressions.Context;
 
 public abstract class ParserFactoryBase {
 
 	private static final ParsingExpressionBuilderBase IGNORED_WS = CharMatcher.whitespace().minCount(0).maxCountUnbounded().ignore();
 
 	private static final OnSuccessHandler TEXT_TO_INTEGER = (context) -> {
-		context.clear();
-		String text = context.getCurrentText().toString();
+		context.clearStack();
+		String text = context.getCharSequence().toString();
 		int value = Integer.parseInt(text);
 		context.push(value);
 	};
@@ -81,16 +81,9 @@ public abstract class ParserFactoryBase {
 
 	public static OnSuccessHandler orElse(Object defaultValue) {
 		return (Context context) -> {
-			int len = context.size();
-			Object value;
-			if (len == 0) {
-				value = defaultValue;
-			} else if (len == 1) {
-				value = context.pop();
-			} else {
-				throw new IllegalStateException("Expected 0 or 1 elements on stack.  Found " + len);
+			if (context.stackSize() == 0) {
+				context.push(defaultValue);
 			}
-			context.push(value);
 		};
 	}
 }

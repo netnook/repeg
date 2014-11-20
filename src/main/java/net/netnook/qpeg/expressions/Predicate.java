@@ -3,8 +3,6 @@ package net.netnook.qpeg.expressions;
 import java.util.Collections;
 import java.util.List;
 
-import net.netnook.qpeg.expressions.Context.Marker;
-
 public final class Predicate extends CompoundExpression {
 
 	public static Builder match(ParsingExpressionBuilder expression) {
@@ -56,12 +54,12 @@ public final class Predicate extends CompoundExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		boolean match = expression.parse(context);
 
 		boolean success = invert ^ match;
 
-		context.resetTo(startMarker);
+		context.resetTo(startPosition, startStackIdx);
 
 		return success;
 	}

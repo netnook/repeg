@@ -3,8 +3,6 @@ package net.netnook.qpeg.expressions;
 import java.util.Collections;
 import java.util.List;
 
-import net.netnook.qpeg.expressions.Context.Marker;
-
 public class Repetition extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder expression) {
@@ -102,16 +100,17 @@ public class Repetition extends CompoundExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		int successCount = 0;
 
 		while (successCount < maxCount) {
-			Marker fallbackMarker = context.updateMark();
+			int fallbackPosition = context.position();
+			int fallbackStackIdx = context.stackSize();
 
 			boolean success = expression.parse(context);
 
 			if (!success) {
-				context.resetTo(fallbackMarker);
+				context.resetTo(fallbackPosition, fallbackStackIdx);
 				break;
 			}
 

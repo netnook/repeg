@@ -7,9 +7,9 @@ public interface OnSuccessHandler {
 		// no-op
 	};
 
-	OnSuccessHandler PUSH_TEXT_TO_STACK = Context::pushCurrentText;
+	OnSuccessHandler PUSH_TEXT_TO_STACK = context -> context.push(context.getCharSequence());
 
-	OnSuccessHandler CLEAR_STACK = Context::clear;
+	OnSuccessHandler CLEAR_STACK = Context::clearStack;
 
 	void accept(Context context);
 }

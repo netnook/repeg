@@ -1,11 +1,11 @@
 package net.netnook.qpeg.parsetree;
 
-import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
 
 public class LeafNode extends ParseNode {
 
-	public LeafNode(Context context, ParsingExpression expression, int startPos, int endPos) {
+	public LeafNode(RootContext context, ParsingExpression expression, int startPos, int endPos) {
 		super(context, expression, startPos, endPos);
 	}
 

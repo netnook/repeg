@@ -1,16 +1,16 @@
 package net.netnook.qpeg.parsetree;
 
-import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
 
 public abstract class ParseNode {
 
-	protected final Context context;
+	protected final RootContext context;
 	protected final ParsingExpression expression;
 	protected final int startPos;
 	protected final int endPos;
 
-	public ParseNode(Context context, ParsingExpression expression, int startPos, int endPos) {
+	public ParseNode(RootContext context, ParsingExpression expression, int startPos, int endPos) {
 		this.context = context;
 		this.expression = expression;
 		this.startPos = startPos;

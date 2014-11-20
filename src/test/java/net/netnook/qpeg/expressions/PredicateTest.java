@@ -12,11 +12,7 @@ public class PredicateTest extends BaseMatcherTest {
 	@Before
 	public void init() {
 		isA = CharMatcher.is('a');
-
-		context = new Context("-abcd-");
-		context.consumeChar();
-
-		buildContext = new BuildContext();
+		buildContext("-abcd-").consumeChar();
 	}
 
 	@Test
@@ -38,13 +34,13 @@ public class PredicateTest extends BaseMatcherTest {
 		ParsingExpression expression = Predicate.match(isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(1);
 
 		context.consumeChar();
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertFullStackContains();
@@ -55,13 +51,13 @@ public class PredicateTest extends BaseMatcherTest {
 		ParsingExpression expression = Predicate.not(isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(1);
 
 		context.consumeChar();
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(2);
 
 		assertFullStackContains();

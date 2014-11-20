@@ -1,7 +1,5 @@
 package net.netnook.qpeg.expressions;
 
-import net.netnook.qpeg.expressions.Context.Marker;
-
 public abstract class ParsingExpressionBase implements ParsingExpression {
 
 	private final OnSuccessHandler onSuccess;
@@ -11,32 +9,31 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 	}
 
 	@Override
-	public final boolean parse(Context context) {
-		Marker startMarker = context.updateMark();
+	public final boolean parse(RootContext context) {
+		int startPosition = context.position();
+		int startStackIdx = context.stackSize();
 
 		onExpressionEnter(context);
 
-		boolean success = parseImpl(context, startMarker);
+		boolean success = parseImpl(context, startPosition, startStackIdx);
 
-		onExpressionExit(context, startMarker, success);
+		onExpressionExit(context, startPosition, startStackIdx, success);
 
 		return success;
 	}
 
-	protected abstract boolean parseImpl(Context context, Marker startMarker);
+	protected abstract boolean parseImpl(RootContext context, int startPosition, int startStackIdx);
 
-	protected void onExpressionEnter(Context context) {
+	private void onExpressionEnter(RootContext context) {
 		context.getListener().onExpressionEnter(this, context);
 	}
 
-	protected void onExpressionExit(Context context, Marker startMarker, boolean success) {
-		context.mark(startMarker);
-
+	private void onExpressionExit(RootContext context, int startPosition, int startStackIdx, boolean success) {
 		if (success) {
-			onSuccess.accept(context);
+			onSuccess.accept(context.slice(startPosition, startStackIdx));
 		}
 
-		context.getListener().onExpressionExit(this, context, success);
+		context.getListener().onExpressionExit(this, context, startPosition, startStackIdx, success);
 	}
 
 	@Override

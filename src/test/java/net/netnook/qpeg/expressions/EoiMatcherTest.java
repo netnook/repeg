@@ -9,8 +9,7 @@ public class EoiMatcherTest extends BaseMatcherTest {
 
 	@Before
 	public void init() {
-		context = new Context("ab");
-		buildContext = new BuildContext();
+		buildContext("ab");
 	}
 
 	@Test

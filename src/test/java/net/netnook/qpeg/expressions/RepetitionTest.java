@@ -14,11 +14,7 @@ public class RepetitionTest extends BaseMatcherTest {
 	public void init() {
 		isA = CharMatcher.is('a');
 		isB = CharMatcher.is('b');
-
-		context = new Context("-aaabbb-");
-		context.consumeChar();
-
-		buildContext = new BuildContext();
+		buildContext("-aaabbb-").consumeChar();
 	}
 
 	@Test
@@ -43,11 +39,11 @@ public class RepetitionTest extends BaseMatcherTest {
 		ParsingExpression expression = Repetition.zeroOrMore(isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "a", "a");
+		assertNewOnStack("a", "a", "a");
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(4);
 
 		assertFullStackContains("a", "a", "a");
@@ -58,11 +54,11 @@ public class RepetitionTest extends BaseMatcherTest {
 		ParsingExpression expression = Repetition.oneOrMore(isA).build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "a", "a");
+		assertNewOnStack("a", "a", "a");
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 
 		assertFullStackContains("a", "a", "a");
 	}
@@ -75,15 +71,15 @@ public class RepetitionTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "a");
+		assertNewOnStack("a", "a");
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isFalse();
-		assertStackContains();
+		assertNewOnStack();
 
 		assertFullStackContains("a", "a", "a");
 	}
@@ -97,12 +93,12 @@ public class RepetitionTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a", "a");
+		assertNewOnStack("a", "a");
 		assertPositionIs(3);
 		assertThat(successCount).isEqualTo(1);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains("a");
+		assertNewOnStack("a");
 		assertPositionIs(4);
 		assertThat(successCount).isEqualTo(2);
 
@@ -121,11 +117,11 @@ public class RepetitionTest extends BaseMatcherTest {
 				.build(buildContext);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(3);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertStackContains();
+		assertNewOnStack();
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isFalse();

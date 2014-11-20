@@ -1,8 +1,8 @@
 package net.netnook.qpeg.expressions;
 
 import java.util.Comparator;
+import java.util.List;
 
-import net.netnook.qpeg.expressions.Context.Marker;
 import net.netnook.qpeg.util.ParseListener;
 
 public class ParsingRule extends ParsingExpressionBase {
@@ -56,10 +56,8 @@ public class ParsingRule extends ParsingExpressionBase {
 	}
 
 	public <T> T parse(CharSequence input, ParseListener listener) throws NoMatchException {
-		Context context = new Context(input);
+		RootContext context = new RootContext(input);
 		context.setListener(listener);
-
-		Marker start = context.updateMark();
 
 		boolean success = parse(context);
 
@@ -68,21 +66,19 @@ public class ParsingRule extends ParsingExpressionBase {
 			throw new NoMatchException();
 		}
 
-		context.mark(start);
+		List<Object> stack = context.getStack();
 
-		int count = context.size();
-
-		if (count == 0) {
+		if (stack.isEmpty()) {
 			return null;
-		} else if (count == 1) {
-			return context.get(0);
+		} else if (stack.size() == 1) {
+			return (T) stack.get(0);
 		} else {
-			return (T) context.getAll();
+			return (T) stack;
 		}
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		return expression.parse(context);
 	}
 

@@ -15,7 +15,7 @@ public interface ParsingExpression extends Visitable {
 	 * @param context parsing context.
 	 * @return {@code true} if match successful
 	 */
-	boolean parse(Context context);
+	boolean parse(RootContext context);
 
 	default boolean isIgnore() {
 		return false;

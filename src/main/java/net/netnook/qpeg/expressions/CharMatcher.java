@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions;
 
-import net.netnook.qpeg.expressions.Context.Marker;
 import net.netnook.qpeg.expressions.chars.CharTester;
 
 public final class CharMatcher extends SimpleExpression {
@@ -88,7 +87,7 @@ public final class CharMatcher extends SimpleExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(Context context, Marker startMarker) {
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		int count = 0;
 		while (count < maxCount) {
 			int found = context.consumeChar();
@@ -96,7 +95,7 @@ public final class CharMatcher extends SimpleExpression {
 			// FIXME: unicode handling ?
 			boolean match = matcher.isMatch(found);
 			if (!match) {
-				context.rewindPosition(1);
+				context.rewindInput();
 				break;
 			}
 			count++;

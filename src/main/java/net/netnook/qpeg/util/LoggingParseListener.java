@@ -2,7 +2,7 @@ package net.netnook.qpeg.util;
 
 import java.util.function.Consumer;
 
-import net.netnook.qpeg.expressions.Context;
+import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.ParsingExpression;
 
 public class LoggingParseListener implements ParseListener {
@@ -33,7 +33,7 @@ public class LoggingParseListener implements ParseListener {
 	}
 
 	@Override
-	public void onExpressionEnter(ParsingExpression expression, Context context) {
+	public void onExpressionEnter(ParsingExpression expression, RootContext context) {
 		depth++;
 
 		StringBuilder buf = new StringBuilder();
@@ -45,15 +45,15 @@ public class LoggingParseListener implements ParseListener {
 	}
 
 	@Override
-	public void onExpressionExit(ParsingExpression expression, Context context, boolean success) {
+	public void onExpressionExit(ParsingExpression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
 		StringBuilder buf = new StringBuilder();
 		appendPrefix(buf);
 		buf.append("EXIT ");
 		buf.append(expression.buildGrammar());
-		buf.append(" start=").append(context.mark().position());
+		buf.append(" start=").append(startPosition);
 		buf.append(" end=").append(context.position());
 		buf.append(" success=").append(success);
-		buf.append(" text='").append(context.getCurrentText()).append("'");
+		buf.append(" text='").append(context.getInput(startPosition)).append("'");
 		print(buf.toString());
 		depth--;
 	}
