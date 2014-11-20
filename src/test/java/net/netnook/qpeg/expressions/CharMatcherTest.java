@@ -152,6 +152,34 @@ public class CharMatcherTest extends BaseMatcherTest {
 	}
 
 	@Test
+	public void test_min_max_count() {
+		CharMatcher expression = (CharMatcher) CharMatcher.any().minCount(7).maxCount(10).build(buildContext);
+		assertThat(expression.getMinCount()).isEqualTo(7);
+		assertThat(expression.getMaxCount()).isEqualTo(10);
+	}
+
+	@Test
+	public void test_zeroOrMore() {
+		CharMatcher expression = (CharMatcher) CharMatcher.any().zeroOrMore().build(buildContext);
+		assertThat(expression.getMinCount()).isEqualTo(0);
+		assertThat(expression.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+	}
+
+	@Test
+	public void test_oneOrMore() {
+		CharMatcher expression = (CharMatcher) CharMatcher.any().oneOrMore().build(buildContext);
+		assertThat(expression.getMinCount()).isEqualTo(1);
+		assertThat(expression.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+	}
+
+	@Test
+	public void test_count() {
+		CharMatcher expression = (CharMatcher) CharMatcher.any().count(42).build(buildContext);
+		assertThat(expression.getMinCount()).isEqualTo(42);
+		assertThat(expression.getMaxCount()).isEqualTo(42);
+	}
+
+	@Test
 	public void invalid_bounds_min_greater_than_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: minCount > maxCount");

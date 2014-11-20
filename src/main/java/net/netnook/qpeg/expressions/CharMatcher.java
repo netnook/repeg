@@ -109,6 +109,14 @@ public final class CharMatcher extends SimpleExpression {
 		this.maxCount = builder.maxCount;
 	}
 
+	int getMinCount() {
+		return minCount;
+	}
+
+	int getMaxCount() {
+		return maxCount;
+	}
+
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		int count = 0;
