@@ -18,7 +18,7 @@ public class StringMatcher extends SimpleExpression {
 
 		@Override
 		public StringMatcher doBuild(BuildContext ctxt) {
-			if (!isIgnore() && getOnSuccess() == null) {
+			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
 			}
 			return new StringMatcher(this);

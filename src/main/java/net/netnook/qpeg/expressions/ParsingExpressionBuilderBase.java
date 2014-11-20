@@ -2,17 +2,11 @@ package net.netnook.qpeg.expressions;
 
 public abstract class ParsingExpressionBuilderBase implements ParsingExpressionBuilder {
 
-	private boolean ignore;
 	private OnSuccessHandler onSuccess;
 	private ParsingExpression built;
 
-	@Override
-	public boolean isIgnore() {
-		return ignore;
-	}
-
 	public ParsingExpressionBuilderBase ignore() {
-		this.ignore = true;
+		this.onSuccess = OnSuccessHandler.CLEAR_STACK;
 		return this;
 	}
 

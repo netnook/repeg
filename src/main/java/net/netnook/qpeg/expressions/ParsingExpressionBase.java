@@ -4,15 +4,9 @@ import net.netnook.qpeg.expressions.Context.Marker;
 
 public abstract class ParsingExpressionBase implements ParsingExpression {
 
-	protected final boolean ignore;
-	protected final OnSuccessHandler onSuccess;
+	private final OnSuccessHandler onSuccess;
 
 	protected ParsingExpressionBase(ParsingExpressionBuilder builder) {
-		if (builder.isIgnore() && builder.getOnSuccess() != null) {
-			throw new InvalidExpressionException("Cannot have ignore=true and an onSuccess handler at same time");
-		}
-
-		this.ignore = builder.isIgnore();
 		this.onSuccess = (builder.getOnSuccess() == null) ? OnSuccessHandler.NO_OP : builder.getOnSuccess();
 	}
 
@@ -39,19 +33,10 @@ public abstract class ParsingExpressionBase implements ParsingExpression {
 		context.mark(startMarker);
 
 		if (success) {
-			if (ignore) {
-				context.clear();
-			} else {
-				onSuccess.accept(context);
-			}
+			onSuccess.accept(context);
 		}
 
 		context.getListener().onExpressionExit(this, context, success);
-	}
-
-	@Override
-	public final boolean isIgnore() {
-		return ignore;
 	}
 
 	@Override

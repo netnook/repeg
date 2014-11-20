@@ -87,7 +87,7 @@ public class CalculatorTest {
 	@Test
 	@Ignore
 	public void parseWithLogging() throws NoMatchException {
-		rule.parse("1 * 2 + 3", LoggingParseListener.builder().skipIgnore(true).build());
+		rule.parse("1 * 2 + 3", LoggingParseListener.builder().build());
 	}
 
 	@Test

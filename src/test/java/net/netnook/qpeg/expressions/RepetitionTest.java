@@ -134,17 +134,6 @@ public class RepetitionTest extends BaseMatcherTest {
 	}
 
 	@Test
-	public void test_success_handler_and_ignore_throws_exception() {
-		thrown.expect(InvalidExpressionException.class);
-		thrown.expectMessage("Cannot have ignore=true and an onSuccess handler");
-
-		Repetition.of(isA) //
-				.onSuccess(onSuccessCounter) //
-				.ignore() //
-				.build(buildContext);
-	}
-
-	@Test
 	public void invalid_bounds_min_greater_than_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: minCount > maxCount");

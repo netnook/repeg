@@ -9,5 +9,7 @@ public interface OnSuccessHandler {
 
 	OnSuccessHandler PUSH_TEXT_TO_STACK = Context::pushCurrentText;
 
+	OnSuccessHandler CLEAR_STACK = Context::clear;
+
 	void accept(Context context);
 }

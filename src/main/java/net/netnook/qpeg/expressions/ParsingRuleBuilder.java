@@ -25,9 +25,4 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 	default OnSuccessHandler getOnSuccess() {
 		return OnSuccessHandler.NO_OP;
 	}
-
-	@Override
-	default boolean isIgnore() {
-		return false;
-	}
 }

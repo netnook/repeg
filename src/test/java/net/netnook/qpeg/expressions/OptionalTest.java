@@ -92,15 +92,4 @@ public class OptionalTest extends BaseMatcherTest {
 
 		assertFullStackContains();
 	}
-
-	@Test
-	public void test_success_handler_and_ignore_throws_exception() {
-		thrown.expect(InvalidExpressionException.class);
-		thrown.expectMessage("Cannot have ignore=true and an onSuccess handler");
-
-		Optional.of(isA) //
-				.onSuccess(onSuccessCounter) //
-				.ignore() //
-				.build(buildContext);
-	}
 }

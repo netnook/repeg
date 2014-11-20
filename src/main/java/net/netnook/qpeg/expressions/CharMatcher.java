@@ -69,7 +69,7 @@ public final class CharMatcher extends SimpleExpression {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
 
-			if (!isIgnore() && getOnSuccess() == null) {
+			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
 			}
 			return new CharMatcher(this);

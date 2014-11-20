@@ -43,9 +43,6 @@ public final class Predicate extends SimpleExpression {
 
 	protected Predicate(Builder builder, ParsingExpression expression) {
 		super(builder);
-		if (!builder.isIgnore()) {
-			throw new IllegalStateException();
-		}
 		this.expression = expression;
 		this.invert = builder.invert;
 	}
