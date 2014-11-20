@@ -7,6 +7,10 @@ import net.netnook.qpeg.expressions.Context.Marker;
 
 public class Repetition extends CompoundExpression {
 
+	public static Builder of(ParsingExpressionBuilder expression) {
+		return zeroOrMore(expression);
+	}
+
 	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression);
@@ -41,17 +45,23 @@ public class Repetition extends CompoundExpression {
 		}
 
 		public Builder minCount(int minCount) {
+			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
 			this.minCount = minCount;
 			return this;
 		}
 
 		public Builder maxCount(int maxCount) {
+			validate(maxCount >= 1, "Invalid expression: max count must be >= 1");
 			this.maxCount = maxCount;
 			return this;
 		}
 
 		@Override
 		public Repetition doBuild(BuildContext ctxt) {
+			if (minCount > maxCount) {
+				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
+			}
+
 			return new Repetition(this, expression.build(ctxt));
 		}
 	}
@@ -67,7 +77,7 @@ public class Repetition extends CompoundExpression {
 		this.maxCount = builder.maxCount;
 
 		if (expression instanceof Optional) {
-			throw new IllegalArgumentException("Cannot have optional content in repeating construct.");
+			throw new InvalidExpressionException("Cannot have optional content in repeating construct.");
 		}
 	}
 
@@ -82,10 +92,12 @@ public class Repetition extends CompoundExpression {
 			return "(" + expression.buildGrammar() + ")*";
 		} else if (minCount == 1 && maxCount == Integer.MAX_VALUE) {
 			return "(" + expression.buildGrammar() + ")+";
+		} else if (maxCount == Integer.MAX_VALUE) {
+			return "(" + expression.buildGrammar() + "){" + minCount + ",}";
 		} else if (minCount == maxCount) {
-			return "(" + expression.buildGrammar() + "){" + minCount + "," + maxCount + "}";
-		} else {
 			return "(" + expression.buildGrammar() + "){" + minCount + "}";
+		} else {
+			return "(" + expression.buildGrammar() + "){" + minCount + "," + maxCount + "}";
 		}
 	}
 

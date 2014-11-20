@@ -1,6 +1,7 @@
 package net.netnook.qpeg.expressions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.netnook.qpeg.util.ParseListener;
@@ -217,5 +218,10 @@ public class Context {
 			result.add(get(i));
 		}
 		return result;
+	}
+
+	// for testing only
+	List<Object> getFullStack() {
+		return Collections.unmodifiableList(stack);
 	}
 }

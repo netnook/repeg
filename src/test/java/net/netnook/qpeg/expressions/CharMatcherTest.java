@@ -3,17 +3,9 @@ package net.netnook.qpeg.expressions;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-public class CharMatcherTest {
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	private Context context;
-	private BuildContext buildContext;
+public class CharMatcherTest extends BaseMatcherTest {
 
 	@Before
 	public void init() {
@@ -29,7 +21,7 @@ public class CharMatcherTest {
 
 	@Test
 	public void test_char_range() {
-		assertThat(CharMatcher.inRange('a','c').build(buildContext).buildGrammar()).isEqualTo("[a-c]");
+		assertThat(CharMatcher.inRange('a', 'c').build(buildContext).buildGrammar()).isEqualTo("[a-c]");
 	}
 
 	@Test
@@ -51,9 +43,14 @@ public class CharMatcherTest {
 	public void test_one_char() {
 		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
 				.build(buildContext);
-		expression.parse(context);
+
+		assertThat(expression.parse(context)).isTrue();
 		assertStackContains("a");
 		assertPositionIs(2);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertStackContains("b");
+		assertPositionIs(3);
 	}
 
 	@Test
@@ -73,7 +70,6 @@ public class CharMatcherTest {
 
 		assertThat(expression.parse(context)).isFalse();
 		assertStackContains();
-		assertPositionIs(7);
 	}
 
 	@Test
@@ -89,7 +85,6 @@ public class CharMatcherTest {
 
 		assertThat(expression.parse(context)).isFalse();
 		assertStackContains();
-		assertPositionIs(7);
 	}
 
 	@Test
@@ -105,7 +100,6 @@ public class CharMatcherTest {
 
 		assertThat(expression.parse(context)).isFalse();
 		assertStackContains();
-		assertPositionIs(3);
 	}
 
 	@Test
@@ -125,7 +119,6 @@ public class CharMatcherTest {
 
 		assertThat(expression.parse(context)).isFalse();
 		assertStackContains();
-		assertPositionIs(7);
 	}
 
 	@Test
@@ -135,39 +128,27 @@ public class CharMatcherTest {
 				.buildGrammar()//
 		).isEqualTo("[a-f]");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(0)
-				.maxCount(1)
-				.build(buildContext)//
+				.minCount(0).maxCount(1).build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]?");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(0)
-				.maxCountUnbounded()
-				.build(buildContext)//
+				.minCount(0).maxCountUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]*");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(1)
-				.maxCountUnbounded()
-				.build(buildContext)//
+				.minCount(1).maxCountUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]+");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(7)
-				.maxCount(7)
-				.build(buildContext)//
+				.minCount(7).maxCount(7).build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{7}");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(2)
-				.maxCount(7)
-				.build(buildContext)//
+				.minCount(2).maxCount(7).build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,7}");
 		assertThat(CharMatcher.inRange('a', 'f') //
-				.minCount(2)
-				.maxCountUnbounded()
-				.build(buildContext)//
+				.minCount(2).maxCountUnbounded().build(buildContext)//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,}");
 	}
@@ -191,13 +172,5 @@ public class CharMatcherTest {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: max count");
 		CharMatcher.any().maxCount(-5);
-	}
-
-	private void assertStackContains(Object... o) {
-		assertThat(context.getAll()).containsExactly(o);
-	}
-
-	private void assertPositionIs(int position) {
-		assertThat(context.position()).isEqualTo(position);
 	}
 }
