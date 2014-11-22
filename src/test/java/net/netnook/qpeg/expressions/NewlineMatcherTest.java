@@ -45,25 +45,6 @@ public class NewlineMatcherTest extends BaseMatcherTest {
 	}
 
 	@Test
-	public void test_lfcr() {
-		buildContext("-\n\r\n\r-");
-		context.consumeChar();
-
-		ParsingExpression expression = NewlineMatcher.builder().build(buildContext);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack("\n\r");
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack("\n\r");
-		assertPositionIs(5);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-	}
-
-	@Test
 	public void test_lf() {
 		buildContext("-\n\n-");
 		context.consumeChar();
@@ -103,7 +84,7 @@ public class NewlineMatcherTest extends BaseMatcherTest {
 
 	@Test
 	public void test_mix() {
-		buildContext("-\r\n\r\r\n\n\n\r-");
+		buildContext("-\r\n\r\r\n\n\r\n-");
 		context.consumeChar();
 
 		ParsingExpression expression = NewlineMatcher.builder().build(buildContext);
@@ -125,7 +106,7 @@ public class NewlineMatcherTest extends BaseMatcherTest {
 		assertPositionIs(7);
 
 		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack("\n\r");
+		assertNewOnStack("\r\n");
 		assertPositionIs(9);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -134,6 +115,6 @@ public class NewlineMatcherTest extends BaseMatcherTest {
 
 	@Test
 	public void test_build_grammar() {
-		assertThat(NewlineMatcher.builder().build(buildContext).buildGrammar()).isEqualTo("('\\n\\r'|'\\n'|'\\r\\n'|'\\r')");
+		assertThat(NewlineMatcher.builder().build(buildContext).buildGrammar()).isEqualTo("('\\n'|'\\r\\n'|'\\r')");
 	}
 }

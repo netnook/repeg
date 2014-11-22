@@ -2,6 +2,17 @@ package net.netnook.qpeg.expressions.chars;
 
 class HorizontalWhitespaceTester extends CharTester {
 
+	private static final int SPACE = ' ';
+	private static final int TAB = '\t';
+	private static final int NO_BREAK_SPACE = 0xa0;
+	private static final int OGHAM_SPACE_MARK = 0x1680;
+	private static final int MONGOLIAN_VOWEL_SEPARATOR = 0x180e;
+	private static final int EN_QUAD = 0x2000;
+	private static final int HAIR_SPACE = 0x200a;
+	private static final int NARROW_NO_BREAK_SPACE = 0x202f;
+	private static final int MEDIUM_MATHEMATICAL_SPACE = 0x205f;
+	private static final int IDEOGRAPHIC_SPACE = 0x3000;
+
 	static final HorizontalWhitespaceTester INSTANCE = new HorizontalWhitespaceTester();
 
 	private HorizontalWhitespaceTester() {
@@ -10,15 +21,15 @@ class HorizontalWhitespaceTester extends CharTester {
 
 	@Override
 	public boolean isMatch(int test) {
-		return test == 0x09 //
-				|| test == 0x20 //
-				|| test == 0xa0 //
-				|| test == 0x1680 //
-				|| test == 0x180e //
-				|| (test >= 0x2000 && test <= 0x200a) //
-				|| test == 0x202f //
-				|| test == 0x205f //
-				|| test == 0x3000;
+		return test == TAB //
+				|| test == SPACE //
+				|| test == NO_BREAK_SPACE //
+				|| test == OGHAM_SPACE_MARK //
+				|| test == MONGOLIAN_VOWEL_SEPARATOR //
+				|| (test >= EN_QUAD && test <= HAIR_SPACE) //
+				|| test == NARROW_NO_BREAK_SPACE //
+				|| test == MEDIUM_MATHEMATICAL_SPACE //
+				|| test == IDEOGRAPHIC_SPACE;
 	}
 
 	@Override

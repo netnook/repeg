@@ -30,17 +30,15 @@ public class NewlineMatcher extends SimpleExpression {
 
 	@Override
 	public String buildGrammar() {
-		return "('\\n\\r'|'\\n'|'\\r\\n'|'\\r')";
+		return "('\\n'|'\\r\\n'|'\\r')";
 	}
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		int c1 = context.consumeChar();
 
+		// TODO: compare this to unicode line termination
 		if (c1 == LF) {
-			if (context.consumeChar() != CR) {
-				context.rewindInput();
-			}
 			return true;
 		} else if (c1 == CR) {
 			if (context.consumeChar() != LF) {
