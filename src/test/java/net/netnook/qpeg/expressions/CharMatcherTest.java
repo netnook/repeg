@@ -120,6 +120,43 @@ public class CharMatcherTest extends BaseMatcherTest {
 	}
 
 	@Test
+	public void test_no_match_eoi() {
+		buildContext("-");
+
+		ParsingExpression expression = CharMatcher.any().build(buildContext);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("-");
+		assertPositionIs(1);
+
+		assertThat(expression.parse(context)).isFalse();
+		assertNewOnStack();
+		assertPositionIs(1);
+
+		assertThat(expression.parse(context)).isFalse();
+		assertNewOnStack();
+		assertPositionIs(1);
+	}
+
+	@Test
+	public void test_inverted_no_match_eoi() {
+		buildContext("-");
+
+		ParsingExpression expression = CharMatcher.any().invert().build(buildContext);
+
+		context.consumeChar(); // skip past '-' will not be matched by inverted any.
+		assertPositionIs(1);
+
+		assertThat(expression.parse(context)).isFalse();
+		assertNewOnStack();
+		assertPositionIs(1);
+
+		assertThat(expression.parse(context)).isFalse();
+		assertNewOnStack();
+		assertPositionIs(1);
+	}
+
+	@Test
 	public void test_build_grammar() {
 		assertThat(CharMatcher.inRange('a', 'f') //
 				.build(buildContext)//
