@@ -5,6 +5,7 @@ import net.netnook.qpeg.expressions.CharMatcher;
 import net.netnook.qpeg.expressions.Choice;
 import net.netnook.qpeg.expressions.Context;
 import net.netnook.qpeg.expressions.EoiMatcher;
+import net.netnook.qpeg.expressions.NewlineMatcher;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.Optional;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
@@ -33,6 +34,10 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected abstract ParsingRuleBuilder getStartRule();
+
+	protected static NewlineMatcher.Builder newLine() {
+		return NewlineMatcher.builder();
+	}
 
 	protected static EoiMatcher.Builder endOfInput() {
 		return EoiMatcher.instance();
@@ -64,12 +69,13 @@ public abstract class ParserFactoryBase {
 
 	protected static ParsingExpressionBuilder endOfLineOrInput() {
 		return choice( //
-				crlf().ignore(), //
+				newLine().ignore(), //
 				endOfInput() //
 		);
 	}
 
 	protected static CharMatcher.Builder crlf() {
+		// FIXME: better performing solution
 		return CharMatcher.in("\r\n").minCount(1).maxCount(2);
 	}
 
