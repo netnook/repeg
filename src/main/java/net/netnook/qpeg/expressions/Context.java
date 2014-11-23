@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions;
 
-public class Context {
+public final class Context {
 
 	private final RootContext context;
 	private int inputOffset;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Choice extends CompoundExpression {
+public final class Choice extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
@@ -32,7 +32,7 @@ public class Choice extends CompoundExpression {
 		}
 
 		@Override
-		public Choice doBuild(BuildContext ctxt) {
+		protected Choice doBuild(BuildContext ctxt) {
 			return new Choice(this, build(ctxt, expressions));
 		}
 	}

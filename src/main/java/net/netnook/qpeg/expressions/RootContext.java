@@ -7,7 +7,7 @@ import java.util.List;
 
 import net.netnook.qpeg.util.ParseListener;
 
-public class RootContext {
+public final class RootContext {
 
 	public static final int END_OF_INPUT = -1;
 	private static final int DEFAULT_INITIAL_STACK_CAPACITY = 64;
@@ -19,21 +19,21 @@ public class RootContext {
 	private int position;
 	private ParseListener listener = ParseListener.NO_OP;
 
-	public RootContext(CharSequence input) {
+	RootContext(CharSequence input) {
 		this.input = input;
 		this.position = 0;
 	}
 
-	public Context slice(int inputOffset, int stackOffset) {
+	Context slice(int inputOffset, int stackOffset) {
 		slice.setup(inputOffset, stackOffset);
 		return slice;
 	}
 
-	public void setListener(ParseListener listener) {
+	void setListener(ParseListener listener) {
 		this.listener = listener;
 	}
 
-	public ParseListener getListener() {
+	ParseListener getListener() {
 		return listener;
 	}
 
@@ -49,7 +49,7 @@ public class RootContext {
 		return input.subSequence(start, end);
 	}
 
-	public int consumeChar() {
+	int consumeChar() {
 		if (position < input.length()) {
 			char c = input.charAt(position);
 			position++;
@@ -60,7 +60,7 @@ public class RootContext {
 		}
 	}
 
-	public int peekChar() {
+	int peekChar() {
 		if (position < input.length()) {
 			return input.charAt(position);
 		} else {
@@ -68,27 +68,27 @@ public class RootContext {
 		}
 	}
 
-	public void rewindInput() {
+	void rewindInput() {
 		position--;
 		if (position < 0) {
 			throw new IllegalArgumentException("Cannot rewind beyond start !");
 		}
 	}
 
-	public int stackSize() {
+	int stackSize() {
 		return stack.size();
 	}
 
-	public void push(Object o) {
+	void push(Object o) {
 		stack.add(o);
 	}
 
-	public <T> T get(int index) {
+	<T> T get(int index) {
 		return (T) stack.get(index);
 	}
 
 	// FIXME: naming
-	public Collection<?> getStack(int startIdx) {
+	Collection<?> getStack(int startIdx) {
 		int len = stack.size() - startIdx;
 		if (len == 0) {
 			return Collections.emptyList();
@@ -114,7 +114,7 @@ public class RootContext {
 		return Collections.unmodifiableList(stack);
 	}
 
-	public void resetTo(int position, int stackSize) {
+	void resetTo(int position, int stackSize) {
 		this.position = position;
 		truncateStack(stackSize);
 	}

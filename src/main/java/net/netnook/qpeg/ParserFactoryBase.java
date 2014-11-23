@@ -16,7 +16,7 @@ import net.netnook.qpeg.expressions.Predicate;
 import net.netnook.qpeg.expressions.Repetition;
 import net.netnook.qpeg.expressions.Sequence;
 import net.netnook.qpeg.expressions.StringMatcher;
-import net.netnook.qpeg.expressions.chars.CharTester;
+import net.netnook.qpeg.expressions.chars.CharTesters;
 
 public abstract class ParserFactoryBase {
 
@@ -104,7 +104,7 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static CharMatcher.Builder horizontalWhitespace() {
-		return CharMatcher.of(CharTester.horizontalWhitespace());
+		return CharMatcher.of(CharTesters.horizontalWhitespace());
 	}
 
 	protected static OnSuccessHandler textToInteger() {

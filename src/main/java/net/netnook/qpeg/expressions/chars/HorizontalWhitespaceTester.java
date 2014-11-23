@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions.chars;
 
-class HorizontalWhitespaceTester extends CharTester {
+final class HorizontalWhitespaceTester extends CharTester {
 
 	private static final int SPACE = ' ';
 	private static final int TAB = '\t';

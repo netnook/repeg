@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions;
 
-public class StringMatcher extends SimpleExpression {
+public final class StringMatcher extends SimpleExpression {
 
 	public static Builder of(String str) {
 		return new Builder(str);
@@ -15,7 +15,7 @@ public class StringMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public StringMatcher doBuild(BuildContext ctxt) {
+		protected StringMatcher doBuild(BuildContext ctxt) {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
 			}

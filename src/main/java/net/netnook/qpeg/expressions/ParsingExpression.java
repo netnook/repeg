@@ -9,7 +9,7 @@ public interface ParsingExpression extends Visitable {
 	String buildGrammar();
 
 	/**
-	 * Parse the next characters as indicated and return the resulting node.  Return null if
+	 * Parse the next characters as indicated and return the resulting node.  Return false if
 	 * there was not match.
 	 *
 	 * @param context parsing context.
@@ -17,7 +17,7 @@ public interface ParsingExpression extends Visitable {
 	 */
 	boolean parse(RootContext context);
 
-	default boolean isIgnore() {
-		return false;
-	}
+	//default boolean isIgnore() {
+	//		return false;
+	//	}
 }

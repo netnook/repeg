@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions.chars;
 
-class InvertedCharTester extends CharTester {
+final class InvertedCharTester extends CharTester {
 
 	private final CharTester wrapped;
 

@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions.chars;
 
-class CharAnyTester extends CharTester {
+final class CharAnyTester extends CharTester {
 
 	static final CharAnyTester INSTANCE = new CharAnyTester();
 

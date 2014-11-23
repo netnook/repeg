@@ -2,6 +2,7 @@ package net.netnook.qpeg.expressions;
 
 import java.util.List;
 
+// TODO switch to interface ??
 public abstract class CompoundExpression extends ParsingExpressionBase {
 
 	protected CompoundExpression(ParsingExpressionBuilder builder) {
@@ -10,6 +11,7 @@ public abstract class CompoundExpression extends ParsingExpressionBase {
 
 	public abstract List<ParsingExpression> parts();
 
+	@Override
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 	}

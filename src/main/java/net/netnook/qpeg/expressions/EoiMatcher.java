@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions;
 
-public class EoiMatcher extends SimpleExpression {
+public final class EoiMatcher extends SimpleExpression {
 
 	private static final Builder EOI_BUILDER = new Builder();
 
@@ -17,7 +17,7 @@ public class EoiMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public ParsingExpression doBuild(BuildContext ctxt) {
+		protected ParsingExpression doBuild(BuildContext ctxt) {
 			return instance;
 		}
 

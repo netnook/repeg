@@ -1,4 +1,4 @@
 package net.netnook.qpeg.expressions;
 
-public class NoMatchException extends Exception {
+public final class NoMatchException extends Exception {
 }

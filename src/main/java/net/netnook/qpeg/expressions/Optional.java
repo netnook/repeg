@@ -3,7 +3,7 @@ package net.netnook.qpeg.expressions;
 import java.util.Collections;
 import java.util.List;
 
-public class Optional extends CompoundExpression {
+public final class Optional extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder expression) {
 		return new Builder().expression(expression);
@@ -30,7 +30,7 @@ public class Optional extends CompoundExpression {
 		}
 
 		@Override
-		public Optional doBuild(BuildContext ctxt) {
+		protected Optional doBuild(BuildContext ctxt) {
 			return new Optional(this, expression.build(ctxt));
 		}
 	}

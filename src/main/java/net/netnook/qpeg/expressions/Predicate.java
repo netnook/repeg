@@ -34,7 +34,7 @@ public final class Predicate extends CompoundExpression {
 		}
 
 		@Override
-		public Predicate doBuild(BuildContext ctxt) {
+		protected Predicate doBuild(BuildContext ctxt) {
 			return new Predicate(this, expression.build(ctxt));
 		}
 	}

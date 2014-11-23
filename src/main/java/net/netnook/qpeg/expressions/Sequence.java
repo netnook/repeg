@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Sequence extends CompoundExpression {
+public final class Sequence extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
@@ -32,7 +32,7 @@ public class Sequence extends CompoundExpression {
 		}
 
 		@Override
-		public Sequence doBuild(BuildContext ctxt) {
+		protected Sequence doBuild(BuildContext ctxt) {
 			return new Sequence(this, build(ctxt, expressions));
 		}
 	}

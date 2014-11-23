@@ -1,6 +1,7 @@
 package net.netnook.qpeg.expressions;
 
 import net.netnook.qpeg.expressions.chars.CharTester;
+import net.netnook.qpeg.expressions.chars.CharTesters;
 
 public final class CharMatcher extends SimpleExpression {
 
@@ -9,23 +10,23 @@ public final class CharMatcher extends SimpleExpression {
 	}
 
 	public static Builder any() {
-		return new Builder().matcher(CharTester.any());
+		return new Builder().matcher(CharTesters.any());
 	}
 
 	public static Builder whitespace() {
-		return new Builder().matcher(CharTester.isWhitespace());
+		return new Builder().matcher(CharTesters.isWhitespace());
 	}
 
 	public static Builder is(char c) {
-		return new Builder().matcher(CharTester.is(c));
+		return new Builder().matcher(CharTesters.is(c));
 	}
 
 	public static Builder in(String characters) {
-		return new Builder().matcher(CharTester.in(characters));
+		return new Builder().matcher(CharTesters.in(characters));
 	}
 
 	public static Builder inRange(char from, char to) {
-		return new Builder().matcher(CharTester.inRange(from, to));
+		return new Builder().matcher(CharTesters.inRange(from, to));
 	}
 
 	public static class Builder extends ParsingExpressionBuilderBase {
@@ -86,7 +87,7 @@ public final class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public CharMatcher doBuild(BuildContext ctxt) {
+		protected CharMatcher doBuild(BuildContext ctxt) {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}

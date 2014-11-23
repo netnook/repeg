@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions;
 
-public class NewlineMatcher extends SimpleExpression {
+public final class NewlineMatcher extends SimpleExpression {
 
 	private static final int LF = '\n';
 	private static final int CR = '\r';
@@ -16,7 +16,7 @@ public class NewlineMatcher extends SimpleExpression {
 		}
 
 		@Override
-		public NewlineMatcher doBuild(BuildContext ctxt) {
+		protected NewlineMatcher doBuild(BuildContext ctxt) {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
 			}

@@ -3,15 +3,15 @@ package net.netnook.qpeg.expressions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BuildContext {
+public final class BuildContext {
 
 	private Map<ParsingRuleBuilder, ParsingRule> expressions = new HashMap<>();
 
-	public ParsingRule getRule(ParsingRuleBuilder key) {
+	ParsingRule getRule(ParsingRuleBuilder key) {
 		return expressions.get(key);
 	}
 
-	public void putRule(ParsingRuleBuilder key, ParsingRule expression) {
+	void putRule(ParsingRuleBuilder key, ParsingRule expression) {
 		expressions.put(key, expression);
 	}
 }
