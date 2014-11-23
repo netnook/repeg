@@ -4,7 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class NewlineMatcherTest extends BaseMatcherTest {
+import net.netnook.qpeg.expressions._util.MatcherTestBase;
+import net.netnook.qpeg.expressions.extras.NewlineMatcher;
+
+public class NewlineMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_crlf() {

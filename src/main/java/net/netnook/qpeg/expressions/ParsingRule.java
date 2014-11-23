@@ -52,13 +52,12 @@ public final class ParsingRule extends ParsingExpressionBase {
 		visitor.visit(this);
 	}
 
-	public <T> T parse(CharSequence input) throws NoMatchException {
+	public <T> T parse(CharSequence input) throws ParseException {
 		return parse(input, ParseListener.NO_OP);
 	}
 
-	public <T> T parse(CharSequence input, ParseListener listener) throws NoMatchException {
-		RootContext context = new RootContext(input);
-		context.setListener(listener);
+	public <T> T parse(CharSequence input, ParseListener listener) throws ParseException {
+		RootContext context = new RootContext(input, listener);
 
 		boolean success = parse(context);
 

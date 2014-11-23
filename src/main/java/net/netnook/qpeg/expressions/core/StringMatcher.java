@@ -1,4 +1,10 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
+
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.RootContext;
+import net.netnook.qpeg.expressions.SimpleExpression;
 
 public final class StringMatcher extends SimpleExpression {
 

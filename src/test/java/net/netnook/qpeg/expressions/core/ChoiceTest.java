@@ -1,11 +1,14 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ChoiceTest extends BaseMatcherTest {
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions._util.MatcherTestBase;
+
+public class ChoiceTest extends MatcherTestBase {
 
 	private CharMatcher.Builder isA;
 	private CharMatcher.Builder isB;

@@ -1,11 +1,14 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class EoiMatcherTest extends BaseMatcherTest {
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions._util.MatcherTestBase;
+
+public class EoiMatcherTest extends MatcherTestBase {
 
 	@Before
 	public void init() {

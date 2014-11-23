@@ -1,11 +1,19 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class Sequence extends CompoundExpression {
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.CompoundExpression;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.RootContext;
+
+public final class Choice extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
@@ -32,14 +40,14 @@ public final class Sequence extends CompoundExpression {
 		}
 
 		@Override
-		protected Sequence doBuild(BuildContext ctxt) {
-			return new Sequence(this, build(ctxt, expressions));
+		protected Choice doBuild(BuildContext ctxt) {
+			return new Choice(this, build(ctxt, expressions));
 		}
 	}
 
 	private final ParsingExpression[] expressions;
 
-	private Sequence(Builder builder, ParsingExpression[] expressions) {
+	private Choice(Builder builder, ParsingExpression[] expressions) {
 		super(builder);
 		this.expressions = expressions;
 	}
@@ -53,17 +61,18 @@ public final class Sequence extends CompoundExpression {
 	public String buildGrammar() {
 		return Stream.of(expressions) //
 				.map(ParsingExpression::buildGrammar) //
-				.collect(Collectors.joining(" ", "(", ")"));
+				.collect(Collectors.joining(" | ", "(", ")"));
 	}
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		for (ParsingExpression expression : expressions) {
 			boolean success = expression.parse(context);
-			if (!success) {
-				return false;
+			if (success) {
+				return true;
 			}
+			context.resetTo(startPosition, startStackIdx);
 		}
-		return true;
+		return false;
 	}
 }

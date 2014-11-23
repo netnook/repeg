@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import net.netnook.qpeg.expressions.NoMatchException;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.parsetree.ParseTreeBuilder;
 import net.netnook.qpeg.util.GrammarBuilder;
@@ -24,51 +23,51 @@ public class IsoDurationTest {
 	}
 
 	@Test
-	public void test_1() throws NoMatchException {
+	public void test_1() {
 		test("P1Y", isoDuration(1, 0, 0, 0, 0, 0));
 	}
 
 	@Test
-	public void test_2() throws NoMatchException {
+	public void test_2() {
 		test("P2M", isoDuration(0, 2, 0, 0, 0, 0));
 	}
 
 	@Test
-	public void test_3() throws NoMatchException {
+	public void test_3() {
 		test("P3D", isoDuration(0, 0, 3, 0, 0, 0));
 	}
 
 	@Test
-	public void test_4() throws NoMatchException {
+	public void test_4() {
 		test("PT4H", isoDuration(0, 0, 0, 4, 0, 0));
 	}
 
 	@Test
-	public void test_5() throws NoMatchException {
+	public void test_5() {
 		test("PT5M", isoDuration(0, 0, 0, 0, 5, 0));
 	}
 
 	@Test
-	public void test_6() throws NoMatchException {
+	public void test_6() {
 		test("PT6S", isoDuration(0, 0, 0, 0, 0, 6));
 	}
 
 	@Test
-	public void test_7() throws NoMatchException {
+	public void test_7() {
 		test("P1Y2M3D", isoDuration(1, 2, 3, 0, 0, 0));
 	}
 
 	@Test
-	public void test_8() throws NoMatchException {
+	public void test_8() {
 		test("PT4H5M6S", isoDuration(0, 0, 0, 4, 5, 6));
 	}
 
 	@Test
-	public void test_9() throws NoMatchException {
+	public void test_9() {
 		test("P1Y2M3DT4H5M6S", isoDuration(1, 2, 3, 4, 5, 6));
 	}
 
-	private void test(String input, IsoDuration expected) throws NoMatchException {
+	private void test(String input, IsoDuration expected) {
 		IsoDuration result = rule.parse(input);
 		assertThat(result).isEqualTo(expected);
 	}
@@ -81,7 +80,7 @@ public class IsoDurationTest {
 
 	@Test
 	@Ignore
-	public void parseTree() throws NoMatchException {
+	public void parseTree() {
 		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
 		IsoDuration result = rule.parse("P1Y2M3DT4H5M6S", parseTreeBuilder);
 		assertThat(result).isEqualTo(isoDuration(1, 2, 3, 4, 5, 6));
@@ -90,7 +89,7 @@ public class IsoDurationTest {
 
 	@Test
 	@Ignore
-	public void performance() throws NoMatchException {
+	public void performance() {
 		System.out.println("#############################################");
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();

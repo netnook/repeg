@@ -15,26 +15,23 @@ public final class RootContext {
 	private final Context slice = new Context(this);
 	private final CharSequence input;
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
+	private final ParseListener listener;
 
 	private int position;
-	private ParseListener listener = ParseListener.NO_OP;
 
-	RootContext(CharSequence input) {
+	public RootContext(CharSequence input, ParseListener listener) {
 		this.input = input;
 		this.position = 0;
+		this.listener = (listener == null) ? ParseListener.NO_OP : listener;
+	}
+
+	public ParseListener getListener() {
+		return listener;
 	}
 
 	Context slice(int inputOffset, int stackOffset) {
 		slice.setup(inputOffset, stackOffset);
 		return slice;
-	}
-
-	void setListener(ParseListener listener) {
-		this.listener = listener;
-	}
-
-	ParseListener getListener() {
-		return listener;
 	}
 
 	public int position() {
@@ -49,7 +46,7 @@ public final class RootContext {
 		return input.subSequence(start, end);
 	}
 
-	int consumeChar() {
+	public int consumeChar() {
 		if (position < input.length()) {
 			char c = input.charAt(position);
 			position++;
@@ -60,7 +57,7 @@ public final class RootContext {
 		}
 	}
 
-	int peekChar() {
+	public int peekChar() {
 		if (position < input.length()) {
 			return input.charAt(position);
 		} else {
@@ -68,14 +65,14 @@ public final class RootContext {
 		}
 	}
 
-	void rewindInput() {
+	public void rewindInput() {
 		position--;
 		if (position < 0) {
 			throw new IllegalArgumentException("Cannot rewind beyond start !");
 		}
 	}
 
-	int stackSize() {
+	public int stackSize() {
 		return stack.size();
 	}
 
@@ -88,7 +85,7 @@ public final class RootContext {
 	}
 
 	// FIXME: naming
-	Collection<?> getStack(int startIdx) {
+	public Collection<?> getStack(int startIdx) {
 		int len = stack.size() - startIdx;
 		if (len == 0) {
 			return Collections.emptyList();
@@ -103,6 +100,10 @@ public final class RootContext {
 		}
 	}
 
+	public List<Object> getStack() {
+		return Collections.unmodifiableList(stack);
+	}
+
 	// FIXME: better way to truncate stack ??
 	void truncateStack(int toSize) {
 		for (int idx = stack.size() - 1; idx >= toSize; idx--) {
@@ -110,11 +111,7 @@ public final class RootContext {
 		}
 	}
 
-	List<Object> getStack() {
-		return Collections.unmodifiableList(stack);
-	}
-
-	void resetTo(int position, int stackSize) {
+	public void resetTo(int position, int stackSize) {
 		this.position = position;
 		truncateStack(stackSize);
 	}

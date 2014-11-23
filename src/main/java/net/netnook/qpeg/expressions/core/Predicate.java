@@ -1,7 +1,15 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
 
 import java.util.Collections;
 import java.util.List;
+
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.CompoundExpression;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.RootContext;
 
 public final class Predicate extends CompoundExpression {
 

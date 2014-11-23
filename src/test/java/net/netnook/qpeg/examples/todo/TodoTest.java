@@ -10,7 +10,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import net.netnook.qpeg.examples.todo.model.Project;
-import net.netnook.qpeg.expressions.NoMatchException;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.util.GrammarBuilder;
 
@@ -26,7 +25,7 @@ public class TodoTest {
 	}
 
 	@Test
-	public void test_todo1() throws NoMatchException {
+	public void test_todo1() {
 		String input = input1();
 
 		System.out.println("##################");
@@ -100,7 +99,7 @@ public class TodoTest {
 
 	@Test
 	@Ignore
-	public void performance() throws NoMatchException {
+	public void performance() {
 		String input = input1();
 		System.out.println("#############################################");
 		for (int round = 0; round < 10; round++) {

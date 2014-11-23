@@ -1,5 +1,11 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions.core;
 
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.InvalidExpressionException;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.qpeg.expressions.RootContext;
+import net.netnook.qpeg.expressions.SimpleExpression;
 import net.netnook.qpeg.expressions.chars.CharTester;
 import net.netnook.qpeg.expressions.chars.CharTesters;
 

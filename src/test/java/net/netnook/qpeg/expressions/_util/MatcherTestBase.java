@@ -1,4 +1,4 @@
-package net.netnook.qpeg.expressions;
+package net.netnook.qpeg.expressions._util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,9 +8,13 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import net.netnook.qpeg.expressions.BuildContext;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
+import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.util.ParseListener;
 
-public abstract class BaseMatcherTest {
+public abstract class MatcherTestBase {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -36,8 +40,7 @@ public abstract class BaseMatcherTest {
 	protected int successCount;
 
 	protected RootContext buildContext(String input) {
-		context = new RootContext(input);
-		context.setListener(testParseListener);
+		context = new RootContext(input, testParseListener);
 		return context;
 	}
 

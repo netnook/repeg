@@ -1,22 +1,22 @@
 package net.netnook.qpeg;
 
 import net.netnook.qpeg.expressions.BuildContext;
-import net.netnook.qpeg.expressions.CharMatcher;
-import net.netnook.qpeg.expressions.Choice;
 import net.netnook.qpeg.expressions.Context;
-import net.netnook.qpeg.expressions.EoiMatcher;
-import net.netnook.qpeg.expressions.NewlineMatcher;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
-import net.netnook.qpeg.expressions.Optional;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
-import net.netnook.qpeg.expressions.Predicate;
-import net.netnook.qpeg.expressions.Repetition;
-import net.netnook.qpeg.expressions.Sequence;
-import net.netnook.qpeg.expressions.StringMatcher;
 import net.netnook.qpeg.expressions.chars.CharTesters;
+import net.netnook.qpeg.expressions.core.CharMatcher;
+import net.netnook.qpeg.expressions.core.Choice;
+import net.netnook.qpeg.expressions.core.EoiMatcher;
+import net.netnook.qpeg.expressions.core.Optional;
+import net.netnook.qpeg.expressions.core.Predicate;
+import net.netnook.qpeg.expressions.core.Repetition;
+import net.netnook.qpeg.expressions.core.Sequence;
+import net.netnook.qpeg.expressions.core.StringMatcher;
+import net.netnook.qpeg.expressions.extras.NewlineMatcher;
 
 public abstract class ParserFactoryBase {
 
