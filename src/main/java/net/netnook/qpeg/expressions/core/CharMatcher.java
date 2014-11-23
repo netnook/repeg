@@ -128,14 +128,15 @@ public final class CharMatcher extends SimpleExpression {
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		int count = 0;
 		while (count < maxCount) {
-			int found = context.consumeChar();
+			int found = context.peekChar();
 
 			// FIXME: unicode handling ?
 			boolean match = (found != RootContext.END_OF_INPUT) && matcher.isMatch(found);
 			if (!match) {
-				context.rewindInput();
+				//context.rewindInput();
 				break;
 			}
+			context.incrementPosition();
 			count++;
 		}
 

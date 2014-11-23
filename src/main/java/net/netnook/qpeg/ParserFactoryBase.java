@@ -14,6 +14,7 @@ import net.netnook.qpeg.expressions.core.Optional;
 import net.netnook.qpeg.expressions.core.Repetition;
 import net.netnook.qpeg.expressions.core.Sequence;
 import net.netnook.qpeg.expressions.core.StringMatcher;
+import net.netnook.qpeg.expressions.extras.FloatMatcher;
 import net.netnook.qpeg.expressions.extras.NewlineMatcher;
 
 public abstract class ParserFactoryBase {
@@ -88,6 +89,10 @@ public abstract class ParserFactoryBase {
 		return StringMatcher.of(string);
 	}
 
+	protected static FloatMatcher.Builder parseFloat() {
+		return FloatMatcher.builder();
+	}
+
 	public static OnSuccessHandler push(Object value) {
 		return (Context context) -> context.push(value);
 	}
@@ -107,7 +112,6 @@ public abstract class ParserFactoryBase {
 	protected static OnSuccessHandler pushTextAsString() {
 		return OnSuccessHandler.PUSH_TEXT_AS_STRING;
 	}
-
 
 	protected static OnSuccessHandler pushTextAsNullableString() {
 		return OnSuccessHandler.PUSH_TEXT_AS_NULLABLE_STRING;

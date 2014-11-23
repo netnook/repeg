@@ -1,0 +1,30 @@
+{
+  "persons": [
+	{
+	  "firstName": "Walsh",
+	  "lastName": "Yurukhin",
+	  "email": "wyurukhin0@tamu.edu",
+	  "gender": "Male",
+	  "address": {
+		"street": "6808 Spenser Terrace",
+		"city": "Marseille",
+		"country": "FR"
+	  },
+	  "coordinates": {
+		"longitude": 2.511999,
+		"latitude": 43.74418
+	  }
+	},
+	{
+	  "firstName": "Finley",
+	  "lastName": "Motion",
+	  "email": "fmotion1@nih.gov",
+	  "gender": "Male",
+	  "address": {
+		"street": "339 Drewry Terrace",
+		"city": "Hannover",
+		"country": "DE"
+	  }
+	}
+  ]
+}

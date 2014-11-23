@@ -5,5 +5,4 @@ public interface ParsingExpressionBuilder {
 	ParsingExpression build(BuildContext ctxt);
 
 	OnSuccessHandler getOnSuccess();
-
 }

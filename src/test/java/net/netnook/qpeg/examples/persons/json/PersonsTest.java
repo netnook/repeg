@@ -1,4 +1,4 @@
-package net.netnook.qpeg.examples.persons.csv;
+package net.netnook.qpeg.examples.persons.json;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +12,8 @@ import org.assertj.core.data.Offset;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.netnook.qpeg.examples.persons.Person;
 import net.netnook.qpeg.examples.persons.Person.Gender;
@@ -29,7 +31,7 @@ public class PersonsTest {
 
 	@Test
 	public void test1() {
-		CharSequence input = loadData("persons/persons.csv");
+		CharSequence input = loadData("persons/persons.json");
 		Persons persons = rule.parse(input);
 		assertThat(persons.getPersons()).hasSize(10000);
 
@@ -60,12 +62,31 @@ public class PersonsTest {
 	@Test
 	@Ignore
 	public void performance() {
-		CharSequence input = loadData("persons/persons.csv");
+		CharSequence input = loadData("persons/persons.json");
 		System.out.println("#############################################");
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 100; i++) {
-				rule.parse(input);
+				Persons persons = rule.parse(input);
+				assertThat(persons.getPersons()).hasSize(10000);
+			}
+			long endTime = System.currentTimeMillis();
+			System.out.println("Time taken: " + (endTime - startTime) + " millis");
+		}
+		System.out.println("#############################################");
+	}
+
+	@Test
+	@Ignore
+	public void performance_using_jackson() throws IOException {
+		String input = loadData("persons/persons.json").toString();
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println("#############################################");
+		for (int round = 0; round < 10; round++) {
+			long startTime = System.currentTimeMillis();
+			for (int i = 0; i < 100; i++) {
+				Persons persons = mapper.readValue(input, Persons.class);
+				assertThat(persons.getPersons()).hasSize(10000);
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");

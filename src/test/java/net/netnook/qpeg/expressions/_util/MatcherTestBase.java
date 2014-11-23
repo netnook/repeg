@@ -52,6 +52,10 @@ public abstract class MatcherTestBase {
 		assertThat(newOnStack).containsExactly(o);
 	}
 
+	protected <T> T getNewOnStack(int i) {
+		return (T) newOnStack.get(i);
+	}
+
 	protected void assertFullStackContains(Object... o) {
 		assertThat(context.getStack()).containsExactly(o);
 	}

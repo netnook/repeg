@@ -1,10 +1,14 @@
 package net.netnook.qpeg.examples.persons.csv;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.netnook.qpeg.ParserFactoryBase;
 import net.netnook.qpeg.examples.persons.Address;
 import net.netnook.qpeg.examples.persons.Coordinates;
 import net.netnook.qpeg.examples.persons.Person;
 import net.netnook.qpeg.examples.persons.Person.Gender;
+import net.netnook.qpeg.examples.persons.Persons;
 import net.netnook.qpeg.expressions.Context;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
@@ -22,8 +26,20 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						HeaderLine, //
-						zeroOrMore(PersonLine), endOfInput() //
-				);
+						zeroOrMore(PersonLine), //
+						endOfInput() //
+				).onSuccess(context -> {
+					int count = context.stackSize();
+					List<Person> list = new ArrayList<>(count);
+
+					for (int i = 0; i < count; i++) {
+						list.add(context.get(i));
+					}
+
+					Persons persons = new Persons();
+					persons.setPersons(list);
+					context.replaceWith(persons);
+				});
 			}
 		},
 

@@ -72,6 +72,10 @@ public final class RootContext {
 		}
 	}
 
+	public void incrementPosition() {
+		position++;
+	}
+
 	public int stackSize() {
 		return stack.size();
 	}
