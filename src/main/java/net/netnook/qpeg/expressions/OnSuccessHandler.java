@@ -11,11 +11,36 @@ public interface OnSuccessHandler {
 
 	OnSuccessHandler PUSH_TEXT = context -> context.push(context.getCharSequence());
 
+	OnSuccessHandler PUSH_TEXT_AS_STRING = context -> {
+		context.push(context.getCharSequence().toString());
+	};
+
+	OnSuccessHandler PUSH_TEXT_AS_NULLABLE_STRING = context -> {
+		CharSequence text = context.getCharSequence();
+		if (text.length() > 0) {
+			context.push(text.toString());
+		} else {
+			context.push(null);
+		}
+	};
+
 	OnSuccessHandler PUSH_TEXT_AS_INTEGER = context -> {
-		context.clearStack();
 		String text = context.getCharSequence().toString();
-		int value = Integer.parseInt(text);
-		context.push(value);
+		context.push(new Integer(text));
+	};
+
+	OnSuccessHandler PUSH_TEXT_AS_FLOAT = context -> {
+		String text = context.getCharSequence().toString();
+		context.push(new Float(text));
+	};
+
+	OnSuccessHandler PUSH_TEXT_AS_NULLABLE_FLOAT = context -> {
+		CharSequence text = context.getCharSequence();
+		if (text.length() > 0) {
+			context.push(new Float(text.toString()));
+		} else {
+			context.push(null);
+		}
 	};
 
 	void accept(Context context);

@@ -104,7 +104,24 @@ public abstract class ParserFactoryBase {
 		return OnSuccessHandler.PUSH_TEXT;
 	}
 
+	protected static OnSuccessHandler pushTextAsString() {
+		return OnSuccessHandler.PUSH_TEXT_AS_STRING;
+	}
+
+
+	protected static OnSuccessHandler pushTextAsNullableString() {
+		return OnSuccessHandler.PUSH_TEXT_AS_NULLABLE_STRING;
+	}
+
 	protected static OnSuccessHandler pushTextAsInteger() {
 		return OnSuccessHandler.PUSH_TEXT_AS_INTEGER;
+	}
+
+	protected static OnSuccessHandler pushTextAsFloat() {
+		return OnSuccessHandler.PUSH_TEXT_AS_FLOAT;
+	}
+
+	protected static OnSuccessHandler pushTextAsNullableFloat() {
+		return OnSuccessHandler.PUSH_TEXT_AS_NULLABLE_FLOAT;
 	}
 }
