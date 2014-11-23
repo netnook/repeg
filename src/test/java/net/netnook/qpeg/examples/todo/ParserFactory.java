@@ -21,7 +21,8 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						zeroOrMore(Proj), //
-						EmptyLines, endOfInput() //
+						EmptyLines, //
+						endOfInput() //
 				);
 			}
 		},
@@ -94,7 +95,7 @@ public class ParserFactory extends ParserFactoryBase {
 								string("(x)").onSuccess(push(Boolean.TRUE)), //
 								horizontalWhitespace().oneOrMore().ignore() //
 						) //
-				).onSuccess(orElsePush(Boolean.FALSE));
+				).onSuccess(pushIfEmpty(Boolean.FALSE));
 			}
 		}, //
 		DueDateField {
@@ -102,11 +103,11 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return optional( //
 						sequence( //
-								characterInRange('0', '9').count(4).onSuccess(textToInteger()), //
+								characterInRange('0', '9').count(4).onSuccess(pushTextAsInteger()), //
 								character('-').ignore(), //
-								characterInRange('0', '9').count(2).onSuccess(textToInteger()), //
+								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
 								character('-').ignore(), //
-								characterInRange('0', '9').count(2).onSuccess(textToInteger()), //
+								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
 								horizontalWhitespace().oneOrMore().ignore() //
 						).onSuccess(context -> {
 							int year = context.get(0);
@@ -114,7 +115,7 @@ public class ParserFactory extends ParserFactoryBase {
 							int day = context.get(2);
 							context.replaceWith(LocalDate.of(year, month, day));
 						}) //
-				).onSuccess(orElsePush(null));
+				).onSuccess(pushIfEmpty(null));
 			}
 		}, //
 		DescriptionField {

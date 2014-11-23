@@ -14,7 +14,7 @@ public class OptionalTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharMatcher.is('a');
+		isA = CharMatcher.character('a');
 		buildContext("-abcd-").consumeChar();
 	}
 

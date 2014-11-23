@@ -24,7 +24,7 @@ public final class NewlineMatcher extends SimpleExpression {
 		@Override
 		protected NewlineMatcher doBuild(BuildContext ctxt) {
 			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
+				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
 			return new NewlineMatcher(this);
 		}

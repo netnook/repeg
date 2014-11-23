@@ -15,8 +15,8 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharMatcher.is('a');
-		isB = CharMatcher.is('b');
+		isA = CharMatcher.character('a');
+		isB = CharMatcher.character('b');
 		buildContext("-abcd-").consumeChar();
 	}
 

@@ -11,7 +11,7 @@ import net.netnook.qpeg.expressions.chars.CharTesters;
 
 public final class CharMatcher extends SimpleExpression {
 
-	public static Builder of(CharTester charTester) {
+	public static Builder using(CharTester charTester) {
 		return new Builder().matcher(charTester);
 	}
 
@@ -23,7 +23,7 @@ public final class CharMatcher extends SimpleExpression {
 		return new Builder().matcher(CharTesters.isWhitespace());
 	}
 
-	public static Builder is(char c) {
+	public static Builder character(char c) {
 		return new Builder().matcher(CharTesters.is(c));
 	}
 
@@ -99,7 +99,7 @@ public final class CharMatcher extends SimpleExpression {
 			}
 
 			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
+				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
 			return new CharMatcher(this);
 		}

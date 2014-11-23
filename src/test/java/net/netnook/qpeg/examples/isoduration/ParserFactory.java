@@ -36,9 +36,9 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						// FIXME: not 'T'
-						optional(sequence(Number, character('Y').ignore())).onSuccess(orElsePush(0)), //
-						optional(sequence(Number, character('M').ignore())).onSuccess(orElsePush(0)), //
-						optional(sequence(Number, character('D').ignore())).onSuccess(orElsePush(0)) //
+						optional(sequence(Number, character('Y').ignore())).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('M').ignore())).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('D').ignore())).onSuccess(pushIfEmpty(0)) //
 				).onSuccess((context) -> {
 					int years = context.get(0);
 					int months = context.get(1);
@@ -53,9 +53,9 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return optional(sequence( //
 						character('T').ignore(), //
-						optional(sequence(Number, character('H').ignore())).onSuccess(orElsePush(0)), //
-						optional(sequence(Number, character('M').ignore())).onSuccess(orElsePush(0)), //
-						optional(sequence(Number, character('S').ignore())).onSuccess(orElsePush(0)) //
+						optional(sequence(Number, character('H').ignore())).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('M').ignore())).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('S').ignore())).onSuccess(pushIfEmpty(0)) //
 				).onSuccess(context -> {
 					int hours = context.get(0);
 					int minutes = context.get(1);
@@ -63,13 +63,13 @@ public class ParserFactory extends ParserFactoryBase {
 
 					int totalSeconds = (((hours * 60) + minutes) * 60) + seconds;
 					context.replaceWith(Duration.ofSeconds(totalSeconds));
-				})).onSuccess(orElsePush(Duration.ofSeconds(0)));
+				})).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
 			}
 		}, //
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').maxUnbounded().onSuccess(textToInteger());
+				return characterInRange('0', '9').oneOrMore().onSuccess(pushTextAsInteger());
 			}
 		};
 	}

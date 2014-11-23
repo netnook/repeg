@@ -99,12 +99,12 @@ public class ParserFactory extends ParserFactoryBase {
 		Factor {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return sequence(ignoredWhitespace(), //
+				return sequence(whitespace().zeroOrMore().ignore(), //
 						choice( //
 								Number, //
 								Parens //
 						), //
-						ignoredWhitespace() //
+						whitespace().zeroOrMore().ignore() //
 				); //
 			}
 		}, //
@@ -121,7 +121,7 @@ public class ParserFactory extends ParserFactoryBase {
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').maxUnbounded().onSuccess(textToInteger());
+				return characterInRange('0', '9').oneOrMore().onSuccess(pushTextAsInteger());
 			}
 		}
 	}

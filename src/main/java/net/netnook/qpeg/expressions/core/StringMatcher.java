@@ -23,7 +23,7 @@ public final class StringMatcher extends SimpleExpression {
 		@Override
 		protected StringMatcher doBuild(BuildContext ctxt) {
 			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT_TO_STACK);
+				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
 			return new StringMatcher(this);
 		}

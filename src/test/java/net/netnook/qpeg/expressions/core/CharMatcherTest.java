@@ -33,7 +33,7 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_exact() {
-		assertThat(CharMatcher.is('x').build(buildContext).buildGrammar()).isEqualTo("[x]");
+		assertThat(CharMatcher.character('x').build(buildContext).buildGrammar()).isEqualTo("[x]");
 	}
 
 	@Test
