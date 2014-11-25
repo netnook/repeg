@@ -10,11 +10,11 @@ import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
 public class OptionalTest extends MatcherTestBase {
 
-	private CharMatcher.Builder isA;
+	private CharacterExpression.Builder isA;
 
 	@Before
 	public void init() {
-		isA = CharMatcher.character('a');
+		isA = CharacterExpression.character('a');
 		buildContext("-abcd-").consumeChar();
 	}
 

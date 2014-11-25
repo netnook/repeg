@@ -6,18 +6,17 @@ import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
-import net.netnook.qpeg.expressions.chars.CharTester;
-import net.netnook.qpeg.expressions.chars.CharTesters;
-import net.netnook.qpeg.expressions.core.CharMatcher;
+import net.netnook.qpeg.expressions.chars.CharMatcher;
+import net.netnook.qpeg.expressions.core.CharacterExpression;
 import net.netnook.qpeg.expressions.core.Choice;
-import net.netnook.qpeg.expressions.core.EoiMatcher;
+import net.netnook.qpeg.expressions.core.EndOfInput;
 import net.netnook.qpeg.expressions.core.Optional;
 import net.netnook.qpeg.expressions.core.Repetition;
 import net.netnook.qpeg.expressions.core.Sequence;
-import net.netnook.qpeg.expressions.core.StringMatcher;
-import net.netnook.qpeg.expressions.extras.FloatMatcher;
-import net.netnook.qpeg.expressions.extras.NewlineMatcher;
-import net.netnook.qpeg.expressions.extras.Skip;
+import net.netnook.qpeg.expressions.core.StringExpression;
+import net.netnook.qpeg.expressions.extras.FloatExpression;
+import net.netnook.qpeg.expressions.extras.NewlineExpression;
+import net.netnook.qpeg.expressions.extras.SkipExpression;
 
 public abstract class ParserFactoryBase {
 
@@ -50,8 +49,8 @@ public abstract class ParserFactoryBase {
 		return Optional.of(expression);
 	}
 
-	protected static EoiMatcher.Builder endOfInput() {
-		return EoiMatcher.instance();
+	protected static EndOfInput.Builder endOfInput() {
+		return EndOfInput.instance();
 	}
 
 	protected static ParsingExpressionBuilder endOfLineOrInput() {
@@ -61,45 +60,45 @@ public abstract class ParserFactoryBase {
 		);
 	}
 
-	protected static NewlineMatcher.Builder newLine() {
-		return NewlineMatcher.builder();
+	protected static NewlineExpression.Builder newLine() {
+		return NewlineExpression.builder();
 	}
 
-	protected static CharMatcher.Builder crlf() {
+	protected static CharacterExpression.Builder crlf() {
 		// TODO: better performing solution
-		return CharMatcher.in("\r\n");
+		return CharacterExpression.in("\r\n");
 	}
 
-	protected static CharMatcher.Builder whitespace() {
-		return CharMatcher.whitespace();
+	protected static CharacterExpression.Builder whitespace() {
+		return CharacterExpression.whitespace();
 	}
 
-	protected static CharMatcher.Builder horizontalWhitespace() {
-		return CharMatcher.using(CharTesters.horizontalWhitespace());
+	protected static CharacterExpression.Builder horizontalWhitespace() {
+		return CharacterExpression.using(CharMatcher.horizontalWhitespace());
 	}
 
-	protected static CharMatcher.Builder character(char c) {
-		return CharMatcher.character(c);
+	protected static CharacterExpression.Builder character(char c) {
+		return CharacterExpression.character(c);
 	}
 
-	protected static CharMatcher.Builder characterIn(String characters) {
-		return CharMatcher.in(characters);
+	protected static CharacterExpression.Builder characterIn(String characters) {
+		return CharacterExpression.in(characters);
 	}
 
-	protected static CharMatcher.Builder characterInRange(char from, char to) {
-		return CharMatcher.inRange(from, to);
+	protected static CharacterExpression.Builder characterInRange(char from, char to) {
+		return CharacterExpression.inRange(from, to);
 	}
 
-	protected static StringMatcher.Builder string(String string) {
-		return StringMatcher.of(string);
+	protected static StringExpression.Builder string(String string) {
+		return StringExpression.of(string);
 	}
 
-	protected static FloatMatcher parseFloat() {
-		return FloatMatcher.instance();
+	protected static FloatExpression parseFloat() {
+		return FloatExpression.instance();
 	}
 
-	protected static Skip skip(CharTester tester) {
-		return Skip.characters(tester);
+	protected static SkipExpression skip(CharMatcher tester) {
+		return SkipExpression.characters(tester);
 	}
 
 	public static OnSuccessHandler push(Object value) {

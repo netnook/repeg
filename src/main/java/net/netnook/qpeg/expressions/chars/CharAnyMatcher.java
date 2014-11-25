@@ -1,10 +1,10 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class CharAnyTester extends CharTester {
+final class CharAnyMatcher extends CharMatcher {
 
-	static final CharAnyTester INSTANCE = new CharAnyTester();
+	static final CharAnyMatcher INSTANCE = new CharAnyMatcher();
 
-	private CharAnyTester() {
+	private CharAnyMatcher() {
 		// defeat instantiation
 	}
 

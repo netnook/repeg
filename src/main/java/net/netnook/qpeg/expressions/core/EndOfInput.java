@@ -7,7 +7,7 @@ import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 import net.netnook.qpeg.expressions.Visitor;
 
-public final class EoiMatcher extends SimpleExpression {
+public final class EndOfInput extends SimpleExpression {
 
 	private static final Builder EOI_BUILDER = new Builder();
 
@@ -17,10 +17,10 @@ public final class EoiMatcher extends SimpleExpression {
 
 	public static class Builder extends ParsingExpressionBuilderBase {
 
-		private final EoiMatcher instance;
+		private final EndOfInput instance;
 
 		Builder() {
-			instance = new EoiMatcher(this);
+			instance = new EndOfInput(this);
 		}
 
 		@Override
@@ -39,7 +39,7 @@ public final class EoiMatcher extends SimpleExpression {
 		}
 	}
 
-	private EoiMatcher(ParsingExpressionBuilderBase builder) {
+	private EndOfInput(ParsingExpressionBuilderBase builder) {
 		super(builder.getOnSuccess());
 	}
 

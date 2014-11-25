@@ -4,15 +4,15 @@ import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 
-public final class FloatMatcher extends SimpleExpression {
+public final class FloatExpression extends SimpleExpression {
 
-	private static final FloatMatcher INSTANCE = new FloatMatcher();
+	private static final FloatExpression INSTANCE = new FloatExpression();
 
-	public static FloatMatcher instance() {
+	public static FloatExpression instance() {
 		return INSTANCE;
 	}
 
-	private FloatMatcher() {
+	private FloatExpression() {
 		super(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
 	}
 

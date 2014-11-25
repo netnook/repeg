@@ -1,9 +1,9 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class CharIsTester extends CharTester {
+final class CharIsMatcher extends CharMatcher {
 	private final char c;
 
-	CharIsTester(char c) {
+	CharIsMatcher(char c) {
 		this.c = c;
 	}
 

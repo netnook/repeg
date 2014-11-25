@@ -11,13 +11,13 @@ import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
 public class RepetitionTest extends MatcherTestBase {
 
-	private CharMatcher.Builder isA;
-	private CharMatcher.Builder isB;
+	private CharacterExpression.Builder isA;
+	private CharacterExpression.Builder isB;
 
 	@Before
 	public void init() {
-		isA = CharMatcher.character('a');
-		isB = CharMatcher.character('b');
+		isA = CharacterExpression.character('a');
+		isB = CharacterExpression.character('b');
 		buildContext("-aaabbb-").consumeChar();
 	}
 

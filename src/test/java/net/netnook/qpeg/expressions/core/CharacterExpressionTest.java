@@ -9,7 +9,7 @@ import net.netnook.qpeg.expressions.InvalidExpressionException;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
-public class CharMatcherTest extends MatcherTestBase {
+public class CharacterExpressionTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
@@ -18,32 +18,32 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_any() {
-		assertThat(CharMatcher.any().build().buildGrammar()).isEqualTo("[.]");
+		assertThat(CharacterExpression.any().build().buildGrammar()).isEqualTo("[.]");
 	}
 
 	@Test
 	public void test_char_range() {
-		assertThat(CharMatcher.inRange('a', 'c').build().buildGrammar()).isEqualTo("[a-c]");
+		assertThat(CharacterExpression.inRange('a', 'c').build().buildGrammar()).isEqualTo("[a-c]");
 	}
 
 	@Test
 	public void test_whitespace() {
-		assertThat(CharMatcher.whitespace().build().buildGrammar()).isEqualTo("[\\s]");
+		assertThat(CharacterExpression.whitespace().build().buildGrammar()).isEqualTo("[\\s]");
 	}
 
 	@Test
 	public void test_exact() {
-		assertThat(CharMatcher.character('x').build().buildGrammar()).isEqualTo("[x]");
+		assertThat(CharacterExpression.character('x').build().buildGrammar()).isEqualTo("[x]");
 	}
 
 	@Test
 	public void test_in() {
-		assertThat(CharMatcher.in("acxz").build().buildGrammar()).isEqualTo("[acxz]");
+		assertThat(CharacterExpression.in("acxz").build().buildGrammar()).isEqualTo("[acxz]");
 	}
 
 	@Test
 	public void test_one_char() {
-		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
+		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -57,7 +57,7 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_four_chars() {
-		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
+		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.minCount(2) //
 				.maxCount(4) //
 				.build();
@@ -76,7 +76,7 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_max_chars() {
-		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
+		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.minCount(2) //
 				.maxUnbounded() //
 				.build();
@@ -91,7 +91,7 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_invert() {
-		ParsingExpression expression = CharMatcher.inRange('c', 'e') //
+		ParsingExpression expression = CharacterExpression.inRange('c', 'e') //
 				.maxUnbounded() //
 				.invert() //
 				.build();
@@ -106,7 +106,7 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_ignore() {
-		ParsingExpression expression = CharMatcher.inRange('a', 'f') //
+		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.maxCount(4) //
 				.ignore() //
 				.build();
@@ -127,7 +127,7 @@ public class CharMatcherTest extends MatcherTestBase {
 	public void test_no_match_eoi() {
 		buildContext("-");
 
-		ParsingExpression expression = CharMatcher.any().build();
+		ParsingExpression expression = CharacterExpression.any().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("-");
@@ -146,7 +146,7 @@ public class CharMatcherTest extends MatcherTestBase {
 	public void test_inverted_no_match_eoi() {
 		buildContext("-");
 
-		ParsingExpression expression = CharMatcher.any().invert().build();
+		ParsingExpression expression = CharacterExpression.any().invert().build();
 
 		context.consumeChar(); // skip past '-' will not be matched by inverted any.
 		assertPositionIs(1);
@@ -162,31 +162,31 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_build_grammar() {
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(0).maxCount(1).build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]?");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(0).maxUnbounded().build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]*");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(1).maxUnbounded().build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]+");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(7).maxCount(7).build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{7}");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(2).maxCount(7).build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,7}");
-		assertThat(CharMatcher.inRange('a', 'f') //
+		assertThat(CharacterExpression.inRange('a', 'f') //
 				.minCount(2).maxUnbounded().build()//
 				.buildGrammar()//
 		).isEqualTo("[a-f]{2,}");
@@ -194,28 +194,28 @@ public class CharMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_min_max_count() {
-		CharMatcher expression = (CharMatcher) CharMatcher.any().minCount(7).maxCount(10).build();
+		CharacterExpression expression = (CharacterExpression) CharacterExpression.any().minCount(7).maxCount(10).build();
 		assertThat(expression.getMinCount()).isEqualTo(7);
 		assertThat(expression.getMaxCount()).isEqualTo(10);
 	}
 
 	@Test
 	public void test_zeroOrMore() {
-		CharMatcher expression = (CharMatcher) CharMatcher.any().zeroOrMore().build();
+		CharacterExpression expression = (CharacterExpression) CharacterExpression.any().zeroOrMore().build();
 		assertThat(expression.getMinCount()).isEqualTo(0);
 		assertThat(expression.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void test_oneOrMore() {
-		CharMatcher expression = (CharMatcher) CharMatcher.any().oneOrMore().build();
+		CharacterExpression expression = (CharacterExpression) CharacterExpression.any().oneOrMore().build();
 		assertThat(expression.getMinCount()).isEqualTo(1);
 		assertThat(expression.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void test_count() {
-		CharMatcher expression = (CharMatcher) CharMatcher.any().count(42).build();
+		CharacterExpression expression = (CharacterExpression) CharacterExpression.any().count(42).build();
 		assertThat(expression.getMinCount()).isEqualTo(42);
 		assertThat(expression.getMaxCount()).isEqualTo(42);
 	}
@@ -224,33 +224,33 @@ public class CharMatcherTest extends MatcherTestBase {
 	public void invalid_bounds_min_greater_than_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: minCount > maxCount");
-		CharMatcher.any().minCount(7).maxCount(3).build();
+		CharacterExpression.any().minCount(7).maxCount(3).build();
 	}
 
 	@Test
 	public void invalid_bounds_negative_min() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: min count");
-		CharMatcher.any().minCount(-3);
+		CharacterExpression.any().minCount(-3);
 	}
 
 	@Test
 	public void invalid_bounds_negative_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: max count");
-		CharMatcher.any().maxCount(-5);
+		CharacterExpression.any().maxCount(-5);
 	}
 
 	@Test
 	public void invalid_bounds_negative_count() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: count");
-		CharMatcher.any().count(-3);
+		CharacterExpression.any().count(-3);
 	}
 
 	@Test
 	public void test_eoi() {
-		ParsingExpression expression = CharMatcher.any() //
+		ParsingExpression expression = CharacterExpression.any() //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();

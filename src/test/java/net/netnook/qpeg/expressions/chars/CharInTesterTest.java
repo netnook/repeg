@@ -8,7 +8,7 @@ public class CharInTesterTest {
 
 	@Test
 	public void test_matching() {
-		CharInTester tester = new CharInTester("bcd");
+		CharInMatcher tester = new CharInMatcher("bcd");
 		assertThat(tester.isMatch('a')).isFalse();
 		assertThat(tester.isMatch('b')).isTrue();
 		assertThat(tester.isMatch('c')).isTrue();
@@ -18,10 +18,10 @@ public class CharInTesterTest {
 
 	@Test
 	public void test_grammar() {
-		assertThat(new CharInTester("bcd").buildGrammar()).isEqualTo("[bcd]");
-		assertThat(new CharInTester("*-").buildGrammar()).isEqualTo("[*\\-]");
-		assertThat(new CharInTester("\t-").buildGrammar()).isEqualTo("[\\t\\-]");
-		assertThat(new CharInTester("^x").buildGrammar()).isEqualTo("[\\^x]");
+		assertThat(new CharInMatcher("bcd").buildGrammar()).isEqualTo("[bcd]");
+		assertThat(new CharInMatcher("*-").buildGrammar()).isEqualTo("[*\\-]");
+		assertThat(new CharInMatcher("\t-").buildGrammar()).isEqualTo("[\\t\\-]");
+		assertThat(new CharInMatcher("^x").buildGrammar()).isEqualTo("[\\^x]");
 	}
 
 }

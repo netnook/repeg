@@ -5,7 +5,7 @@ import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 
-public final class StringMatcher extends SimpleExpression {
+public final class StringExpression extends SimpleExpression {
 
 	public static Builder of(String str) {
 		return new Builder(str);
@@ -20,17 +20,17 @@ public final class StringMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected StringMatcher doBuild() {
+		protected StringExpression doBuild() {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
-			return new StringMatcher(this);
+			return new StringExpression(this);
 		}
 	}
 
 	private final String str;
 
-	private StringMatcher(Builder builder) {
+	private StringExpression(Builder builder) {
 		super(builder.getOnSuccess());
 		this.str = builder.str;
 	}

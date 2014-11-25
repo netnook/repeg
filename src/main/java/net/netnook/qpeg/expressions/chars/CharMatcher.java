@@ -1,13 +1,37 @@
 package net.netnook.qpeg.expressions.chars;
 
-public abstract class CharTester {
+public abstract class CharMatcher {
 
-	protected CharTester() {
+	public static CharMatcher any() {
+		return CharAnyMatcher.INSTANCE;
+	}
+
+	public static CharMatcher isWhitespace() {
+		return CharIsWhitespaceMatcher.INSTANCE;
+	}
+
+	public static CharMatcher horizontalWhitespace() {
+		return HorizontalWhitespaceMatcher.INSTANCE;
+	}
+
+	public static CharMatcher is(char c) {
+		return new CharIsMatcher(c);
+	}
+
+	public static CharMatcher in(String characters) {
+		return new CharInMatcher(characters);
+	}
+
+	public static CharMatcher inRange(char from, char to) {
+		return new CharInRangeMatcher(from, to);
+	}
+
+	protected CharMatcher() {
 		// no-op
 	}
 
-	public CharTester invert() {
-		return new InvertedCharTester(this);
+	public CharMatcher invert() {
+		return new InvertedCharMatcher(this);
 	}
 
 	public abstract boolean isMatch(int c);

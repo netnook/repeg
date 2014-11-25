@@ -5,41 +5,40 @@ import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
-import net.netnook.qpeg.expressions.chars.CharTester;
-import net.netnook.qpeg.expressions.chars.CharTesters;
+import net.netnook.qpeg.expressions.chars.CharMatcher;
 
-public final class CharMatcher extends SimpleExpression {
+public final class CharacterExpression extends SimpleExpression {
 
-	public static Builder using(CharTester charTester) {
-		return new Builder().matcher(charTester);
+	public static Builder using(CharMatcher matcher) {
+		return new Builder().matcher(matcher);
 	}
 
 	public static Builder any() {
-		return new Builder().matcher(CharTesters.any());
+		return new Builder().matcher(CharMatcher.any());
 	}
 
 	public static Builder whitespace() {
-		return new Builder().matcher(CharTesters.isWhitespace());
+		return new Builder().matcher(CharMatcher.isWhitespace());
 	}
 
 	public static Builder character(char c) {
-		return new Builder().matcher(CharTesters.is(c));
+		return new Builder().matcher(CharMatcher.is(c));
 	}
 
 	public static Builder in(String characters) {
-		return new Builder().matcher(CharTesters.in(characters));
+		return new Builder().matcher(CharMatcher.in(characters));
 	}
 
 	public static Builder inRange(char from, char to) {
-		return new Builder().matcher(CharTesters.inRange(from, to));
+		return new Builder().matcher(CharMatcher.inRange(from, to));
 	}
 
 	public static class Builder extends ParsingExpressionBuilderBase {
-		private CharTester matcher;
+		private CharMatcher matcher;
 		private int minCount = 1;
 		private int maxCount = 1;
 
-		public Builder matcher(CharTester matcher) {
+		public Builder matcher(CharMatcher matcher) {
 			this.matcher = matcher;
 			return this;
 		}
@@ -92,7 +91,7 @@ public final class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected CharMatcher doBuild() {
+		protected CharacterExpression doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
@@ -100,15 +99,15 @@ public final class CharMatcher extends SimpleExpression {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
-			return new CharMatcher(this);
+			return new CharacterExpression(this);
 		}
 	}
 
-	private final CharTester matcher;
+	private final CharMatcher matcher;
 	private final int minCount;
 	private final int maxCount;
 
-	protected CharMatcher(Builder builder) {
+	protected CharacterExpression(Builder builder) {
 		super(builder.getOnSuccess());
 		this.matcher = builder.matcher;
 		this.minCount = builder.minCount;

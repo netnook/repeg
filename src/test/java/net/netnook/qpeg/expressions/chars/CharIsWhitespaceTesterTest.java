@@ -8,7 +8,7 @@ public class CharIsWhitespaceTesterTest {
 
 	@Test
 	public void test_matching() {
-		CharIsWhitespaceTester tester = CharIsWhitespaceTester.INSTANCE;
+		CharIsWhitespaceMatcher tester = CharIsWhitespaceMatcher.INSTANCE;
 		assertThat(tester.isMatch('a')).isFalse();
 		assertThat(tester.isMatch(' ')).isTrue();
 		assertThat(tester.isMatch('\t')).isTrue();
@@ -17,6 +17,6 @@ public class CharIsWhitespaceTesterTest {
 
 	@Test
 	public void test_grammar() {
-		assertThat(CharIsWhitespaceTester.INSTANCE.buildGrammar()).isEqualTo("[\\s]");
+		assertThat(CharIsWhitespaceMatcher.INSTANCE.buildGrammar()).isEqualTo("[\\s]");
 	}
 }

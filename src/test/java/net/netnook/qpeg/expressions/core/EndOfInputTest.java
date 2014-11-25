@@ -8,7 +8,7 @@ import org.junit.Test;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
-public class EoiMatcherTest extends MatcherTestBase {
+public class EndOfInputTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
@@ -17,12 +17,12 @@ public class EoiMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(EoiMatcher.instance().build().buildGrammar()).isEqualTo("EOI");
+		assertThat(EndOfInput.instance().build().buildGrammar()).isEqualTo("EOI");
 	}
 
 	@Test
 	public void test_eoi() {
-		ParsingExpression expression = EoiMatcher.instance().build();
+		ParsingExpression expression = EndOfInput.instance().build();
 		assertThat(expression.parse(context)).isFalse();
 		context.consumeChar();
 		assertThat(expression.parse(context)).isFalse();
@@ -33,12 +33,12 @@ public class EoiMatcherTest extends MatcherTestBase {
 	@Test
 	public void test_ignore_unsupported() {
 		thrown.expect(UnsupportedOperationException.class);
-		EoiMatcher.instance().ignore();
+		EndOfInput.instance().ignore();
 	}
 
 	@Test
 	public void test_onSuccess_unsupported() {
 		thrown.expect(UnsupportedOperationException.class);
-		EoiMatcher.instance().onSuccess(null);
+		EndOfInput.instance().onSuccess(null);
 	}
 }

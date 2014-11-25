@@ -11,7 +11,7 @@ import net.netnook.qpeg.examples.persons.Person.Gender;
 import net.netnook.qpeg.examples.persons.Persons;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
-import net.netnook.qpeg.expressions.chars.CharTesters;
+import net.netnook.qpeg.expressions.chars.CharMatcher;
 
 public class ParserFactory extends ParserFactoryBase {
 
@@ -257,5 +257,5 @@ public class ParserFactory extends ParserFactoryBase {
 	}
 
 	// TODO: replace with skip(whitespace()) this API has been fixed
-	private static final ParsingExpressionBuilder SkipWhitespace = skip(CharTesters.isWhitespace());
+	private static final ParsingExpressionBuilder SkipWhitespace = skip(CharMatcher.isWhitespace());
 }

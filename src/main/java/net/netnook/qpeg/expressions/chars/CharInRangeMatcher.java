@@ -1,10 +1,10 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class CharInRangeTester extends CharTester {
+final class CharInRangeMatcher extends CharMatcher {
 	private final char from;
 	private final char to;
 
-	CharInRangeTester(char from, char to) {
+	CharInRangeMatcher(char from, char to) {
 		if (to < from) {
 			throw new IllegalArgumentException("Illegal attempt to define a character-in-range test with to < from");
 		}

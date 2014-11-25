@@ -5,7 +5,7 @@ import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 
-public final class NewlineMatcher extends SimpleExpression {
+public final class NewlineExpression extends SimpleExpression {
 
 	private static final int LF = '\n';
 	private static final int CR = '\r';
@@ -21,15 +21,15 @@ public final class NewlineMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected NewlineMatcher doBuild() {
+		protected NewlineExpression doBuild() {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
-			return new NewlineMatcher(this);
+			return new NewlineExpression(this);
 		}
 	}
 
-	private NewlineMatcher(Builder builder) {
+	private NewlineExpression(Builder builder) {
 		super(builder.getOnSuccess());
 	}
 

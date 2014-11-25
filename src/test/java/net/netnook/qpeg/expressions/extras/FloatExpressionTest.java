@@ -8,13 +8,13 @@ import org.junit.Test;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
-public class FloatMatcherTest extends MatcherTestBase {
+public class FloatExpressionTest extends MatcherTestBase {
 
 	@Test
 	public void test_positive() {
 		buildContext("-1.234-").consumeChar();
 
-		ParsingExpression expression = FloatMatcher.instance();
+		ParsingExpression expression = FloatExpression.instance();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertThat((Float) getNewOnStack(0)).isCloseTo(1.234f, Offset.offset(0.0001f));
@@ -28,7 +28,7 @@ public class FloatMatcherTest extends MatcherTestBase {
 	public void test_negative() {
 		buildContext("--1.234-").consumeChar();
 
-		ParsingExpression expression = FloatMatcher.instance();
+		ParsingExpression expression = FloatExpression.instance();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertThat((Float) getNewOnStack(0)).isCloseTo(-1.234f, Offset.offset(0.0001f));
@@ -42,7 +42,7 @@ public class FloatMatcherTest extends MatcherTestBase {
 	public void test_start_with_dot() {
 		buildContext("-.234-").consumeChar();
 
-		ParsingExpression expression = FloatMatcher.instance();
+		ParsingExpression expression = FloatExpression.instance();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertThat((Float) getNewOnStack(0)).isCloseTo(0.234f, Offset.offset(0.0001f));
@@ -56,7 +56,7 @@ public class FloatMatcherTest extends MatcherTestBase {
 	public void test_negative_start_with_dot() {
 		buildContext("--.234-").consumeChar();
 
-		ParsingExpression expression = FloatMatcher.instance();
+		ParsingExpression expression = FloatExpression.instance();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertThat((Float) getNewOnStack(0)).isCloseTo(-0.234f, Offset.offset(0.0001f));
@@ -68,6 +68,6 @@ public class FloatMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_build_grammar() {
-		assertThat(FloatMatcher.instance().buildGrammar()).isEqualTo("[:float:]");
+		assertThat(FloatExpression.instance().buildGrammar()).isEqualTo("[:float:]");
 	}
 }

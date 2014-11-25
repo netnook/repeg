@@ -1,10 +1,10 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class InvertedCharTester extends CharTester {
+final class InvertedCharMatcher extends CharMatcher {
 
-	private final CharTester wrapped;
+	private final CharMatcher wrapped;
 
-	InvertedCharTester(CharTester wrapped) {
+	InvertedCharMatcher(CharMatcher wrapped) {
 		this.wrapped = wrapped;
 	}
 

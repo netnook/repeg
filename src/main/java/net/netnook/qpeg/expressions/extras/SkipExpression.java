@@ -3,17 +3,17 @@ package net.netnook.qpeg.expressions.extras;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
-import net.netnook.qpeg.expressions.chars.CharTester;
+import net.netnook.qpeg.expressions.chars.CharMatcher;
 
-public final class Skip extends SimpleExpression {
+public final class SkipExpression extends SimpleExpression {
 
-	public static Skip characters(CharTester charTester) {
-		return new Skip(charTester);
+	public static SkipExpression characters(CharMatcher matcher) {
+		return new SkipExpression(matcher);
 	}
 
-	private final CharTester matcher;
+	private final CharMatcher matcher;
 
-	private Skip(CharTester matcher) {
+	private SkipExpression(CharMatcher matcher) {
 		super(OnSuccessHandler.NO_OP);
 		this.matcher = matcher;
 	}

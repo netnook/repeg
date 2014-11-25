@@ -5,16 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
-import net.netnook.qpeg.expressions.extras.NewlineMatcher;
+import net.netnook.qpeg.expressions.extras.NewlineExpression;
 
-public class NewlineMatcherTest extends MatcherTestBase {
+public class NewlineExpressionTest extends MatcherTestBase {
 
 	@Test
 	public void test_crlf() {
 		buildContext("-\r\n\r\n-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineMatcher.builder().build();
+		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r\n");
@@ -33,7 +33,7 @@ public class NewlineMatcherTest extends MatcherTestBase {
 		buildContext("-\r\r-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineMatcher.builder().build();
+		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r");
@@ -52,7 +52,7 @@ public class NewlineMatcherTest extends MatcherTestBase {
 		buildContext("-\n\n-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineMatcher.builder().build();
+		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\n");
@@ -71,7 +71,7 @@ public class NewlineMatcherTest extends MatcherTestBase {
 		buildContext("-\n\n-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineMatcher.builder().ignore().build();
+		ParsingExpression expression = NewlineExpression.builder().ignore().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();
@@ -90,7 +90,7 @@ public class NewlineMatcherTest extends MatcherTestBase {
 		buildContext("-\r\n\r\r\n\n\r\n-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineMatcher.builder().build();
+		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r\n");
@@ -118,6 +118,6 @@ public class NewlineMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_build_grammar() {
-		assertThat(NewlineMatcher.builder().build().buildGrammar()).isEqualTo("('\\n'|'\\r\\n'|'\\r')");
+		assertThat(NewlineExpression.builder().build().buildGrammar()).isEqualTo("('\\n'|'\\r\\n'|'\\r')");
 	}
 }

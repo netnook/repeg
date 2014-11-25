@@ -1,6 +1,6 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class CharIsWhitespaceTester extends CharTester {
+final class CharIsWhitespaceMatcher extends CharMatcher {
 
 	private static final int SPACE = ' ';
 	private static final int TAB = '\t';
@@ -9,9 +9,9 @@ final class CharIsWhitespaceTester extends CharTester {
 	private static final int FORM_FEED = '\f';
 	private static final int CR = '\r';
 
-	static final CharIsWhitespaceTester INSTANCE = new CharIsWhitespaceTester();
+	static final CharIsWhitespaceMatcher INSTANCE = new CharIsWhitespaceMatcher();
 
-	private CharIsWhitespaceTester() {
+	private CharIsWhitespaceMatcher() {
 		// defeat instantiation
 	}
 

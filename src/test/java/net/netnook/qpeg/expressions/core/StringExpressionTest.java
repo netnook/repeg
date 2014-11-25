@@ -8,7 +8,7 @@ import org.junit.Test;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
-public class StringMatcherTest extends MatcherTestBase {
+public class StringExpressionTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
@@ -17,7 +17,7 @@ public class StringMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_one() {
-		ParsingExpression expression = StringMatcher.of("one") //
+		ParsingExpression expression = StringExpression.of("one") //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -30,11 +30,11 @@ public class StringMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_build_grammar() {
-		assertThat(StringMatcher.of("one") //
+		assertThat(StringExpression.of("one") //
 				.build()//
 				.buildGrammar()//
 		).isEqualTo("'one'");
-		assertThat(StringMatcher.of("on'e") //
+		assertThat(StringExpression.of("on'e") //
 				.build()//
 				.buildGrammar()//
 		).isEqualTo("'on\\'e'");

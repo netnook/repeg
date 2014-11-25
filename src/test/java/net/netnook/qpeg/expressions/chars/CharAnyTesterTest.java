@@ -8,7 +8,7 @@ public class CharAnyTesterTest {
 
 	@Test
 	public void test_matching() {
-		CharAnyTester tester = CharAnyTester.INSTANCE;
+		CharAnyMatcher tester = CharAnyMatcher.INSTANCE;
 		assertThat(tester.isMatch('a')).isTrue();
 		assertThat(tester.isMatch(' ')).isTrue();
 		assertThat(tester.isMatch('\t')).isTrue();
@@ -17,6 +17,6 @@ public class CharAnyTesterTest {
 
 	@Test
 	public void test_grammar() {
-		assertThat(CharAnyTester.INSTANCE.buildGrammar()).isEqualTo("[.]");
+		assertThat(CharAnyMatcher.INSTANCE.buildGrammar()).isEqualTo("[.]");
 	}
 }

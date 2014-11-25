@@ -1,11 +1,11 @@
 package net.netnook.qpeg.expressions.chars;
 
-final class CharInTester extends CharTester {
+final class CharInMatcher extends CharMatcher {
 
 	private final String characters;
 
 	// TODO: convert this to indexed array for the common case a few characters in narrow range (e.g. char < 1024 ?)
-	CharInTester(String characters) {
+	CharInMatcher(String characters) {
 		this.characters = characters;
 	}
 
