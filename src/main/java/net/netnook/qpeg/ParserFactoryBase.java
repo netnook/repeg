@@ -16,13 +16,12 @@ import net.netnook.qpeg.expressions.core.Sequence;
 import net.netnook.qpeg.expressions.core.StringExpression;
 import net.netnook.qpeg.expressions.extras.FloatExpression;
 import net.netnook.qpeg.expressions.extras.NewlineExpression;
-import net.netnook.qpeg.expressions.extras.SkipExpression;
 
 public abstract class ParserFactoryBase {
 
 	public ParsingRule build() {
 		ParsingRule build = getStartRule().build();
-		// FIXME: how can we ensure that alyways cleared event when .build() called directly on ExpressionBuilder
+		// FIXME: how can we ensure that always cleared event when .build() called directly on ExpressionBuilder
 		BuildContext.clear();
 		return build;
 	}
@@ -37,19 +36,63 @@ public abstract class ParserFactoryBase {
 		return Choice.of(expressions);
 	}
 
+	protected static Repetition.Builder one(char c) {
+		return one(CharMatcher.is(c));
+	}
+
+	protected static Repetition.Builder one(CharMatcher charMatcher) {
+		return Repetition.one(CharacterExpression.using(charMatcher));
+	}
+
+	protected static Repetition.Builder zeroOrMore(char c) {
+		return zeroOrMore(CharMatcher.is(c));
+	}
+
+	protected static Repetition.Builder zeroOrMore(CharMatcher charMatcher) {
+		return zeroOrMore(CharacterExpression.using(charMatcher));
+	}
+
 	protected static Repetition.Builder zeroOrMore(ParsingExpressionBuilder expression) {
 		return Repetition.zeroOrMore(expression);
+	}
+
+	protected static Repetition.Builder oneOrMore(char c) {
+		return oneOrMore(CharMatcher.is(c));
+	}
+
+	protected static Repetition.Builder oneOrMore(CharMatcher charMatcher) {
+		return oneOrMore(CharacterExpression.using(charMatcher));
 	}
 
 	protected static Repetition.Builder oneOrMore(ParsingExpressionBuilder expression) {
 		return Repetition.oneOrMore(expression);
 	}
 
+	protected static Repetition.Builder repeat(int times, CharMatcher charMatcher) {
+		return repeat(times, CharacterExpression.using(charMatcher));
+	}
+
+	protected static Repetition.Builder repeat(int times, ParsingExpressionBuilder expression) {
+		return Repetition.of(expression).count(times);
+	}
+
+	protected static Optional.Builder optional(char c) {
+		return optional(CharMatcher.is(c));
+	}
+
+	protected static Optional.Builder optional(CharMatcher matcher) {
+		return optional(CharacterExpression.using(matcher));
+	}
+
 	protected static Optional.Builder optional(ParsingExpressionBuilder expression) {
 		return Optional.of(expression);
 	}
 
-	protected static EndOfInput.Builder endOfInput() {
+	protected static StringExpression.Builder string(String string) {
+		return StringExpression.of(string);
+	}
+
+	protected static EndOfInput endOfInput() {
 		return EndOfInput.instance();
 	}
 
@@ -64,41 +107,33 @@ public abstract class ParserFactoryBase {
 		return NewlineExpression.builder();
 	}
 
-	protected static CharacterExpression.Builder crlf() {
+	protected static CharMatcher character(char c) {
+		return CharMatcher.is(c);
+	}
+
+	protected static CharMatcher characterIn(String characters) {
+		return CharMatcher.in(characters);
+	}
+
+	protected static CharMatcher characterInRange(char from, char to) {
+		return CharMatcher.inRange(from, to);
+	}
+
+	protected static CharMatcher crlf() {
 		// TODO: better performing solution
-		return CharacterExpression.in("\r\n");
+		return CharMatcher.in("\r\n");
 	}
 
-	protected static CharacterExpression.Builder whitespace() {
-		return CharacterExpression.whitespace();
+	protected static CharMatcher whitespace() {
+		return CharMatcher.whitespace();
 	}
 
-	protected static CharacterExpression.Builder horizontalWhitespace() {
-		return CharacterExpression.using(CharMatcher.horizontalWhitespace());
-	}
-
-	protected static CharacterExpression.Builder character(char c) {
-		return CharacterExpression.character(c);
-	}
-
-	protected static CharacterExpression.Builder characterIn(String characters) {
-		return CharacterExpression.in(characters);
-	}
-
-	protected static CharacterExpression.Builder characterInRange(char from, char to) {
-		return CharacterExpression.inRange(from, to);
-	}
-
-	protected static StringExpression.Builder string(String string) {
-		return StringExpression.of(string);
+	protected static CharMatcher horizontalWhitespace() {
+		return CharMatcher.horizontalWhitespace();
 	}
 
 	protected static FloatExpression parseFloat() {
 		return FloatExpression.instance();
-	}
-
-	protected static SkipExpression skip(CharMatcher tester) {
-		return SkipExpression.characters(tester);
 	}
 
 	public static OnSuccessHandler push(Object value) {

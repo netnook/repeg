@@ -26,19 +26,19 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						SkipWhitespace, //
-						character('{'), //
+						one('{'), //
 						SkipWhitespace, //
 						string("\"persons\""), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
-						character('['), //
+						one('['), //
 						SkipWhitespace, //
 						zeroOrMore(PersonObject), //
 						SkipWhitespace, //
-						character(']'), //
+						one(']'), //
 						SkipWhitespace, //
-						character('}'), //
+						one('}'), //
 						SkipWhitespace, //
 						endOfInput() //
 				).onSuccess(context -> {
@@ -60,7 +60,7 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character('{'), //
+						one('{'), //
 						SkipWhitespace, //
 						zeroOrMore( //
 								choice( //
@@ -72,9 +72,9 @@ public class ParserFactory extends ParserFactoryBase {
 										CoordinatesObject //
 								) //
 						), //
-						character('}'), //
+						one('}'), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Person person = new Person();
@@ -109,17 +109,15 @@ public class ParserFactory extends ParserFactoryBase {
 				return sequence( //
 						string("\"gender\"").onSuccess(push("gender")), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
-						character('"'), //
-						character('"').invert() //
-								.zeroOrMore() //
-								.onSuccess(context -> {
-									context.push(Gender.valueOf(context.getCharSequence().toString()));
-								}), //
-						character('"'), //
+						one('"'), //
+						zeroOrMore(character('"').not()).onSuccess(context -> {
+							context.push(Gender.valueOf(context.getCharSequence().toString()));
+						}), //
+						one('"'), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				);
 			}
@@ -131,9 +129,9 @@ public class ParserFactory extends ParserFactoryBase {
 				return sequence( //
 						string("\"address\""), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
-						character('{'), //
+						one('{'), //
 						SkipWhitespace, //
 						zeroOrMore( //
 								choice( //
@@ -142,9 +140,9 @@ public class ParserFactory extends ParserFactoryBase {
 										stringField("country") //
 								) //
 						), //
-						character('}'), //
+						one('}'), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Address address = new Address();
@@ -174,9 +172,9 @@ public class ParserFactory extends ParserFactoryBase {
 				return sequence( //
 						string("\"coordinates\""), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
-						character('{'), //
+						one('{'), //
 						SkipWhitespace, //
 						zeroOrMore( //
 								choice( //
@@ -184,9 +182,9 @@ public class ParserFactory extends ParserFactoryBase {
 										Latitude //
 								) //
 						), //
-						character('}'), //
+						one('}'), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Coordinates coordinates = new Coordinates();
@@ -214,11 +212,11 @@ public class ParserFactory extends ParserFactoryBase {
 				return sequence( //
 						string("\"longitude\"").onSuccess(push("longitude")), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
 						parseFloat(), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				);
 			}
@@ -230,11 +228,11 @@ public class ParserFactory extends ParserFactoryBase {
 				return sequence( //
 						string("\"latitude\"").onSuccess(push("latitude")), //
 						SkipWhitespace, //
-						character(':'), //
+						one(':'), //
 						SkipWhitespace, //
 						parseFloat(), //
 						SkipWhitespace, //
-						optional(character(',')), //
+						optional(','), //
 						SkipWhitespace //
 				);
 			}
@@ -245,18 +243,16 @@ public class ParserFactory extends ParserFactoryBase {
 		return sequence( //
 				string("\"" + name + "\"").onSuccess(push(name)), //
 				SkipWhitespace, //
-				character(':'), //
+				one(':'), //
 				SkipWhitespace, //
-				character('"'), //
-				character('"').invert().zeroOrMore().onSuccess(pushTextAsString()), //
-				character('"'), //
+				one('"'), //
+				zeroOrMore(character('"').not()).onSuccess(pushTextAsString()), //
+				one('"'), //
 				SkipWhitespace, //
-				optional(character(',')), //
+				optional(','), //
 				SkipWhitespace //
 		);
 	}
 
-	// TODO: replace with skip(whitespace()) this API has been fixed
-	// FIXME: this should be created automatically when builder detects that a matched sequence has NO_OP success
-	private static final ParsingExpressionBuilder SkipWhitespace = skip(CharMatcher.isWhitespace());
+	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatcher.whitespace());
 }

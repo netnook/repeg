@@ -60,9 +60,7 @@ public class ParserFactory extends ParserFactoryBase {
 		ProjectName {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return crlf() //
-						.invert() //
-						.oneOrMore() //
+				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.replaceWith(context.getCharSequence().toString().trim()));
 			}
 		}, //
@@ -70,11 +68,12 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						horizontalWhitespace().oneOrMore(), //
+						oneOrMore(horizontalWhitespace()), //
 						DoneField, //
 						DueDateField, //
 						DescriptionField, //
-						endOfLineOrInput()).onSuccess(context -> {
+						endOfLineOrInput() //
+				).onSuccess(context -> {
 					Boolean done = context.get(0);
 					LocalDate dueDate = context.get(1);
 					String description = context.get(2);
@@ -93,7 +92,7 @@ public class ParserFactory extends ParserFactoryBase {
 				return optional( //
 						sequence( //
 								string("(x)").onSuccess(push(Boolean.TRUE)), //
-								horizontalWhitespace().oneOrMore() //
+								oneOrMore(horizontalWhitespace()) //
 						) //
 				).onSuccess(pushIfEmpty(Boolean.FALSE));
 			}
@@ -103,12 +102,12 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return optional( //
 						sequence( //
-								characterInRange('0', '9').count(4).onSuccess(pushTextAsInteger()), //
-								character('-'), //
-								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
-								character('-'), //
-								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
-								horizontalWhitespace().oneOrMore() //
+								repeat(4, characterInRange('0', '9')).onSuccess(pushTextAsInteger()), //
+								one('-'), //
+								repeat(2, characterInRange('0', '9')).onSuccess(pushTextAsInteger()), //
+								one('-'), //
+								repeat(2, characterInRange('0', '9')).onSuccess(pushTextAsInteger()), //
+								oneOrMore(horizontalWhitespace()) //
 						).onSuccess(context -> {
 							int year = context.get(0);
 							int month = context.get(1);
@@ -121,9 +120,7 @@ public class ParserFactory extends ParserFactoryBase {
 		DescriptionField {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return crlf() //
-						.invert() //
-						.oneOrMore() //
+				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.push(context.getCharSequence().toString().trim()));
 			}
 		}, //
@@ -132,8 +129,8 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return zeroOrMore( //
 						sequence( //
-								horizontalWhitespace().zeroOrMore(), //
-								crlf() //
+								zeroOrMore(horizontalWhitespace()), //
+								one(crlf()) //
 						) //
 				);
 			}

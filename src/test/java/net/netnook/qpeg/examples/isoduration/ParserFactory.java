@@ -19,7 +19,7 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character('P'), //
+						one('P'), //
 						Period_Part, //
 						Time_Part, //
 						endOfInput() //
@@ -36,9 +36,9 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						// FIXME: not 'T'
-						optional(sequence(Number, character('Y'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('M'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('D'))).onSuccess(pushIfEmpty(0)) //
+						optional(sequence(Number, one('Y'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('D'))).onSuccess(pushIfEmpty(0)) //
 				).onSuccess((context) -> {
 					int years = context.get(0);
 					int months = context.get(1);
@@ -52,10 +52,10 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return optional(sequence( //
-						character('T'), //
-						optional(sequence(Number, character('H'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('M'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('S'))).onSuccess(pushIfEmpty(0)) //
+						one('T'), //
+						optional(sequence(Number, one('H'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('S'))).onSuccess(pushIfEmpty(0)) //
 				).onSuccess(context -> {
 					int hours = context.get(0);
 					int minutes = context.get(1);
@@ -69,7 +69,7 @@ public class ParserFactory extends ParserFactoryBase {
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').oneOrMore().onSuccess(pushTextAsInteger());
+				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
 			}
 		};
 	}

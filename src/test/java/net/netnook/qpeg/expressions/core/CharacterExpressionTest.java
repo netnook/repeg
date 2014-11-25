@@ -94,22 +94,6 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_invert() {
-		ParsingExpression expression = CharacterExpression.inRange('c', 'e') //
-				.maxUnbounded() //
-				.invert() //
-				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack("ab");
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-	}
-
-	@Test
 	public void test_no_match_eoi() {
 		buildContext("-");
 
@@ -119,27 +103,6 @@ public class CharacterExpressionTest extends MatcherTestBase {
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("-");
-		assertPositionIs(1);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-		assertPositionIs(1);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-		assertPositionIs(1);
-	}
-
-	@Test
-	public void test_inverted_no_match_eoi() {
-		buildContext("-");
-
-		ParsingExpression expression = CharacterExpression.any() //
-				.invert() //
-				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
-				.build();
-
-		context.consumeChar(); // skip past '-' will not be matched by inverted any.
 		assertPositionIs(1);
 
 		assertThat(expression.parse(context)).isFalse();

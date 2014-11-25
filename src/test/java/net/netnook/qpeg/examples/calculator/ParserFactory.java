@@ -30,7 +30,7 @@ public class ParserFactory extends ParserFactoryBase {
 						Term, //
 						zeroOrMore( //
 								sequence( //
-										characterIn("+-").onSuccess(pushTextAsString()), //
+										one(characterIn("+-")).onSuccess(pushTextAsString()), //
 										Term //
 								) //
 						) //
@@ -67,7 +67,7 @@ public class ParserFactory extends ParserFactoryBase {
 						Factor, //
 						zeroOrMore( //
 								sequence( //
-										characterIn("*/").onSuccess(pushTextAsString()), //
+										one(characterIn("*/")).onSuccess(pushTextAsString()), //
 										Factor //
 								) //
 						) //
@@ -100,12 +100,12 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						whitespace().zeroOrMore(), //
+						zeroOrMore(whitespace()), //
 						choice( //
 								Number, //
 								Parens //
 						), //
-						whitespace().zeroOrMore() //
+						zeroOrMore(whitespace()) //
 				); //
 			}
 		}, //
@@ -113,16 +113,16 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character('('), //
+						one('('), //
 						Expression, //
-						character(')') //
+						one(')') //
 				);
 			}
 		}, //
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return characterInRange('0', '9').oneOrMore().onSuccess(pushTextAsInteger());
+				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
 			}
 		}
 	}

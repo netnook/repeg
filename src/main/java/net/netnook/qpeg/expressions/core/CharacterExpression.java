@@ -18,7 +18,7 @@ public final class CharacterExpression extends SimpleExpression {
 	}
 
 	public static Builder whitespace() {
-		return new Builder().matcher(CharMatcher.isWhitespace());
+		return new Builder().matcher(CharMatcher.whitespace());
 	}
 
 	public static Builder character(char c) {
@@ -49,45 +49,48 @@ public final class CharacterExpression extends SimpleExpression {
 			return this;
 		}
 
-		public Builder invert() {
-			this.matcher = this.matcher.invert();
-			return this;
-		}
-
-		public Builder zeroOrMore() {
+		Builder zeroOrMore() {
 			minCount(0);
 			maxUnbounded();
 			return this;
 		}
 
-		public Builder oneOrMore() {
+		Builder oneOrMore() {
 			minCount(1);
 			maxUnbounded();
 			return this;
 		}
 
-		public Builder count(int count) {
+		Builder count(int count) {
 			validate(count >= 1, "Invalid expression: count must be >= 1");
 			this.minCount = count;
 			this.maxCount = count;
 			return this;
 		}
 
-		public Builder minCount(int minCount) {
+		Builder minCount(int minCount) {
 			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
 			this.minCount = minCount;
 			return this;
 		}
 
-		public Builder maxCount(int maxCount) {
+		Builder maxCount(int maxCount) {
 			validate(maxCount >= 1, "Invalid expression: max count must be >= 1");
 			this.maxCount = maxCount;
 			return this;
 		}
 
-		public Builder maxUnbounded() {
+		Builder maxUnbounded() {
 			this.maxCount = Integer.MAX_VALUE;
 			return this;
+		}
+
+		@Deprecated
+			// FIXME: not good ????
+		boolean hasDefaults() {
+			return minCount == 1 //
+					&& maxCount == 1 //
+					&& getOnSuccess() == null;
 		}
 
 		@Override
@@ -122,7 +125,7 @@ public final class CharacterExpression extends SimpleExpression {
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 
 		int pos = startPosition;
-		// TODO: better way to handle int overrun ?
+		// TODO: better way to handle int overrun ? (see java ArrayList index checking for solution)
 		int maxPos = (maxCount == Integer.MAX_VALUE) ? Integer.MAX_VALUE : pos + maxCount;
 		while (pos < maxPos) {
 			int found = context.charAt(pos);

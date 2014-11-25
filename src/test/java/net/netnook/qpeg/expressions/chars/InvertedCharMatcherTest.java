@@ -8,7 +8,7 @@ public class InvertedCharMatcherTest {
 
 	@Test
 	public void test_matching() {
-		CharMatcher tester = new CharIsMatcher('b').invert();
+		CharMatcher tester = new CharIsMatcher('b').not();
 		assertThat(tester.isMatch('a')).isTrue();
 		assertThat(tester.isMatch('b')).isFalse();
 		assertThat(tester.isMatch('c')).isTrue();
@@ -16,9 +16,9 @@ public class InvertedCharMatcherTest {
 
 	@Test
 	public void test_grammar() {
-		assertThat(new CharIsMatcher('b').invert().buildGrammar()).isEqualTo("[^b]");
-		assertThat(new CharIsMatcher('^').invert().buildGrammar()).isEqualTo("[^\\^]");
-		assertThat(new CharIsMatcher('\t').invert().buildGrammar()).isEqualTo("[^\\t]");
+		assertThat(new CharIsMatcher('b').not().buildGrammar()).isEqualTo("[^b]");
+		assertThat(new CharIsMatcher('^').not().buildGrammar()).isEqualTo("[^\\^]");
+		assertThat(new CharIsMatcher('\t').not().buildGrammar()).isEqualTo("[^\\t]");
 	}
 
 }

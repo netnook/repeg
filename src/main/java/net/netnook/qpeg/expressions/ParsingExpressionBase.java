@@ -13,6 +13,10 @@ abstract class ParsingExpressionBase implements ParsingExpression, ParsingExpres
 		return this;
 	}
 
+	public OnSuccessHandler getOnSuccess() {
+		return onSuccess;
+	}
+
 	@Override
 	public final boolean parse(RootContext context) {
 		int startPosition = context.position();

@@ -17,6 +17,13 @@ public final class Repetition extends CompoundExpression {
 		return zeroOrMore(expression);
 	}
 
+	public static Builder one(ParsingExpressionBuilder expression) {
+		return new Builder() //
+				.minCount(1) //
+				.maxCount(1) //
+				.expression(expression);
+	}
+
 	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression);
@@ -44,6 +51,13 @@ public final class Repetition extends CompoundExpression {
 			return this;
 		}
 
+		public Builder count(int count) {
+			validate(count >= 1, "Invalid expression: count must be >= 1");
+			this.minCount = count;
+			this.maxCount = count;
+			return this;
+		}
+
 		public Builder minCount(int minCount) {
 			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
 			this.minCount = minCount;
@@ -56,10 +70,33 @@ public final class Repetition extends CompoundExpression {
 			return this;
 		}
 
+		public Builder maxUnbounded() {
+			this.maxCount = Integer.MAX_VALUE;
+			return this;
+		}
+
+		public Builder count() {
+			this.maxCount = Integer.MAX_VALUE;
+			return this;
+		}
+
 		@Override
-		protected Repetition doBuild() {
+		protected ParsingExpression doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
+			}
+
+			if (expression instanceof CharacterExpression.Builder) {
+				CharacterExpression.Builder characterExpression = (CharacterExpression.Builder) expression;
+
+				if (characterExpression.hasDefaults()) {
+					// FIXME: Should clone the builder ?
+					// FIXME: Test this
+					characterExpression.minCount(minCount);
+					characterExpression.maxCount(maxCount);
+					characterExpression.onSuccess(getOnSuccess());
+					return characterExpression.build();
+				}
 			}
 
 			return new Repetition(this);
@@ -79,6 +116,14 @@ public final class Repetition extends CompoundExpression {
 		if (expression instanceof Optional) {
 			throw new InvalidExpressionException("Cannot have optional content in repeating construct.");
 		}
+	}
+
+	public int getMinCount() {
+		return minCount;
+	}
+
+	public int getMaxCount() {
+		return maxCount;
 	}
 
 	@Override

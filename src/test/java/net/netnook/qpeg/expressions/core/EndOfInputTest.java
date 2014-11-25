@@ -29,10 +29,4 @@ public class EndOfInputTest extends MatcherTestBase {
 		context.consumeChar();
 		assertThat(expression.parse(context)).isTrue();
 	}
-
-	@Test
-	public void test_onSuccess_unsupported() {
-		thrown.expect(UnsupportedOperationException.class);
-		EndOfInput.instance().onSuccess(null);
-	}
 }

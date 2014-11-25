@@ -6,7 +6,7 @@ public abstract class CharMatcher {
 		return CharAnyMatcher.INSTANCE;
 	}
 
-	public static CharMatcher isWhitespace() {
+	public static CharMatcher whitespace() {
 		return CharIsWhitespaceMatcher.INSTANCE;
 	}
 
@@ -30,7 +30,7 @@ public abstract class CharMatcher {
 		// no-op
 	}
 
-	public CharMatcher invert() {
+	public CharMatcher not() {
 		return new InvertedCharMatcher(this);
 	}
 

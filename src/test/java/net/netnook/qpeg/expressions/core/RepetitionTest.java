@@ -1,5 +1,6 @@
 package net.netnook.qpeg.expressions.core;
 
+import static net.netnook.qpeg.expressions.core.CharacterExpression.character;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
@@ -10,16 +11,15 @@ import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
+import net.netnook.qpeg.expressions.chars.CharMatcher;
 
 public class RepetitionTest extends MatcherTestBase {
 
 	private ParsingExpressionBuilder isA;
-	private ParsingExpressionBuilder isB;
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
-		isB = CharacterExpression.character('b').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isA = character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 		buildContext("-aaabbb-").consumeChar();
 	}
 
@@ -41,7 +41,7 @@ public class RepetitionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_0orMore_a() {
+	public void test_zeroOrMore_a() {
 		ParsingExpression expression = Repetition.zeroOrMore(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -56,11 +56,33 @@ public class RepetitionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_1orMore_a() {
+	public void test_oneOrMore_a() {
 		ParsingExpression expression = Repetition.oneOrMore(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "a", "a");
+		assertPositionIs(4);
+
+		assertThat(expression.parse(context)).isFalse();
+		assertNewOnStack();
+
+		assertFullStackContains("a", "a", "a");
+	}
+
+	@Test
+	public void test_one_a() {
+		ParsingExpression expression = Repetition.one(isA).build();
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("a");
+		assertPositionIs(2);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("a");
+		assertPositionIs(3);
+
+		assertThat(expression.parse(context)).isTrue();
+		assertNewOnStack("a");
 		assertPositionIs(4);
 
 		assertThat(expression.parse(context)).isFalse();
@@ -141,4 +163,69 @@ public class RepetitionTest extends MatcherTestBase {
 		thrown.expectMessage("Cannot have optional content in repeating construct");
 		Repetition.of(Optional.of(isA)).build();
 	}
+
+	@Test
+	public void test_auto_replacement_by_charexpression() {
+		CharacterExpression e;
+
+		e = (CharacterExpression) Repetition.of(character('a')).build();
+		assertThat(e.getMinCount()).isEqualTo(0);
+		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+
+		e = (CharacterExpression) Repetition.of(character('a')).minCount(5).build();
+		assertThat(e.getMinCount()).isEqualTo(5);
+		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+
+		e = (CharacterExpression) Repetition.of(character('a')).maxCount(8).build();
+		assertThat(e.getMinCount()).isEqualTo(0);
+		assertThat(e.getMaxCount()).isEqualTo(8);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+
+		e = (CharacterExpression) Repetition.of(character('a')).onSuccess(OnSuccessHandler.CLEAR_STACK).build();
+		assertThat(e.getMinCount()).isEqualTo(0);
+		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.CLEAR_STACK);
+
+		e = (CharacterExpression) Repetition.of(character('a')).minCount(3).maxCount(4).onSuccess(OnSuccessHandler.CLEAR_STACK).build();
+		assertThat(e.getMinCount()).isEqualTo(3);
+		assertThat(e.getMaxCount()).isEqualTo(4);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.CLEAR_STACK);
+
+		e = (CharacterExpression) Repetition.of(character('a').minCount(1).maxCount(1).onSuccess(null)).onSuccess(OnSuccessHandler.CLEAR_STACK).build();
+		assertThat(e.getMinCount()).isEqualTo(0);
+		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.CLEAR_STACK);
+	}
+
+	@Test
+	public void test_not_auto_replacement_by_charexpression() {
+		Repetition e;
+
+		e = (Repetition)Repetition.of(character('a').minCount(0)).count(5).build();
+		assertThat(e.getMinCount()).isEqualTo(5);
+		assertThat(e.getMaxCount()).isEqualTo(5);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(0);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(1);
+		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+
+		e = (Repetition)Repetition.of(character('a').maxCount(2)).count(5).build();
+		assertThat(e.getMinCount()).isEqualTo(5);
+		assertThat(e.getMaxCount()).isEqualTo(5);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(1);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(2);
+		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+
+		e = (Repetition)Repetition.of(character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING)).count(5).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_FLOAT).build();
+		assertThat(e.getMinCount()).isEqualTo(5);
+		assertThat(e.getMaxCount()).isEqualTo(5);
+		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(1);
+		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(1);
+		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+	}
+
 }

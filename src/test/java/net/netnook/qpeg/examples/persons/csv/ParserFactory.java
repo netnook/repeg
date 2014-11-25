@@ -47,8 +47,8 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						crlf().invert().zeroOrMore(), //
-						crlf() //
+						zeroOrMore(crlf().not()), //
+						one(crlf()) //
 				);
 			}
 		},
@@ -57,23 +57,23 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // first_name
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // last_name
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // email
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(ParserFactory::convertToGender), // gender
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // street
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // city
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // country
-						character(','), //
-						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableFloat()), // long
-						character(','), //
-						crlf().invert().zeroOrMore().onSuccess(pushTextAsNullableFloat()), // lat
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // first_name
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // last_name
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // email
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(ParserFactory::convertToGender), // gender
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // street
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // city
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // country
+						one(','), //
+						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableFloat()), // long
+						one(','), //
+						zeroOrMore(crlf().not()).onSuccess(pushTextAsNullableFloat()), // lat
 						endOfLineOrInput() //
 				).onSuccess(context -> {
 					String firstName = context.get(0);
@@ -103,8 +103,8 @@ public class ParserFactory extends ParserFactoryBase {
 					if (longitude != null || latitude != null) {
 						Coordinates coordinates = new Coordinates();
 						person.setCoordinates(coordinates);
-						coordinates.setLongitude(longitude);
-						coordinates.setLatitude(latitude);
+						coordinates.setLongitude(longitude == null ? null : longitude.floatValue());
+						coordinates.setLatitude(latitude == null ? null : latitude.floatValue());
 					}
 
 					context.replaceWith(person);
