@@ -42,16 +42,16 @@ public final class Predicate extends CompoundExpression {
 
 		@Override
 		protected Predicate doBuild() {
-			return new Predicate(this, expression.build());
+			return new Predicate(this);
 		}
 	}
 
 	protected final ParsingExpression expression;
 	protected final boolean invert;
 
-	protected Predicate(Builder builder, ParsingExpression expression) {
-		super(builder);
-		this.expression = expression;
+	private Predicate(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expression = builder.expression.build();
 		this.invert = builder.invert;
 	}
 

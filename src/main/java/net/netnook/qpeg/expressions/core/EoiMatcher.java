@@ -40,7 +40,7 @@ public final class EoiMatcher extends SimpleExpression {
 	}
 
 	private EoiMatcher(ParsingExpressionBuilderBase builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 	}
 
 	@Override

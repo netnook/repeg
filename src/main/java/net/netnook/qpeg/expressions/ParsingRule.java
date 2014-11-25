@@ -25,7 +25,7 @@ public final class ParsingRule extends ParsingExpressionBase {
 	private ParsingExpression expression;
 
 	ParsingRule(ParsingRuleBuilder builder) {
-		super(builder);
+		super(null);
 		this.name = builder.name();
 	}
 

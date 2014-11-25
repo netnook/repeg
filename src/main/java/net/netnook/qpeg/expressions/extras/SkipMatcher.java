@@ -37,7 +37,7 @@ public final class SkipMatcher extends SimpleExpression {
 	private final CharTester matcher;
 
 	protected SkipMatcher(Builder builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 		this.matcher = builder.matcher;
 	}
 

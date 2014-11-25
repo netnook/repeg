@@ -10,7 +10,6 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 		return this;
 	}
 
-	@Override
 	public OnSuccessHandler getOnSuccess() {
 		return onSuccess;
 	}
@@ -29,14 +28,6 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 	}
 
 	protected abstract ParsingExpression doBuild();
-
-	protected static ParsingExpression[] build(ParsingExpressionBuilder[] builders) {
-		ParsingExpression[] results = new ParsingExpression[builders.length];
-		for (int i = 0; i < builders.length; i++) {
-			results[i] = builders[i].build();
-		}
-		return results;
-	}
 
 	protected void validate(boolean valid, String message) {
 		if (!valid) {

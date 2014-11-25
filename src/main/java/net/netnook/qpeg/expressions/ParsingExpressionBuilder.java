@@ -4,7 +4,11 @@ public interface ParsingExpressionBuilder {
 
 	ParsingExpression build();
 
-	default OnSuccessHandler getOnSuccess() {
-		return OnSuccessHandler.NO_OP;
+	static ParsingExpression[] build(ParsingExpressionBuilder[] builders) {
+		ParsingExpression[] results = new ParsingExpression[builders.length];
+		for (int i = 0; i < builders.length; i++) {
+			results[i] = builders[i].build();
+		}
+		return results;
 	}
 }

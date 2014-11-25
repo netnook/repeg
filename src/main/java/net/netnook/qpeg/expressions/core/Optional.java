@@ -38,15 +38,15 @@ public final class Optional extends CompoundExpression {
 
 		@Override
 		protected Optional doBuild() {
-			return new Optional(this, expression.build());
+			return new Optional(this);
 		}
 	}
 
 	private final ParsingExpression expression;
 
-	private Optional(Builder builder, ParsingExpression expression) {
-		super(builder);
-		this.expression = expression;
+	private Optional(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expression = builder.expression.build();
 	}
 
 	@Override

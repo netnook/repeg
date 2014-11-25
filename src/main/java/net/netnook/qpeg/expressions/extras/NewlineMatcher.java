@@ -30,7 +30,7 @@ public final class NewlineMatcher extends SimpleExpression {
 	}
 
 	private NewlineMatcher(Builder builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 	}
 
 	@Override

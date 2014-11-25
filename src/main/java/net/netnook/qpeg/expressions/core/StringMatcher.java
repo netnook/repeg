@@ -31,7 +31,7 @@ public final class StringMatcher extends SimpleExpression {
 	private final String str;
 
 	private StringMatcher(Builder builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 		this.str = builder.str;
 	}
 

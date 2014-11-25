@@ -27,7 +27,7 @@ public final class FloatMatcher extends SimpleExpression {
 	}
 
 	private FloatMatcher(Builder builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 	}
 
 	@Override

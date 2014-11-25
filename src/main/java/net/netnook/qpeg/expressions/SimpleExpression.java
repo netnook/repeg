@@ -3,8 +3,8 @@ package net.netnook.qpeg.expressions;
 // TODO: switch to interface ?
 public abstract class SimpleExpression extends ParsingExpressionBase {
 
-	protected SimpleExpression(ParsingExpressionBuilder builder) {
-		super(builder);
+	protected SimpleExpression(OnSuccessHandler onSuccess) {
+		super(onSuccess);
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import java.util.List;
 // TODO switch to interface ??
 public abstract class CompoundExpression extends ParsingExpressionBase {
 
-	protected CompoundExpression(ParsingExpressionBuilder builder) {
-		super(builder);
+	protected CompoundExpression(OnSuccessHandler onSuccess) {
+		super(onSuccess);
 	}
 
 	public abstract List<ParsingExpression> parts();

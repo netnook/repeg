@@ -40,15 +40,15 @@ public final class Choice extends CompoundExpression {
 
 		@Override
 		protected Choice doBuild() {
-			return new Choice(this, build(expressions));
+			return new Choice(this);
 		}
 	}
 
 	private final ParsingExpression[] expressions;
 
-	private Choice(Builder builder, ParsingExpression[] expressions) {
-		super(builder);
-		this.expressions = expressions;
+	private Choice(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expressions = ParsingExpressionBuilder.build(builder.expressions);
 	}
 
 	@Override

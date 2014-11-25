@@ -109,7 +109,7 @@ public final class CharMatcher extends SimpleExpression {
 	private final int maxCount;
 
 	protected CharMatcher(Builder builder) {
-		super(builder);
+		super(builder.getOnSuccess());
 		this.matcher = builder.matcher;
 		this.minCount = builder.minCount;
 		this.maxCount = builder.maxCount;

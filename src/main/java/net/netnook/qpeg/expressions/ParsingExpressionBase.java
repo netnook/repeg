@@ -4,8 +4,8 @@ abstract class ParsingExpressionBase implements ParsingExpression {
 
 	private final OnSuccessHandler onSuccess;
 
-	protected ParsingExpressionBase(ParsingExpressionBuilder builder) {
-		this.onSuccess = (builder.getOnSuccess() == null) ? OnSuccessHandler.NO_OP : builder.getOnSuccess();
+	protected ParsingExpressionBase(OnSuccessHandler onSuccess) {
+		this.onSuccess = (onSuccess == null) ? OnSuccessHandler.NO_OP : onSuccess;
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public final class Repetition extends CompoundExpression {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
 
-			return new Repetition(this, expression.build());
+			return new Repetition(this);
 		}
 	}
 
@@ -76,9 +76,9 @@ public final class Repetition extends CompoundExpression {
 	private final int minCount;
 	private final int maxCount;
 
-	private Repetition(Builder builder, ParsingExpression expression) {
-		super(builder);
-		this.expression = expression;
+	private Repetition(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expression = builder.expression.build();
 		this.minCount = builder.minCount;
 		this.maxCount = builder.maxCount;
 

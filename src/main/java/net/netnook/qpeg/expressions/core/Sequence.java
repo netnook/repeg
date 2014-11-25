@@ -40,15 +40,15 @@ public final class Sequence extends CompoundExpression {
 
 		@Override
 		protected Sequence doBuild() {
-			return new Sequence(this, build(expressions));
+			return new Sequence(this);
 		}
 	}
 
 	private final ParsingExpression[] expressions;
 
-	private Sequence(Builder builder, ParsingExpression[] expressions) {
-		super(builder);
-		this.expressions = expressions;
+	private Sequence(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expressions = ParsingExpressionBuilder.build(builder.expressions);
 	}
 
 	@Override
