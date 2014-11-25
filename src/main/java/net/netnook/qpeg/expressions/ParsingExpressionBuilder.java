@@ -4,5 +4,7 @@ public interface ParsingExpressionBuilder {
 
 	ParsingExpression build();
 
-	OnSuccessHandler getOnSuccess();
+	default OnSuccessHandler getOnSuccess() {
+		return OnSuccessHandler.NO_OP;
+	}
 }

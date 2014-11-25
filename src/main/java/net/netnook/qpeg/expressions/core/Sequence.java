@@ -14,7 +14,7 @@ import net.netnook.qpeg.expressions.RootContext;
 
 public final class Sequence extends CompoundExpression {
 
-	public static Builder of(ParsingExpressionBuilder... expressions) {
+	public static <T extends ParsingExpressionBuilder> Builder of(T... expressions) {
 		return new Builder().expressions(expressions);
 	}
 

@@ -22,9 +22,4 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 			return rule;
 		}
 	}
-
-	@Override
-	default OnSuccessHandler getOnSuccess() {
-		return OnSuccessHandler.NO_OP;
-	}
 }
