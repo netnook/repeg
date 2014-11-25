@@ -21,9 +21,6 @@ public final class StringExpression extends SimpleExpression {
 
 		@Override
 		protected StringExpression doBuild() {
-			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT);
-			}
 			return new StringExpression(this);
 		}
 	}

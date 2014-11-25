@@ -22,9 +22,6 @@ public final class NewlineExpression extends SimpleExpression {
 
 		@Override
 		protected NewlineExpression doBuild() {
-			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT);
-			}
 			return new NewlineExpression(this);
 		}
 	}

@@ -2,6 +2,7 @@ package net.netnook.qpeg.expressions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
@@ -9,12 +10,17 @@ import net.netnook.qpeg.expressions.extras.NewlineExpression;
 
 public class NewlineExpressionTest extends MatcherTestBase {
 
+	private ParsingExpression expression;
+
+	@Before
+	public void init() {
+		expression = NewlineExpression.builder().onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING).build();
+	}
+
 	@Test
 	public void test_crlf() {
 		buildContext("-\r\n\r\n-");
 		context.consumeChar();
-
-		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r\n");
@@ -33,8 +39,6 @@ public class NewlineExpressionTest extends MatcherTestBase {
 		buildContext("-\r\r-");
 		context.consumeChar();
 
-		ParsingExpression expression = NewlineExpression.builder().build();
-
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r");
 		assertPositionIs(2);
@@ -51,8 +55,6 @@ public class NewlineExpressionTest extends MatcherTestBase {
 	public void test_lf() {
 		buildContext("-\n\n-");
 		context.consumeChar();
-
-		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\n");
@@ -89,8 +91,6 @@ public class NewlineExpressionTest extends MatcherTestBase {
 	public void test_mix() {
 		buildContext("-\r\n\r\r\n\n\r\n-");
 		context.consumeChar();
-
-		ParsingExpression expression = NewlineExpression.builder().build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("\r\n");

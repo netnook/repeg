@@ -30,7 +30,7 @@ public class ParserFactory extends ParserFactoryBase {
 						Term, //
 						zeroOrMore( //
 								sequence( //
-										characterIn("+-"), //
+										characterIn("+-").onSuccess(pushTextAsString()), //
 										Term //
 								) //
 						) //
@@ -67,7 +67,7 @@ public class ParserFactory extends ParserFactoryBase {
 						Factor, //
 						zeroOrMore( //
 								sequence( //
-										characterIn("*/"), //
+										characterIn("*/").onSuccess(pushTextAsString()), //
 										Factor //
 								) //
 						) //

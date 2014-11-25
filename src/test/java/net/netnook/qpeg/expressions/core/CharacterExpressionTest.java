@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.netnook.qpeg.expressions.InvalidExpressionException;
+import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
@@ -44,6 +45,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	@Test
 	public void test_one_char() {
 		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -60,6 +62,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.minCount(2) //
 				.maxCount(4) //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -79,6 +82,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
 				.minCount(2) //
 				.maxUnbounded() //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -94,6 +98,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 		ParsingExpression expression = CharacterExpression.inRange('c', 'e') //
 				.maxUnbounded() //
 				.invert() //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();
@@ -127,7 +132,9 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	public void test_no_match_eoi() {
 		buildContext("-");
 
-		ParsingExpression expression = CharacterExpression.any().build();
+		ParsingExpression expression = CharacterExpression.any() //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("-");
@@ -146,7 +153,10 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	public void test_inverted_no_match_eoi() {
 		buildContext("-");
 
-		ParsingExpression expression = CharacterExpression.any().invert().build();
+		ParsingExpression expression = CharacterExpression.any() //
+				.invert() //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
+				.build();
 
 		context.consumeChar(); // skip past '-' will not be matched by inverted any.
 		assertPositionIs(1);
@@ -251,6 +261,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	@Test
 	public void test_eoi() {
 		ParsingExpression expression = CharacterExpression.any() //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();

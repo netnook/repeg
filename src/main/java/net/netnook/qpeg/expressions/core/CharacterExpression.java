@@ -95,10 +95,6 @@ public final class CharacterExpression extends SimpleExpression {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
-
-			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT);
-			}
 			return new CharacterExpression(this);
 		}
 	}

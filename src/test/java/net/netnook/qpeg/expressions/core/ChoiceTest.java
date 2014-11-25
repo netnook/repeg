@@ -5,18 +5,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
+import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
 public class ChoiceTest extends MatcherTestBase {
 
-	private CharacterExpression.Builder isA;
-	private CharacterExpression.Builder isB;
+	private ParsingExpressionBuilder isA;
+	private ParsingExpressionBuilder isB;
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.character('a');
-		isB = CharacterExpression.character('b');
+		isA = CharacterExpression.character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isB = CharacterExpression.character('b').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 		buildContext("-abcd-").consumeChar();
 	}
 

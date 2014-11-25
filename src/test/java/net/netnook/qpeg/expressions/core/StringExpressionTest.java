@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
@@ -18,6 +19,7 @@ public class StringExpressionTest extends MatcherTestBase {
 	@Test
 	public void test_one() {
 		ParsingExpression expression = StringExpression.of("one") //
+				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 
 		assertThat(expression.parse(context)).isTrue();

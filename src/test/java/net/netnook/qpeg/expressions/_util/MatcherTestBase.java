@@ -35,7 +35,6 @@ public abstract class MatcherTestBase {
 	private final List<Object> newOnStack = new ArrayList<>();
 	private final TestParseListener testParseListener = new TestParseListener();
 	protected RootContext context;
-	//protected BuildContext buildContext = new BuildContext();
 	protected int successCount;
 
 	protected RootContext buildContext(String input) {
