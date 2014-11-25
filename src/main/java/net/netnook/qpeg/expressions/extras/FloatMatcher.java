@@ -1,33 +1,19 @@
 package net.netnook.qpeg.expressions.extras;
 
 import net.netnook.qpeg.expressions.OnSuccessHandler;
-import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 
 public final class FloatMatcher extends SimpleExpression {
 
-	public static Builder builder() {
-		return new Builder();
+	private static final FloatMatcher INSTANCE = new FloatMatcher();
+
+	public static FloatMatcher instance() {
+		return INSTANCE;
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
-
-		private Builder() {
-			// no-op
-		}
-
-		@Override
-		protected FloatMatcher doBuild() {
-			if (getOnSuccess() == null) {
-				onSuccess(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
-			}
-			return new FloatMatcher(this);
-		}
-	}
-
-	private FloatMatcher(Builder builder) {
-		super(builder.getOnSuccess());
+	private FloatMatcher() {
+		super(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
 	}
 
 	@Override

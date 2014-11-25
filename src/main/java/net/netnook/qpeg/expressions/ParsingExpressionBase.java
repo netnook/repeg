@@ -1,11 +1,16 @@
 package net.netnook.qpeg.expressions;
 
-abstract class ParsingExpressionBase implements ParsingExpression {
+abstract class ParsingExpressionBase implements ParsingExpression, ParsingExpressionBuilder {
 
 	private final OnSuccessHandler onSuccess;
 
 	protected ParsingExpressionBase(OnSuccessHandler onSuccess) {
 		this.onSuccess = (onSuccess == null) ? OnSuccessHandler.NO_OP : onSuccess;
+	}
+
+	@Override
+	public ParsingExpression build() {
+		return this;
 	}
 
 	@Override

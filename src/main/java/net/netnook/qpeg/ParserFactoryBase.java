@@ -6,6 +6,7 @@ import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingRule;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
+import net.netnook.qpeg.expressions.chars.CharTester;
 import net.netnook.qpeg.expressions.chars.CharTesters;
 import net.netnook.qpeg.expressions.core.CharMatcher;
 import net.netnook.qpeg.expressions.core.Choice;
@@ -16,6 +17,7 @@ import net.netnook.qpeg.expressions.core.Sequence;
 import net.netnook.qpeg.expressions.core.StringMatcher;
 import net.netnook.qpeg.expressions.extras.FloatMatcher;
 import net.netnook.qpeg.expressions.extras.NewlineMatcher;
+import net.netnook.qpeg.expressions.extras.Skip;
 
 public abstract class ParserFactoryBase {
 
@@ -92,8 +94,12 @@ public abstract class ParserFactoryBase {
 		return StringMatcher.of(string);
 	}
 
-	protected static FloatMatcher.Builder parseFloat() {
-		return FloatMatcher.builder();
+	protected static FloatMatcher parseFloat() {
+		return FloatMatcher.instance();
+	}
+
+	protected static Skip skip(CharTester tester) {
+		return Skip.characters(tester);
 	}
 
 	public static OnSuccessHandler push(Object value) {

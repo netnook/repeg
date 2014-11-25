@@ -99,7 +99,8 @@ public class ParserFactory extends ParserFactoryBase {
 		Factor {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return sequence(whitespace().zeroOrMore().ignore(), //
+				return sequence( //
+						whitespace().zeroOrMore().ignore(), //
 						choice( //
 								Number, //
 								Parens //

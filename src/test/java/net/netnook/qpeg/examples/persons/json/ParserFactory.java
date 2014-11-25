@@ -2,7 +2,6 @@ package net.netnook.qpeg.examples.persons.json;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import net.netnook.qpeg.ParserFactoryBase;
 import net.netnook.qpeg.examples.persons.Address;
@@ -13,7 +12,6 @@ import net.netnook.qpeg.examples.persons.Persons;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingRuleBuilder;
 import net.netnook.qpeg.expressions.chars.CharTesters;
-import net.netnook.qpeg.expressions.extras.SkipMatcher;
 
 public class ParserFactory extends ParserFactoryBase {
 
@@ -66,9 +64,9 @@ public class ParserFactory extends ParserFactoryBase {
 						SkipWhitespace, //
 						zeroOrMore( //
 								choice( //
-										stringField("firstName", Person::setFirstName), //
-										stringField("lastName", Person::setLastName), //
-										stringField("email", Person::setEmail), //
+										stringField("firstName"), //
+										stringField("lastName"), //
+										stringField("email"), //
 										Gender_Rule, //
 										AddressObject, //
 										CoordinatesObject //
@@ -139,9 +137,9 @@ public class ParserFactory extends ParserFactoryBase {
 						SkipWhitespace, //
 						zeroOrMore( //
 								choice( //
-										stringField("street", Address::setStreet), //
-										stringField("city", Address::setCity), //
-										stringField("country", Address::setCountry) //
+										stringField("street"), //
+										stringField("city"), //
+										stringField("country") //
 								) //
 						), //
 						character('}').ignore(), //
@@ -243,7 +241,7 @@ public class ParserFactory extends ParserFactoryBase {
 		}, //
 	}
 
-	private static <O> ParsingExpressionBuilder stringField(String name, BiConsumer<O, String> setter) {
+	private static ParsingExpressionBuilder stringField(String name) {
 		return sequence( //
 				string("\"" + name + "\"").onSuccess(push(name)), //
 				SkipWhitespace, //
@@ -258,6 +256,6 @@ public class ParserFactory extends ParserFactoryBase {
 		);
 	}
 
-	//private static final ParsingExpressionBuilder SkipWhitespace = whitespace().zeroOrMore().ignore();
-	private static final ParsingExpressionBuilder SkipWhitespace = SkipMatcher.using(CharTesters.isWhitespace());
+	// TODO: replace with skip(whitespace()) this API has been fixed
+	private static final ParsingExpressionBuilder SkipWhitespace = skip(CharTesters.isWhitespace());
 }
