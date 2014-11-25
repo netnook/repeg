@@ -21,19 +21,19 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 	}
 
 	@Override
-	public final ParsingExpression build(BuildContext ctxt) {
+	public final ParsingExpression build() {
 		if (built == null) {
-			built = doBuild(ctxt);
+			built = doBuild();
 		}
 		return built;
 	}
 
-	protected abstract ParsingExpression doBuild(BuildContext ctxt);
+	protected abstract ParsingExpression doBuild();
 
-	protected static ParsingExpression[] build(BuildContext ctxt, ParsingExpressionBuilder[] builders) {
+	protected static ParsingExpression[] build(ParsingExpressionBuilder[] builders) {
 		ParsingExpression[] results = new ParsingExpression[builders.length];
 		for (int i = 0; i < builders.length; i++) {
-			results[i] = builders[i].build(ctxt);
+			results[i] = builders[i].build();
 		}
 		return results;
 	}

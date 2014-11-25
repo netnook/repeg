@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions.RootContext;
@@ -36,7 +35,7 @@ public abstract class MatcherTestBase {
 	private final List<Object> newOnStack = new ArrayList<>();
 	private final TestParseListener testParseListener = new TestParseListener();
 	protected RootContext context;
-	protected BuildContext buildContext = new BuildContext();
+	//protected BuildContext buildContext = new BuildContext();
 	protected int successCount;
 
 	protected RootContext buildContext(String input) {

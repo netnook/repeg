@@ -22,7 +22,7 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_parts() {
-		Choice expression = (Choice) Choice.of(isA, isB).build(buildContext);
+		Choice expression = (Choice) Choice.of(isA, isB).build();
 
 		assertThat(expression.parts()).hasSize(2);
 		assertThat(expression.parts().get(0).buildGrammar()).isEqualTo("[a]");
@@ -31,12 +31,12 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(Choice.of(isA, isB).build(buildContext).buildGrammar()).isEqualTo("([a] | [b])");
+		assertThat(Choice.of(isA, isB).build().buildGrammar()).isEqualTo("([a] | [b])");
 	}
 
 	@Test
 	public void test_a_or_b() {
-		ParsingExpression expression = Choice.of(isA, isB).build(buildContext);
+		ParsingExpression expression = Choice.of(isA, isB).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -53,7 +53,7 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_b_or_a() {
-		ParsingExpression expression = Choice.of(isB, isA).build(buildContext);
+		ParsingExpression expression = Choice.of(isB, isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -72,7 +72,7 @@ public class ChoiceTest extends MatcherTestBase {
 	public void test_on_success() {
 		ParsingExpression expression = Choice.of(isA, isB) //
 				.onSuccess(onSuccessCounter) //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -94,7 +94,7 @@ public class ChoiceTest extends MatcherTestBase {
 	public void test_ignore() {
 		ParsingExpression expression = Choice.of(isA, isB) //
 				.ignore() //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();

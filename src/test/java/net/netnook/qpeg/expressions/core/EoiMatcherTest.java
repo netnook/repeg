@@ -17,12 +17,12 @@ public class EoiMatcherTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(EoiMatcher.instance().build(buildContext).buildGrammar()).isEqualTo("EOI");
+		assertThat(EoiMatcher.instance().build().buildGrammar()).isEqualTo("EOI");
 	}
 
 	@Test
 	public void test_eoi() {
-		ParsingExpression expression = EoiMatcher.instance().build(buildContext);
+		ParsingExpression expression = EoiMatcher.instance().build();
 		assertThat(expression.parse(context)).isFalse();
 		context.consumeChar();
 		assertThat(expression.parse(context)).isFalse();

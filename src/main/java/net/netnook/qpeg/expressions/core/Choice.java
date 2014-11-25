@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CompoundExpression;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
@@ -40,8 +39,8 @@ public final class Choice extends CompoundExpression {
 		}
 
 		@Override
-		protected Choice doBuild(BuildContext ctxt) {
-			return new Choice(this, build(ctxt, expressions));
+		protected Choice doBuild() {
+			return new Choice(this, build(expressions));
 		}
 	}
 

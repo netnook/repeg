@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.core;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.InvalidExpressionException;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
@@ -93,7 +92,7 @@ public final class CharMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected CharMatcher doBuild(BuildContext ctxt) {
+		protected CharMatcher doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}

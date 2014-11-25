@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.extras;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
@@ -27,7 +26,7 @@ public final class SkipMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected SkipMatcher doBuild(BuildContext ctxt) {
+		protected SkipMatcher doBuild() {
 			if (getOnSuccess() != null) {
 				throw new RuntimeException();
 			}

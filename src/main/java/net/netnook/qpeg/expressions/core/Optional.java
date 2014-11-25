@@ -3,7 +3,6 @@ package net.netnook.qpeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CompoundExpression;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
@@ -38,8 +37,8 @@ public final class Optional extends CompoundExpression {
 		}
 
 		@Override
-		protected Optional doBuild(BuildContext ctxt) {
-			return new Optional(this, expression.build(ctxt));
+		protected Optional doBuild() {
+			return new Optional(this, expression.build());
 		}
 	}
 

@@ -22,7 +22,7 @@ public class SequenceTest extends MatcherTestBase {
 
 	@Test
 	public void test_parts() {
-		Sequence expression = (Sequence) Sequence.of(isA, isB).build(buildContext);
+		Sequence expression = (Sequence) Sequence.of(isA, isB).build();
 
 		assertThat(expression.parts()).hasSize(2);
 		assertThat(expression.parts().get(0).buildGrammar()).isEqualTo("[a]");
@@ -31,12 +31,12 @@ public class SequenceTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(Sequence.of(isA, isB).build(buildContext).buildGrammar()).isEqualTo("([a] [b])");
+		assertThat(Sequence.of(isA, isB).build().buildGrammar()).isEqualTo("([a] [b])");
 	}
 
 	@Test
 	public void test_sequence() {
-		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
+		ParsingExpression expression = Sequence.of(isA, isB).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "b");
@@ -55,7 +55,7 @@ public class SequenceTest extends MatcherTestBase {
 	public void test_sequence_fail_on_first() {
 		buildContext("-abX-").consumeChar();
 
-		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
+		ParsingExpression expression = Sequence.of(isA, isB).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "b");
@@ -70,7 +70,7 @@ public class SequenceTest extends MatcherTestBase {
 	public void test_sequence_fail_on_second() {
 		buildContext("-abaX-").consumeChar();
 
-		ParsingExpression expression = Sequence.of(isA, isB).build(buildContext);
+		ParsingExpression expression = Sequence.of(isA, isB).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "b");
@@ -85,7 +85,7 @@ public class SequenceTest extends MatcherTestBase {
 	public void test_on_success() {
 		ParsingExpression expression = Sequence.of(isA, isB) //
 				.onSuccess(onSuccessCounter) //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "b");
@@ -107,7 +107,7 @@ public class SequenceTest extends MatcherTestBase {
 	public void test_ignore() {
 		ParsingExpression expression = Sequence.of(isA, isB) //
 				.ignore() //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();

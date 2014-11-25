@@ -18,7 +18,7 @@ public class StringMatcherTest extends MatcherTestBase {
 	@Test
 	public void test_one() {
 		ParsingExpression expression = StringMatcher.of("one") //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("one");
@@ -31,11 +31,11 @@ public class StringMatcherTest extends MatcherTestBase {
 	@Test
 	public void test_build_grammar() {
 		assertThat(StringMatcher.of("one") //
-				.build(buildContext)//
+				.build()//
 				.buildGrammar()//
 		).isEqualTo("'one'");
 		assertThat(StringMatcher.of("on'e") //
-				.build(buildContext)//
+				.build()//
 				.buildGrammar()//
 		).isEqualTo("'on\\'e'");
 	}

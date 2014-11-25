@@ -23,7 +23,7 @@ public class RepetitionTest extends MatcherTestBase {
 
 	@Test
 	public void test_parts() {
-		Repetition expression = (Repetition) Repetition.of(isA).build(buildContext);
+		Repetition expression = (Repetition) Repetition.of(isA).build();
 
 		assertThat(expression.parts()).hasSize(1);
 		assertThat(expression.parts().get(0).buildGrammar()).isEqualTo("[a]");
@@ -31,16 +31,16 @@ public class RepetitionTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(Repetition.of(isA).minCount(0).build(buildContext).buildGrammar()).isEqualTo("([a])*");
-		assertThat(Repetition.of(isA).minCount(1).build(buildContext).buildGrammar()).isEqualTo("([a])+");
-		assertThat(Repetition.of(isA).minCount(2).build(buildContext).buildGrammar()).isEqualTo("([a]){2,}");
-		assertThat(Repetition.of(isA).minCount(2).maxCount(4).build(buildContext).buildGrammar()).isEqualTo("([a]){2,4}");
-		assertThat(Repetition.of(isA).minCount(4).maxCount(4).build(buildContext).buildGrammar()).isEqualTo("([a]){4}");
+		assertThat(Repetition.of(isA).minCount(0).build().buildGrammar()).isEqualTo("([a])*");
+		assertThat(Repetition.of(isA).minCount(1).build().buildGrammar()).isEqualTo("([a])+");
+		assertThat(Repetition.of(isA).minCount(2).build().buildGrammar()).isEqualTo("([a]){2,}");
+		assertThat(Repetition.of(isA).minCount(2).maxCount(4).build().buildGrammar()).isEqualTo("([a]){2,4}");
+		assertThat(Repetition.of(isA).minCount(4).maxCount(4).build().buildGrammar()).isEqualTo("([a]){4}");
 	}
 
 	@Test
 	public void test_0orMore_a() {
-		ParsingExpression expression = Repetition.zeroOrMore(isA).build(buildContext);
+		ParsingExpression expression = Repetition.zeroOrMore(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "a", "a");
@@ -55,7 +55,7 @@ public class RepetitionTest extends MatcherTestBase {
 
 	@Test
 	public void test_1orMore_a() {
-		ParsingExpression expression = Repetition.oneOrMore(isA).build(buildContext);
+		ParsingExpression expression = Repetition.oneOrMore(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "a", "a");
@@ -72,7 +72,7 @@ public class RepetitionTest extends MatcherTestBase {
 		ParsingExpression expression = Repetition.of(isA) //
 				.minCount(1) //
 				.maxCount(2) //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "a");
@@ -94,7 +94,7 @@ public class RepetitionTest extends MatcherTestBase {
 				.minCount(1) //
 				.maxCount(2) //
 				.onSuccess(onSuccessCounter) //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a", "a");
@@ -118,7 +118,7 @@ public class RepetitionTest extends MatcherTestBase {
 				.minCount(1) //
 				.maxCount(2) //
 				.ignore() //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();
@@ -137,7 +137,7 @@ public class RepetitionTest extends MatcherTestBase {
 	public void invalid_bounds_min_greater_than_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: minCount > maxCount");
-		Repetition.of(isA).minCount(7).maxCount(3).build(buildContext);
+		Repetition.of(isA).minCount(7).maxCount(3).build();
 	}
 
 	@Test
@@ -158,6 +158,6 @@ public class RepetitionTest extends MatcherTestBase {
 	public void invalid_optional_expression_in_repetition() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Cannot have optional content in repeating construct");
-		Repetition.of(Optional.of(isA)).build(buildContext);
+		Repetition.of(Optional.of(isA)).build();
 	}
 }

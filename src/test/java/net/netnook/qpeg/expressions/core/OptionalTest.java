@@ -20,7 +20,7 @@ public class OptionalTest extends MatcherTestBase {
 
 	@Test
 	public void test_parts() {
-		Optional expression = (Optional) Optional.of(isA).build(buildContext);
+		Optional expression = (Optional) Optional.of(isA).build();
 
 		assertThat(expression.parts()).hasSize(1);
 		assertThat(expression.parts().get(0).buildGrammar()).isEqualTo("[a]");
@@ -28,12 +28,12 @@ public class OptionalTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(Optional.of(isA).build(buildContext).buildGrammar()).isEqualTo("([a])?");
+		assertThat(Optional.of(isA).build().buildGrammar()).isEqualTo("([a])?");
 	}
 
 	@Test
 	public void test_options() {
-		ParsingExpression expression = Optional.of(isA).build(buildContext);
+		ParsingExpression expression = Optional.of(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -54,7 +54,7 @@ public class OptionalTest extends MatcherTestBase {
 	public void test_on_success() {
 		ParsingExpression expression = Optional.of(isA) //
 				.onSuccess(onSuccessCounter) //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -73,7 +73,7 @@ public class OptionalTest extends MatcherTestBase {
 	public void test_ignore() {
 		ParsingExpression expression = Optional.of(isA) //
 				.ignore() //
-				.build(buildContext);
+				.build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();

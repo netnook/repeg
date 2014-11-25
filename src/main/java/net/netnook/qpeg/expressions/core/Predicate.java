@@ -3,7 +3,6 @@ package net.netnook.qpeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CompoundExpression;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
@@ -42,8 +41,8 @@ public final class Predicate extends CompoundExpression {
 		}
 
 		@Override
-		protected Predicate doBuild(BuildContext ctxt) {
-			return new Predicate(this, expression.build(ctxt));
+		protected Predicate doBuild() {
+			return new Predicate(this, expression.build());
 		}
 	}
 

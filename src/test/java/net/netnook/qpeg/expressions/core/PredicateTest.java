@@ -20,7 +20,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Test
 	public void test_parts() {
-		Predicate expression = (Predicate) Predicate.match(isA).build(buildContext);
+		Predicate expression = (Predicate) Predicate.match(isA).build();
 
 		assertThat(expression.parts()).hasSize(1);
 		assertThat(expression.parts().get(0).buildGrammar()).isEqualTo("[a]");
@@ -28,13 +28,13 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Test
 	public void test_grammar() {
-		assertThat(Predicate.match(isA).build(buildContext).buildGrammar()).isEqualTo("&([a])");
-		assertThat(Predicate.not(isA).build(buildContext).buildGrammar()).isEqualTo("!([a])");
+		assertThat(Predicate.match(isA).build().buildGrammar()).isEqualTo("&([a])");
+		assertThat(Predicate.not(isA).build().buildGrammar()).isEqualTo("!([a])");
 	}
 
 	@Test
 	public void test_match() {
-		ParsingExpression expression = Predicate.match(isA).build(buildContext);
+		ParsingExpression expression = Predicate.match(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();
@@ -51,7 +51,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Test
 	public void test_not() {
-		ParsingExpression expression = Predicate.not(isA).build(buildContext);
+		ParsingExpression expression = Predicate.not(isA).build();
 
 		assertThat(expression.parse(context)).isFalse();
 		assertNewOnStack();

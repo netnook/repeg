@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.extras;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
@@ -19,7 +18,7 @@ public final class FloatMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected FloatMatcher doBuild(BuildContext ctxt) {
+		protected FloatMatcher doBuild() {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
 			}

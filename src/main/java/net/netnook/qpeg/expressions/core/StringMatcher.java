@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.core;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
@@ -21,7 +20,7 @@ public final class StringMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected StringMatcher doBuild(BuildContext ctxt) {
+		protected StringMatcher doBuild() {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}

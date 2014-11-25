@@ -7,7 +7,9 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 	String name();
 
 	@Override
-	default ParsingRule build(BuildContext ctxt) {
+	default ParsingRule build() {
+		BuildContext ctxt = BuildContext.get();
+
 		ParsingRule expression = ctxt.getRule(this);
 		if (expression != null) {
 			return expression;
@@ -15,7 +17,7 @@ public interface ParsingRuleBuilder extends ParsingExpressionBuilder {
 			ParsingRule rule = new ParsingRule(this);
 			ctxt.putRule(this, rule);
 
-			rule.setExpression(expression().build(ctxt));
+			rule.setExpression(expression().build());
 
 			return rule;
 		}

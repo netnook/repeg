@@ -3,7 +3,6 @@ package net.netnook.qpeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CompoundExpression;
 import net.netnook.qpeg.expressions.InvalidExpressionException;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
@@ -64,12 +63,12 @@ public final class Repetition extends CompoundExpression {
 		}
 
 		@Override
-		protected Repetition doBuild(BuildContext ctxt) {
+		protected Repetition doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
 
-			return new Repetition(this, expression.build(ctxt));
+			return new Repetition(this, expression.build());
 		}
 	}
 

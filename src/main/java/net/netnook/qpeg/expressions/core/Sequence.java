@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.CompoundExpression;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
@@ -40,8 +39,8 @@ public final class Sequence extends CompoundExpression {
 		}
 
 		@Override
-		protected Sequence doBuild(BuildContext ctxt) {
-			return new Sequence(this, build(ctxt, expressions));
+		protected Sequence doBuild() {
+			return new Sequence(this, build(expressions));
 		}
 	}
 

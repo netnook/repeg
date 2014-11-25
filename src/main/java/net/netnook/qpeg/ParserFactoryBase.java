@@ -20,7 +20,10 @@ import net.netnook.qpeg.expressions.extras.NewlineMatcher;
 public abstract class ParserFactoryBase {
 
 	public ParsingRule build() {
-		return getStartRule().build(new BuildContext());
+		ParsingRule build = getStartRule().build();
+		// FIXME: how can we ensure that alyways cleared event when .build() called directly on ExpressionBuilder
+		BuildContext.clear();
+		return build;
 	}
 
 	protected abstract ParsingRuleBuilder getStartRule();

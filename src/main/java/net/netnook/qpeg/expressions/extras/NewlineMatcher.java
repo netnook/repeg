@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.extras;
 
-import net.netnook.qpeg.expressions.BuildContext;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
@@ -22,7 +21,7 @@ public final class NewlineMatcher extends SimpleExpression {
 		}
 
 		@Override
-		protected NewlineMatcher doBuild(BuildContext ctxt) {
+		protected NewlineMatcher doBuild() {
 			if (getOnSuccess() == null) {
 				onSuccess(OnSuccessHandler.PUSH_TEXT);
 			}
