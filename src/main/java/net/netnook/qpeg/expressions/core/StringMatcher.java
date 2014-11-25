@@ -42,11 +42,13 @@ public final class StringMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
-		for (int i = 0; i < str.length(); i++) {
-			if (context.consumeChar() != str.charAt(i)) {
+		int pos = startPosition;
+		for (int i = 0; i < str.length(); i++, pos++) {
+			if (context.charAt(pos) != str.charAt(i)) {
 				return false;
 			}
 		}
+		context.setPosition(pos);
 		return true;
 	}
 }

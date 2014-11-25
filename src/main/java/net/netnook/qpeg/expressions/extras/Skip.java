@@ -20,16 +20,19 @@ public final class Skip extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+		int pos = startPosition;
 		while (true) {
-			int found = context.peekChar();
+			int found = context.charAt(pos);
 
 			boolean match = (found != RootContext.END_OF_INPUT) && matcher.isMatch(found);
 			if (!match) {
 				break;
 			}
 
-			context.incrementPosition();
+			pos++;
 		}
+
+		context.setPosition(pos);
 
 		return true;
 	}

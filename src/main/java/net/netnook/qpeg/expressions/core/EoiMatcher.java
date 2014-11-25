@@ -55,6 +55,6 @@ public final class EoiMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
-		return context.peekChar() == RootContext.END_OF_INPUT;
+		return context.charAt(startPosition) == RootContext.END_OF_INPUT;
 	}
 }

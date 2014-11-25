@@ -125,21 +125,24 @@ public final class CharMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
-		int count = 0;
-		while (count < maxCount) {
-			int found = context.peekChar();
+
+		int pos = startPosition;
+		// TODO: better way to handle int overrun ?
+		int maxPos = (maxCount == Integer.MAX_VALUE) ? Integer.MAX_VALUE : pos + maxCount;
+		while (pos < maxPos) {
+			int found = context.charAt(pos);
 
 			// FIXME: unicode handling ?
 			boolean match = (found != RootContext.END_OF_INPUT) && matcher.isMatch(found);
 			if (!match) {
-				//context.rewindInput();
 				break;
 			}
-			context.incrementPosition();
-			count++;
+			pos++;
 		}
 
-		return (count >= minCount); // NOTE: no maxCount check - not necessary due to loop condition above
+		context.setPosition(pos);
+
+		return ((pos - startPosition) >= minCount); // NOTE: no maxCount check - not necessary due to loop condition above
 	}
 
 	@Override

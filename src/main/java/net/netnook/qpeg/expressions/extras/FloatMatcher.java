@@ -23,32 +23,34 @@ public final class FloatMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
-
-		int c = context.consumeChar();
+		int pos = startPosition;
+		int c = context.charAt(pos);
 
 		if (c != '-' && c != '.' && (c < '0' || c > '9')) {
 			return false;
 		}
+		pos++;
 		boolean isNegative = (c == '-');
 		boolean foundDot = (c == '.');
 
 		while (true) {
-			c = context.consumeChar();
+			c = context.charAt(pos);
 
 			if (c == '.') {
 				if (foundDot) {
-					context.rewindInput();
 					break;
 				}
 				foundDot = true;
 
 			} else if (c < '0' || c > '9') {
-				context.rewindInput();
 				break;
 			}
+			pos++;
 		}
 
-		int len = context.position() - startPosition;
+		context.setPosition(pos);
+
+		int len = pos - startPosition;
 
 		if (isNegative && foundDot) {
 			return len > 2;

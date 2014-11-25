@@ -38,6 +38,18 @@ public final class RootContext {
 		return position;
 	}
 
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public int charAt(int position) {
+		if (position < input.length()) {
+			return input.charAt(position);
+		} else {
+			return END_OF_INPUT;
+		}
+	}
+
 	public CharSequence getInput(int start) {
 		return input.subSequence(start, position);
 	}
@@ -55,25 +67,6 @@ public final class RootContext {
 			position++;
 			return END_OF_INPUT;
 		}
-	}
-
-	public int peekChar() {
-		if (position < input.length()) {
-			return input.charAt(position);
-		} else {
-			return END_OF_INPUT;
-		}
-	}
-
-	public void rewindInput() {
-		position--;
-		if (position < 0) {
-			throw new IllegalArgumentException("Cannot rewind beyond start !");
-		}
-	}
-
-	public void incrementPosition() {
-		position++;
 	}
 
 	public int stackSize() {

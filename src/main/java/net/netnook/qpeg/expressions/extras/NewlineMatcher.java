@@ -40,14 +40,18 @@ public final class NewlineMatcher extends SimpleExpression {
 
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
-		int c1 = context.consumeChar();
+		int c1 = context.charAt(startPosition);
 
 		// TODO: compare this to unicode line termination
 		if (c1 == LF) {
+			context.setPosition(startPosition + 1);
 			return true;
 		} else if (c1 == CR) {
-			if (context.consumeChar() != LF) {
-				context.rewindInput();
+			int pos = startPosition + 1;
+			if (context.charAt(pos) == LF) {
+				context.setPosition(pos + 1);
+			} else {
+				context.setPosition(pos);
 			}
 			return true;
 		}
