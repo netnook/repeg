@@ -248,7 +248,7 @@ public class ParserFactory extends ParserFactoryBase {
 				character(':').ignore(), //
 				SkipWhitespace, //
 				character('"').ignore(), //
-				character('"').invert().zeroOrMore().onSuccess(pushText()), //
+				character('"').invert().zeroOrMore().onSuccess(pushTextAsString()), //
 				character('"').ignore(), //
 				SkipWhitespace, //
 				optional(character(',').ignore()), //

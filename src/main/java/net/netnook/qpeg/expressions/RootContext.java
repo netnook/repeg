@@ -51,11 +51,11 @@ public final class RootContext {
 	}
 
 	public CharSequence getInput(int start) {
-		return input.subSequence(start, position);
+		return new CharSequenceImpl(start, position);
 	}
 
 	public CharSequence getInput(int start, int end) {
-		return input.subSequence(start, end);
+		return new CharSequenceImpl(start, end);
 	}
 
 	public int consumeChar() {
@@ -111,5 +111,36 @@ public final class RootContext {
 	public void resetTo(int position, int stackSize) {
 		this.position = position;
 		truncateStack(stackSize);
+	}
+
+	private class CharSequenceImpl implements CharSequence {
+
+		private final int start;
+		private final int end;
+
+		private CharSequenceImpl(int start, int end) {
+			this.start = start;
+			this.end = end;
+		}
+
+		@Override
+		public int length() {
+			return end - start;
+		}
+
+		@Override
+		public char charAt(int index) {
+			return RootContext.this.input.charAt(start + index);
+		}
+
+		@Override
+		public CharSequence subSequence(int start, int end) {
+			return new CharSequenceImpl(this.start + start, this.start + end);
+		}
+
+		@Override
+		public String toString() {
+			return RootContext.this.input.subSequence(start, end).toString();
+		}
 	}
 }

@@ -47,16 +47,25 @@ public abstract class MatcherTestBase {
 		successCount++;
 	};
 
-	protected void assertNewOnStack(Object... o) {
-		assertThat(newOnStack).containsExactly(o);
+	protected void assertNewOnStack(String... o) {
+		assertStackContains(newOnStack, o);
+	}
+
+	protected void assertFullStackContains(Object... o) {
+		assertStackContains(context.getStack(), o);
 	}
 
 	protected <T> T getNewOnStack(int i) {
 		return (T) newOnStack.get(i);
 	}
 
-	protected void assertFullStackContains(Object... o) {
-		assertThat(context.getStack()).containsExactly(o);
+	private void assertStackContains(List<Object> stack, Object... o) {
+		assertThat(stack).hasSize(o.length);
+		for (int i = 0; i < o.length; i++) {
+			assertThat(stack.get(i).toString()) //
+					.isEqualTo(o[i]) //
+					.overridingErrorMessage("Expected '" + o[i] + "' but found '" + stack.get(i) + "' at index " + i);
+		}
 	}
 
 	protected void assertPositionIs(int position) {
