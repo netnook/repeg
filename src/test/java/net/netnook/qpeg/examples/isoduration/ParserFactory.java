@@ -19,7 +19,7 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character('P').ignore(), //
+						character('P'), //
 						Period_Part, //
 						Time_Part, //
 						endOfInput() //
@@ -36,9 +36,9 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						// FIXME: not 'T'
-						optional(sequence(Number, character('Y').ignore())).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('M').ignore())).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('D').ignore())).onSuccess(pushIfEmpty(0)) //
+						optional(sequence(Number, character('Y'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('M'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('D'))).onSuccess(pushIfEmpty(0)) //
 				).onSuccess((context) -> {
 					int years = context.get(0);
 					int months = context.get(1);
@@ -52,10 +52,10 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return optional(sequence( //
-						character('T').ignore(), //
-						optional(sequence(Number, character('H').ignore())).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('M').ignore())).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, character('S').ignore())).onSuccess(pushIfEmpty(0)) //
+						character('T'), //
+						optional(sequence(Number, character('H'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('M'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, character('S'))).onSuccess(pushIfEmpty(0)) //
 				).onSuccess(context -> {
 					int hours = context.get(0);
 					int minutes = context.get(1);

@@ -8,7 +8,6 @@ import org.junit.Test;
 import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.ParsingExpression;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
-import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions._util.MatcherTestBase;
 
 public class ChoiceTest extends MatcherTestBase {
@@ -91,24 +90,5 @@ public class ChoiceTest extends MatcherTestBase {
 		assertThat(successCount).isEqualTo(2);
 
 		assertFullStackContains("a", "b");
-	}
-
-	@Test
-	public void test_ignore() {
-		ParsingExpression expression = Choice.of(isA, isB) //
-				.ignore() //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(2);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isFalse();
-
-		assertFullStackContains();
 	}
 }

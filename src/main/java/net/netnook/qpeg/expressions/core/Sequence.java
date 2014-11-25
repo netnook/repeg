@@ -33,12 +33,6 @@ public final class Sequence extends CompoundExpression {
 		}
 
 		@Override
-		public Builder ignore() {
-			super.ignore();
-			return this;
-		}
-
-		@Override
 		protected Sequence doBuild() {
 			return new Sequence(this);
 		}

@@ -70,7 +70,7 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						horizontalWhitespace().oneOrMore().ignore(), //
+						horizontalWhitespace().oneOrMore(), //
 						DoneField, //
 						DueDateField, //
 						DescriptionField, //
@@ -93,7 +93,7 @@ public class ParserFactory extends ParserFactoryBase {
 				return optional( //
 						sequence( //
 								string("(x)").onSuccess(push(Boolean.TRUE)), //
-								horizontalWhitespace().oneOrMore().ignore() //
+								horizontalWhitespace().oneOrMore() //
 						) //
 				).onSuccess(pushIfEmpty(Boolean.FALSE));
 			}
@@ -104,11 +104,11 @@ public class ParserFactory extends ParserFactoryBase {
 				return optional( //
 						sequence( //
 								characterInRange('0', '9').count(4).onSuccess(pushTextAsInteger()), //
-								character('-').ignore(), //
+								character('-'), //
 								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
-								character('-').ignore(), //
+								character('-'), //
 								characterInRange('0', '9').count(2).onSuccess(pushTextAsInteger()), //
-								horizontalWhitespace().oneOrMore().ignore() //
+								horizontalWhitespace().oneOrMore() //
 						).onSuccess(context -> {
 							int year = context.get(0);
 							int month = context.get(1);
@@ -132,8 +132,8 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return zeroOrMore( //
 						sequence( //
-								horizontalWhitespace().zeroOrMore().ignore(), //
-								crlf().ignore() //
+								horizontalWhitespace().zeroOrMore(), //
+								crlf() //
 						) //
 				);
 			}

@@ -115,27 +115,6 @@ public class RepetitionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_ignore() {
-		ParsingExpression expression = Repetition.of(isA) //
-				.minCount(1) //
-				.maxCount(2) //
-				.ignore() //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(4);
-
-		assertThat(expression.parse(context)).isFalse();
-
-		assertFullStackContains();
-	}
-
-	@Test
 	public void invalid_bounds_min_greater_than_max() {
 		thrown.expect(InvalidExpressionException.class);
 		thrown.expectMessage("Invalid expression: minCount > maxCount");

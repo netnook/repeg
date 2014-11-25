@@ -1,6 +1,5 @@
 package net.netnook.qpeg.expressions.extras;
 
-import net.netnook.qpeg.expressions.OnSuccessHandler;
 import net.netnook.qpeg.expressions.RootContext;
 import net.netnook.qpeg.expressions.SimpleExpression;
 import net.netnook.qpeg.expressions.chars.CharMatcher;
@@ -14,7 +13,7 @@ public final class SkipExpression extends SimpleExpression {
 	private final CharMatcher matcher;
 
 	private SkipExpression(CharMatcher matcher) {
-		super(OnSuccessHandler.NO_OP);
+		super(null);
 		this.matcher = matcher;
 	}
 

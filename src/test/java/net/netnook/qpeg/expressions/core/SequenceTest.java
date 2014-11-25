@@ -104,23 +104,4 @@ public class SequenceTest extends MatcherTestBase {
 
 		assertFullStackContains("a", "b", "a", "b");
 	}
-
-	@Test
-	public void test_ignore() {
-		ParsingExpression expression = Sequence.of(isA, isB) //
-				.ignore() //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(5);
-
-		assertThat(expression.parse(context)).isFalse();
-
-		assertFullStackContains();
-	}
 }

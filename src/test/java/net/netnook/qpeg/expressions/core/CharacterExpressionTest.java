@@ -110,25 +110,6 @@ public class CharacterExpressionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_ignore() {
-		ParsingExpression expression = CharacterExpression.inRange('a', 'f') //
-				.maxCount(4) //
-				.ignore() //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(5);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(7);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-	}
-
-	@Test
 	public void test_no_match_eoi() {
 		buildContext("-");
 

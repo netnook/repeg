@@ -55,7 +55,7 @@ public abstract class ParserFactoryBase {
 
 	protected static ParsingExpressionBuilder endOfLineOrInput() {
 		return choice( //
-				newLine().ignore(), //
+				newLine(), //
 				endOfInput() //
 		);
 	}

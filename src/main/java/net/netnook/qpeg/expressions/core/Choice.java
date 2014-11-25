@@ -33,12 +33,6 @@ public final class Choice extends CompoundExpression {
 		}
 
 		@Override
-		public Builder ignore() {
-			super.ignore();
-			return this;
-		}
-
-		@Override
 		protected Choice doBuild() {
 			return new Choice(this);
 		}

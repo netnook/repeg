@@ -5,11 +5,6 @@ public abstract class ParsingExpressionBuilderBase implements ParsingExpressionB
 	private OnSuccessHandler onSuccess;
 	private ParsingExpression built;
 
-	public ParsingExpressionBuilderBase ignore() {
-		this.onSuccess = OnSuccessHandler.CLEAR_STACK;
-		return this;
-	}
-
 	public OnSuccessHandler getOnSuccess() {
 		return onSuccess;
 	}

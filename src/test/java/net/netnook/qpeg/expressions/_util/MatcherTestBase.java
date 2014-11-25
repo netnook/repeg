@@ -3,6 +3,7 @@ package net.netnook.qpeg.expressions._util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Rule;
@@ -47,23 +48,25 @@ public abstract class MatcherTestBase {
 	};
 
 	protected void assertNewOnStack(String... o) {
-		assertStackContains(newOnStack, o);
+		assertStackContains(newOnStack, Arrays.asList(o));
 	}
 
 	protected void assertFullStackContains(Object... o) {
-		assertStackContains(context.getStack(), o);
+		assertStackContains(context.getStack(), Arrays.asList(o));
 	}
 
 	protected <T> T getNewOnStack(int i) {
 		return (T) newOnStack.get(i);
 	}
 
-	private void assertStackContains(List<Object> stack, Object... o) {
-		assertThat(stack).hasSize(o.length);
-		for (int i = 0; i < o.length; i++) {
-			assertThat(stack.get(i).toString()) //
-					.isEqualTo(o[i]) //
-					.overridingErrorMessage("Expected '" + o[i] + "' but found '" + stack.get(i) + "' at index " + i);
+	private void assertStackContains(List<Object> stack, List<Object> expecteds) {
+		assertThat(stack).hasSize(expecteds.size());
+		for (int i = 0; i < expecteds.size(); i++) {
+			Object actual = stack.get(i);
+			Object expected = expecteds.get(i);
+			assertThat(actual) //
+					.isEqualTo(expected) //
+					.overridingErrorMessage("Expected '" + expected + "' but found '" + actual + "' at index " + i);
 		}
 	}
 

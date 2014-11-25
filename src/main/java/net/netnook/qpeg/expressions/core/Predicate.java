@@ -25,14 +25,10 @@ public final class Predicate extends CompoundExpression {
 		private boolean invert;
 
 		public Builder expression(ParsingExpressionBuilder expression, boolean invert) {
+			super.onSuccess(OnSuccessHandler.CLEAR_STACK);
 			this.expression = expression;
 			this.invert = invert;
 			return this;
-		}
-
-		@Override
-		public Builder ignore() {
-			throw new UnsupportedOperationException();
 		}
 
 		@Override

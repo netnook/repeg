@@ -67,12 +67,6 @@ public class PredicateTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_ignore_unsupported() {
-		thrown.expect(UnsupportedOperationException.class);
-		Predicate.match(isA).ignore();
-	}
-
-	@Test
 	public void test_onSuccess_unsupported() {
 		thrown.expect(UnsupportedOperationException.class);
 		Predicate.match(isA).onSuccess(null);

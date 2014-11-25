@@ -44,12 +44,6 @@ public final class Repetition extends CompoundExpression {
 			return this;
 		}
 
-		@Override
-		public Builder ignore() {
-			super.ignore();
-			return this;
-		}
-
 		public Builder minCount(int minCount) {
 			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
 			this.minCount = minCount;

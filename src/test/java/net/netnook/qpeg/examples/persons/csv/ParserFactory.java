@@ -47,8 +47,8 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						crlf().invert().zeroOrMore().ignore(), //
-						crlf().ignore() //
+						crlf().invert().zeroOrMore(), //
+						crlf() //
 				);
 			}
 		},
@@ -58,21 +58,21 @@ public class ParserFactory extends ParserFactoryBase {
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // first_name
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // last_name
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // email
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(ParserFactory::convertToGender), // gender
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // street
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // city
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableString()), // country
-						character(',').ignore(), //
+						character(','), //
 						character(',').invert().zeroOrMore().onSuccess(pushTextAsNullableFloat()), // long
-						character(',').ignore(), //
+						character(','), //
 						crlf().invert().zeroOrMore().onSuccess(pushTextAsNullableFloat()), // lat
 						endOfLineOrInput() //
 				).onSuccess(context -> {

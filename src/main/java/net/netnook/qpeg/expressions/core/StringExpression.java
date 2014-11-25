@@ -20,6 +20,12 @@ public final class StringExpression extends SimpleExpression {
 		}
 
 		@Override
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
+			super.onSuccess(onSuccess);
+			return this;
+		}
+
+		@Override
 		protected StringExpression doBuild() {
 			return new StringExpression(this);
 		}

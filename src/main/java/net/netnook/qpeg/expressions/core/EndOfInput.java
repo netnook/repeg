@@ -29,11 +29,6 @@ public final class EndOfInput extends SimpleExpression {
 		}
 
 		@Override
-		public ParsingExpressionBuilderBase ignore() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		public ParsingExpressionBuilderBase onSuccess(OnSuccessHandler onSuccess) {
 			throw new UnsupportedOperationException();
 		}

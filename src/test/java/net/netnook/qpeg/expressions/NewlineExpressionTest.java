@@ -69,25 +69,6 @@ public class NewlineExpressionTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_ignore() {
-		buildContext("-\n\n-");
-		context.consumeChar();
-
-		ParsingExpression expression = NewlineExpression.builder().ignore().build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(2);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(3);
-
-		assertThat(expression.parse(context)).isFalse();
-		assertNewOnStack();
-	}
-
-	@Test
 	public void test_mix() {
 		buildContext("-\r\n\r\r\n\n\r\n-");
 		context.consumeChar();

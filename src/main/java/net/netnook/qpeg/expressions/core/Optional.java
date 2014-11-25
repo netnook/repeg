@@ -31,12 +31,6 @@ public final class Optional extends CompoundExpression {
 		}
 
 		@Override
-		public Builder ignore() {
-			super.ignore();
-			return this;
-		}
-
-		@Override
 		protected Optional doBuild() {
 			return new Optional(this);
 		}

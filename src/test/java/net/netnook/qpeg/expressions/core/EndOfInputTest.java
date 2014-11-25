@@ -31,12 +31,6 @@ public class EndOfInputTest extends MatcherTestBase {
 	}
 
 	@Test
-	public void test_ignore_unsupported() {
-		thrown.expect(UnsupportedOperationException.class);
-		EndOfInput.instance().ignore();
-	}
-
-	@Test
 	public void test_onSuccess_unsupported() {
 		thrown.expect(UnsupportedOperationException.class);
 		EndOfInput.instance().onSuccess(null);

@@ -44,8 +44,8 @@ public final class CharacterExpression extends SimpleExpression {
 		}
 
 		@Override
-		public Builder ignore() {
-			super.ignore();
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
+			super.onSuccess(onSuccess);
 			return this;
 		}
 

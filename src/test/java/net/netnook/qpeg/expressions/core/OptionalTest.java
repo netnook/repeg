@@ -70,21 +70,4 @@ public class OptionalTest extends MatcherTestBase {
 
 		assertFullStackContains("a");
 	}
-
-	@Test
-	public void test_ignore() {
-		ParsingExpression expression = Optional.of(isA) //
-				.ignore() //
-				.build();
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(2);
-
-		assertThat(expression.parse(context)).isTrue();
-		assertNewOnStack();
-		assertPositionIs(2);
-
-		assertFullStackContains();
-	}
 }

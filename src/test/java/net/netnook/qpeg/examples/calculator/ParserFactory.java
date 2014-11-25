@@ -100,12 +100,12 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						whitespace().zeroOrMore().ignore(), //
+						whitespace().zeroOrMore(), //
 						choice( //
 								Number, //
 								Parens //
 						), //
-						whitespace().zeroOrMore().ignore() //
+						whitespace().zeroOrMore() //
 				); //
 			}
 		}, //
@@ -113,9 +113,9 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						character('(').ignore(), //
+						character('('), //
 						Expression, //
-						character(')').ignore() //
+						character(')') //
 				);
 			}
 		}, //
