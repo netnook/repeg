@@ -12,6 +12,13 @@ import net.netnook.qpeg.expressions.ParsingExpressionBuilder;
 import net.netnook.qpeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.qpeg.expressions.RootContext;
 
+/**
+ * Ordered choice expression i.e. (a | b | c).
+ *
+ * This expression handles an ordered choice of sub-expressions, attempting to match each one in turn
+ * and returning a match when the first sub-expression matches.  If none of the sub-expressions match, this
+ * choice expression returns no-match.
+ */
 public final class Choice extends CompoundExpression {
 
 	public static Builder of(ParsingExpressionBuilder... expressions) {
