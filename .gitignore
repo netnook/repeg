@@ -1,15 +1,6 @@
 build/
 tmp/
 out/
-
-.gradle/
-gradlew
-gradlew.bat
-build.gradle
-settings.gradle
-gradle.properties
-
 .idea/
+.gradle/
 *.iml
-
-

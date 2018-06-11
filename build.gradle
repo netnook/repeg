@@ -1,0 +1,19 @@
+repositories {
+	mavenCentral()
+}
+
+group 'net.netnook.qpeg'
+
+apply plugin: 'java'
+
+dependencies {
+	testImplementation group: 'junit', name: 'junit', version: '4.11'
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.7.0'
+	testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.8'
+}
+
+test {
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
