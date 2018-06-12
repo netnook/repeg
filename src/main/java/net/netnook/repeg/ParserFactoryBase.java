@@ -1,6 +1,5 @@
 package net.netnook.repeg;
 
-import net.netnook.repeg.expressions.BuildContext;
 import net.netnook.repeg.expressions.Context;
 import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
@@ -20,10 +19,7 @@ import net.netnook.repeg.expressions.extras.NewlineExpression;
 public abstract class ParserFactoryBase {
 
 	public ParsingRule build() {
-		ParsingRule build = getStartRule().build();
-		// FIXME: how can we ensure that always cleared event when .build() called directly on ExpressionBuilder
-		BuildContext.clear();
-		return build;
+		return getStartRule().build();
 	}
 
 	protected abstract ParsingRuleBuilder getStartRule();
