@@ -11,12 +11,38 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
+/**
+ * Repetition expression e.g. '{@code (a)*}' (zero or more), '{@code (a)+}' (one or more),
+ * '{@code (a){3}}' (3 times).
+ * <p>
+ * This expression handles an repetition of a sub-expression, attempting to match the sub-expression
+ * repeatedly for a specified minimum and maximum number of times.  This expression will match
+ * only if the minimum number of repeats are matched and will never consume more than the maximum
+ * number of repetitions.
+ * <p>
+ * By default, the minimum repetition count is  {@code 0} and the maximum number of repetitions
+ * is {@code Integer.MAX_VALUE}.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class Repetition extends CompoundExpression {
 
+	/**
+	 * Same as {@link Repetition#zeroOrMore(ParsingExpressionBuilder)}.
+	 *
+	 * @param expression the sub-expression to match
+	 * @return the new {@link Repetition} expression.
+	 */
 	public static Builder of(ParsingExpressionBuilder expression) {
 		return zeroOrMore(expression);
 	}
 
+	/**
+	 * Create a {@link Repetition} expression matching exactly one repetition (i.e. minCount=1 and maxCount=1).
+	 *
+	 * @param expression the sub-expression to match
+	 * @return the new {@link Repetition} expression.
+	 */
 	public static Builder one(ParsingExpressionBuilder expression) {
 		return new Builder() //
 				.minCount(1) //
@@ -24,11 +50,23 @@ public final class Repetition extends CompoundExpression {
 				.expression(expression);
 	}
 
+	/**
+	 * Create a {@link Repetition} expression matching zero or more repetitions (i.e. minCount=0 and maxCount=Integer.MAX_VALUE).
+	 *
+	 * @param expression the sub-expression to match
+	 * @return the new {@link Repetition} expression.
+	 */
 	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression);
 	}
 
+	/**
+	 * Create a {@link Repetition} expression matching one or more repetitions (i.e. minCount=1 and maxCount=Integer.MAX_VALUE).
+	 *
+	 * @param expression the sub-expression to match
+	 * @return the new {@link Repetition} expression.
+	 */
 	public static Builder oneOrMore(ParsingExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression) //
@@ -71,11 +109,6 @@ public final class Repetition extends CompoundExpression {
 		}
 
 		public Builder maxUnbounded() {
-			this.maxCount = Integer.MAX_VALUE;
-			return this;
-		}
-
-		public Builder count() {
 			this.maxCount = Integer.MAX_VALUE;
 			return this;
 		}

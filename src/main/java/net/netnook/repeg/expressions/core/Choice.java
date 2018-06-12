@@ -13,14 +13,22 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
 /**
- * Ordered choice expression i.e. (a | b | c).
+ * Ordered choice expression i.e. '{@code (a | b | c)}'.
  * <p>
  * This expression handles an ordered choice of sub-expressions, attempting to match each one in turn
  * and returning a match when the first sub-expression matches.  If none of the sub-expressions match, this
  * choice expression returns no-match.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
 public final class Choice extends CompoundExpression {
 
+	/**
+	 * Create a new {@link Choice} expression for the specified sub-expressions.
+	 *
+	 * @param expressions the sub-expressions to test for match in order.
+	 * @return the new {@link Choice} expression.
+	 */
 	public static Builder of(ParsingExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
 	}

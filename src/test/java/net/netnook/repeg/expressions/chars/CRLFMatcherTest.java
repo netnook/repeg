@@ -1,7 +1,6 @@
 package net.netnook.repeg.expressions.chars;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 

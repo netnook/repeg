@@ -4,6 +4,9 @@ import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 import net.netnook.repeg.expressions.Visitor;
 
+/**
+ * An expression which matches when the end of the input has been reached.
+ */
 public final class EndOfInput extends SimpleExpression {
 
 	private static final EndOfInput EOI = new EndOfInput();

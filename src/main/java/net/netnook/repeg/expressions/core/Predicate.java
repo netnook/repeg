@@ -10,12 +10,36 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
+/**
+ * Predicate expression e.g. '{@code &(a)}' (match), '{@code !(a)}' (no match).
+ * <p>
+ * This expression tests the current input for a match/no-match of a sub-expression
+ * itself returning a match if the sub-expression matches (in the case of a &/match predicate)
+ * or if the sub-expression does not match (in the case of a !/no-match predicate).
+ * <p>
+ * This expression never consumes any input and always resets the stack to it's initial position
+ * irrespective of the matching result of the sub-expression.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class Predicate extends CompoundExpression {
 
+	/**
+	 * Create a new {@link Predicate} expression which matches when the specified sub-expression matches.
+	 *
+	 * @param expression the sub-expression to match.
+	 * @return the new {@link Predicate} expression.
+	 */
 	public static Builder match(ParsingExpressionBuilder expression) {
 		return new Builder().expression(expression, false);
 	}
 
+	/**
+	 * Create a new {@link Predicate} expression which matches when the specified sub-expression does not match.
+	 *
+	 * @param expression the sub-expression to match.
+	 * @return the new {@link Predicate} expression.
+	 */
 	public static Builder not(ParsingExpressionBuilder expression) {
 		return new Builder().expression(expression, true);
 	}

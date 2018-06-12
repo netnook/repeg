@@ -12,7 +12,7 @@ package net.netnook.repeg.expressions.chars;
  *     <li>FORM FEED (U+000C, '\f')</li>
  *     <li>CARRIAGE RETURN (U+000D, '\r')</li>
  * </ul>
- *
+ * <p>
  * This matcher corresponds to the {@code '\s'} shorthand character class.
  */
 final class AsciiWhitespaceMatcher extends CharMatcher {

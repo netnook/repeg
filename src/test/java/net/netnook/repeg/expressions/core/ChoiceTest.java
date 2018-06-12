@@ -9,6 +9,7 @@ import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.ParsingExpression;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
+import net.netnook.repeg.expressions.chars.CharMatcher;
 
 public class ChoiceTest extends MatcherTestBase {
 
@@ -17,8 +18,8 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
-		isB = CharacterExpression.character('b').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isA = CharacterExpression.using(CharMatcher.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isB = CharacterExpression.using(CharMatcher.is('b')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 		buildContext("-abcd-").consumeChar();
 	}
 

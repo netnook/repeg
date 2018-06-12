@@ -4,6 +4,11 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
+/**
+ * An expression which matches any of the common newline sequences '\n', '\r\n' or '\r'.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class NewlineExpression extends SimpleExpression {
 
 	private static final int LF = '\n';

@@ -7,30 +7,20 @@ import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 import net.netnook.repeg.expressions.chars.CharMatcher;
 
+/**
+ * Character expression e.g. '{@code '[a]'}' (character 'a'), '{@code '[a-z]'}' (lower case ascii letter).
+ * <p>
+ * This expression matches individual characters in the input.  By default a single character is matched
+ * but the minCount and maxCount properties can be used to match repeating characters.
+ * This expression will match only if the minimum number of repeats are matched (default 1) and will
+ * never consume more than the maximum number of repetitions (default 1).
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class CharacterExpression extends SimpleExpression {
 
 	public static Builder using(CharMatcher matcher) {
 		return new Builder().matcher(matcher);
-	}
-
-	public static Builder any() {
-		return new Builder().matcher(CharMatcher.any());
-	}
-
-	public static Builder asciiWhitespace() {
-		return new Builder().matcher(CharMatcher.asciiWhitespace());
-	}
-
-	public static Builder character(char c) {
-		return new Builder().matcher(CharMatcher.is(c));
-	}
-
-	public static Builder in(String characters) {
-		return new Builder().matcher(CharMatcher.in(characters));
-	}
-
-	public static Builder inRange(char from, char to) {
-		return new Builder().matcher(CharMatcher.inRange(from, to));
 	}
 
 	public static class Builder extends ParsingExpressionBuilderBase {

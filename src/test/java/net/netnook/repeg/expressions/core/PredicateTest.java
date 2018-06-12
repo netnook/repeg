@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import net.netnook.repeg.expressions.ParsingExpression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
+import net.netnook.repeg.expressions.chars.CharMatcher;
 
 public class PredicateTest extends MatcherTestBase {
 
@@ -14,7 +15,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.character('a');
+		isA = CharacterExpression.using(CharMatcher.is('a'));
 		buildContext("-abcd-").consumeChar();
 	}
 

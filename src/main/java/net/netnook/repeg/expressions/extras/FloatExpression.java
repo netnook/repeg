@@ -4,6 +4,14 @@ import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
+/**
+ * An expression which matches a sequence of characters containing a floating point value.
+ * <p>
+ * Matches the regex '-?[0-9]*\.[0-9]*' with at least one digit before or after the decimal point '.'.
+ * <p>
+ * This expression has a default {@link OnSuccessHandler} which converts the matched input to
+ * a {@link Float} and pushes it onto the stack.
+ */
 public final class FloatExpression extends SimpleExpression {
 
 	private static final FloatExpression INSTANCE = new FloatExpression();

@@ -10,8 +10,22 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
+/**
+ * Optional expression i.e. '{@code (a)?}'.
+ * <p>
+ * This expression handles an optional sub-expression, attempting to match the sub-expression
+ * but always returning a positive match.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class Optional extends CompoundExpression {
 
+	/**
+	 * Create a new {@link Optional} expression for the specified sub-expression.
+	 *
+	 * @param expression the sub-expression to match.
+	 * @return the new {@link Optional} expression.
+	 */
 	public static Builder of(ParsingExpressionBuilder expression) {
 		return new Builder().expression(expression);
 	}

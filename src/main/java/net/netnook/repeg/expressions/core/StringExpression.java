@@ -5,8 +5,21 @@ import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
+/**
+ * String expression i.e. '{@code 'foobar'}'.
+ * <p>
+ * This expression matches the specified string in the input.
+ * <p>
+ * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ */
 public final class StringExpression extends SimpleExpression {
 
+	/**
+	 * Create new {@link StringExpression} for the specified string.
+	 *
+	 * @param str string to match
+	 * @return the new {@link StringExpression}.
+	 */
 	public static Builder of(String str) {
 		return new Builder(str);
 	}
