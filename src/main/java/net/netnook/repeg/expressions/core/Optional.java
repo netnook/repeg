@@ -14,7 +14,8 @@ import net.netnook.repeg.expressions.RootContext;
  * Optional expression i.e. '{@code (a)?}'.
  * <p>
  * This expression handles an optional sub-expression, attempting to match the sub-expression
- * but always returning a positive match.
+ * but always returning a positive match.  A {@link Optional} expression's {@link OnSuccessHandler} will
+ * always be called.
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */

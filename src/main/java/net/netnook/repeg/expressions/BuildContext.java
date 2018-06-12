@@ -3,6 +3,9 @@ package net.netnook.repeg.expressions;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Build context used by expressions builders during the build phase to handle cyclic dependencies amongst rules.
+ */
 public final class BuildContext {
 
 	private static final ThreadLocal<BuildContext> threadLocal = ThreadLocal.withInitial(BuildContext::new);
