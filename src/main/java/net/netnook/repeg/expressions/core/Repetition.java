@@ -1,0 +1,170 @@
+package net.netnook.repeg.expressions.core;
+
+import java.util.Collections;
+import java.util.List;
+
+import net.netnook.repeg.expressions.CompoundExpression;
+import net.netnook.repeg.expressions.InvalidExpressionException;
+import net.netnook.repeg.expressions.OnSuccessHandler;
+import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.ParsingExpressionBuilder;
+import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.expressions.RootContext;
+
+public final class Repetition extends CompoundExpression {
+
+	public static Builder of(ParsingExpressionBuilder expression) {
+		return zeroOrMore(expression);
+	}
+
+	public static Builder one(ParsingExpressionBuilder expression) {
+		return new Builder() //
+				.minCount(1) //
+				.maxCount(1) //
+				.expression(expression);
+	}
+
+	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
+		return new Builder() //
+				.expression(expression);
+	}
+
+	public static Builder oneOrMore(ParsingExpressionBuilder expression) {
+		return new Builder() //
+				.expression(expression) //
+				.minCount(1);
+	}
+
+	public static class Builder extends ParsingExpressionBuilderBase {
+		private ParsingExpressionBuilder expression;
+		private int minCount = 0;
+		private int maxCount = Integer.MAX_VALUE;
+
+		public Builder expression(ParsingExpressionBuilder expression) {
+			this.expression = expression;
+			return this;
+		}
+
+		@Override
+		public Builder onSuccess(OnSuccessHandler onSuccess) {
+			super.onSuccess(onSuccess);
+			return this;
+		}
+
+		public Builder count(int count) {
+			validate(count >= 1, "Invalid expression: count must be >= 1");
+			this.minCount = count;
+			this.maxCount = count;
+			return this;
+		}
+
+		public Builder minCount(int minCount) {
+			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
+			this.minCount = minCount;
+			return this;
+		}
+
+		public Builder maxCount(int maxCount) {
+			validate(maxCount >= 1, "Invalid expression: max count must be >= 1");
+			this.maxCount = maxCount;
+			return this;
+		}
+
+		public Builder maxUnbounded() {
+			this.maxCount = Integer.MAX_VALUE;
+			return this;
+		}
+
+		public Builder count() {
+			this.maxCount = Integer.MAX_VALUE;
+			return this;
+		}
+
+		@Override
+		protected ParsingExpression doBuild() {
+			if (minCount > maxCount) {
+				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
+			}
+
+			if (expression instanceof CharacterExpression.Builder) {
+				CharacterExpression.Builder characterExpression = (CharacterExpression.Builder) expression;
+
+				if (characterExpression.hasDefaults()) {
+					// FIXME: Should clone the builder ?
+					// FIXME: Test this
+					characterExpression.minCount(minCount);
+					characterExpression.maxCount(maxCount);
+					characterExpression.onSuccess(getOnSuccess());
+					return characterExpression.build();
+				}
+			}
+
+			return new Repetition(this);
+		}
+	}
+
+	private final ParsingExpression expression;
+	private final int minCount;
+	private final int maxCount;
+
+	private Repetition(Builder builder) {
+		super(builder.getOnSuccess());
+		this.expression = builder.expression.build();
+		this.minCount = builder.minCount;
+		this.maxCount = builder.maxCount;
+
+		if (expression instanceof Optional) {
+			throw new InvalidExpressionException("Cannot have optional content in repeating construct.");
+		}
+	}
+
+	public int getMinCount() {
+		return minCount;
+	}
+
+	public int getMaxCount() {
+		return maxCount;
+	}
+
+	@Override
+	public List<ParsingExpression> parts() {
+		return Collections.singletonList(expression);
+	}
+
+	@Override
+	public String buildGrammar() {
+		if (minCount == 0 && maxCount == Integer.MAX_VALUE) {
+			return "(" + expression.buildGrammar() + ")*";
+		} else if (minCount == 1 && maxCount == Integer.MAX_VALUE) {
+			return "(" + expression.buildGrammar() + ")+";
+		} else if (maxCount == Integer.MAX_VALUE) {
+			return "(" + expression.buildGrammar() + "){" + minCount + ",}";
+		} else if (minCount == maxCount) {
+			return "(" + expression.buildGrammar() + "){" + minCount + "}";
+		} else {
+			return "(" + expression.buildGrammar() + "){" + minCount + "," + maxCount + "}";
+		}
+	}
+
+	@Override
+	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+		int successCount = 0;
+
+		while (successCount < maxCount) {
+			int fallbackPosition = context.position();
+			int fallbackStackIdx = context.stackSize();
+
+			boolean success = expression.parse(context);
+
+			if (!success) {
+				context.resetTo(fallbackPosition, fallbackStackIdx);
+				break;
+			}
+
+			successCount++;
+		}
+
+		return successCount >= minCount;
+	}
+}
+

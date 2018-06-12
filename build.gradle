@@ -2,7 +2,7 @@ repositories {
 	mavenCentral()
 }
 
-group 'net.netnook.qpeg'
+group 'net.netnook.repeg'
 
 apply plugin: 'java'
 
