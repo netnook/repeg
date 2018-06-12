@@ -29,7 +29,7 @@ public class CharacterExpressionTest extends MatcherTestBase {
 
 	@Test
 	public void test_whitespace() {
-		assertThat(CharacterExpression.whitespace().build().buildGrammar()).isEqualTo("[\\s]");
+		assertThat(CharacterExpression.asciiWhitespace().build().buildGrammar()).isEqualTo("[\\s]");
 	}
 
 	@Test

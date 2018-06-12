@@ -17,8 +17,8 @@ public final class CharacterExpression extends SimpleExpression {
 		return new Builder().matcher(CharMatcher.any());
 	}
 
-	public static Builder whitespace() {
-		return new Builder().matcher(CharMatcher.whitespace());
+	public static Builder asciiWhitespace() {
+		return new Builder().matcher(CharMatcher.asciiWhitespace());
 	}
 
 	public static Builder character(char c) {

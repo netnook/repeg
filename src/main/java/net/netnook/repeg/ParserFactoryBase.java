@@ -120,12 +120,11 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static CharMatcher crlf() {
-		// TODO: better performing solution
-		return CharMatcher.in("\r\n");
+		return CharMatcher.crlf();
 	}
 
-	protected static CharMatcher whitespace() {
-		return CharMatcher.whitespace();
+	protected static CharMatcher asciiWhitespace() {
+		return CharMatcher.asciiWhitespace();
 	}
 
 	protected static CharMatcher horizontalWhitespace() {

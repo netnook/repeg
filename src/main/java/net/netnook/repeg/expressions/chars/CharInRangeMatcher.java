@@ -1,5 +1,8 @@
 package net.netnook.repeg.expressions.chars;
 
+/**
+ * {@link CharMatcher} which matches a character if between a lower ({@code from}) and upper ({@code to}) bounds.  Inclusive match.
+ */
 final class CharInRangeMatcher extends CharMatcher {
 	private final char from;
 	private final char to;

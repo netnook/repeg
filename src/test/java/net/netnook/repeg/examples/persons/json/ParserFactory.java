@@ -254,5 +254,5 @@ public class ParserFactory extends ParserFactoryBase {
 		);
 	}
 
-	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatcher.whitespace());
+	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatcher.asciiWhitespace());
 }

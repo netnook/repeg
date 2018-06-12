@@ -100,12 +100,12 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						zeroOrMore(whitespace()), //
+						zeroOrMore(asciiWhitespace()), //
 						choice( //
 								Number, //
 								Parens //
 						), //
-						zeroOrMore(whitespace()) //
+						zeroOrMore(asciiWhitespace()) //
 				); //
 			}
 		},

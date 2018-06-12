@@ -1,5 +1,8 @@
 package net.netnook.repeg.expressions.chars;
 
+/**
+ * {@link CharMatcher} which matches a single character.
+ */
 final class CharIsMatcher extends CharMatcher {
 	private final char c;
 
