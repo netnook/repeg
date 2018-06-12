@@ -2,17 +2,12 @@ package net.netnook.repeg.expressions;
 
 import java.util.List;
 
-// TODO switch to interface ??
-public abstract class CompoundExpression extends ParsingExpressionBase {
+public interface CompoundExpression extends ParsingExpression {
 
-	protected CompoundExpression(OnSuccessHandler onSuccess) {
-		super(onSuccess);
-	}
-
-	public abstract List<ParsingExpression> parts();
+	List<ParsingExpression> parts();
 
 	@Override
-	public void accept(Visitor visitor) {
+	default void accept(Visitor visitor) {
 		visitor.visit(this);
 	}
 }

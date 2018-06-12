@@ -101,7 +101,7 @@ public final class RootContext {
 		return Collections.unmodifiableList(stack);
 	}
 
-	// FIXME: better way to truncate stack ??
+	// TODO: better way to truncate stack ??
 	void truncateStack(int toSize) {
 		for (int idx = stack.size() - 1; idx >= toSize; idx--) {
 			stack.remove(idx);

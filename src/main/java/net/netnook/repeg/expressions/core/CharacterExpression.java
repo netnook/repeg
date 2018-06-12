@@ -2,6 +2,7 @@ package net.netnook.repeg.expressions.core;
 
 import net.netnook.repeg.expressions.InvalidExpressionException;
 import net.netnook.repeg.expressions.OnSuccessHandler;
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
@@ -17,7 +18,7 @@ import net.netnook.repeg.expressions.chars.CharMatcher;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class CharacterExpression extends SimpleExpression {
+public final class CharacterExpression extends ParsingExpressionBase implements SimpleExpression {
 
 	public static Builder using(CharMatcher matcher) {
 		return new Builder().matcher(matcher);
@@ -120,7 +121,7 @@ public final class CharacterExpression extends SimpleExpression {
 		while (pos < maxPos) {
 			int found = context.charAt(pos);
 
-			// FIXME: unicode handling ?
+			// TODO: unicode handling ?
 			boolean match = (found != RootContext.END_OF_INPUT) && matcher.isMatch(found);
 			if (!match) {
 				break;

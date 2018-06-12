@@ -1,6 +1,7 @@
 package net.netnook.repeg.expressions.core;
 
 import net.netnook.repeg.expressions.OnSuccessHandler;
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
@@ -12,7 +13,7 @@ import net.netnook.repeg.expressions.SimpleExpression;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class StringExpression extends SimpleExpression {
+public final class StringExpression extends ParsingExpressionBase implements SimpleExpression {
 
 	/**
 	 * Create new {@link StringExpression} for the specified string.

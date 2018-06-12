@@ -7,6 +7,7 @@ import net.netnook.repeg.expressions.CompoundExpression;
 import net.netnook.repeg.expressions.InvalidExpressionException;
 import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -25,7 +26,7 @@ import net.netnook.repeg.expressions.RootContext;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class Repetition extends CompoundExpression {
+public final class Repetition extends ParsingExpressionBase implements CompoundExpression {
 
 	/**
 	 * Same as {@link Repetition#zeroOrMore(ParsingExpressionBuilder)}.
@@ -124,7 +125,7 @@ public final class Repetition extends CompoundExpression {
 
 				if (characterExpression.hasDefaults()) {
 					// FIXME: Should clone the builder ?
-					// FIXME: Test this
+					// TODO: Test this
 					characterExpression.minCount(minCount);
 					characterExpression.maxCount(maxCount);
 					characterExpression.onSuccess(getOnSuccess());

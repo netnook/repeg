@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import net.netnook.repeg.expressions.CompoundExpression;
 import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -20,7 +21,7 @@ import net.netnook.repeg.expressions.RootContext;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class Sequence extends CompoundExpression {
+public final class Sequence extends ParsingExpressionBase implements CompoundExpression {
 
 	/**
 	 * Create a new {@link Sequence} expression with the specified sub-expressions.

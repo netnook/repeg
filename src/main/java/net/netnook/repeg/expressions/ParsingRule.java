@@ -1,11 +1,12 @@
 package net.netnook.repeg.expressions;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import net.netnook.repeg.util.ParseListener;
 
-public final class ParsingRule extends ParsingExpressionBase {
+public final class ParsingRule extends ParsingExpressionBase implements CompoundExpression {
 
 	public static final Comparator<? super ParsingRule> SORT_BY_NAME_WITH_START_FIRST = (Comparator<ParsingRule>) (r1, r2) -> {
 		String name1 = r1.getName();
@@ -21,7 +22,7 @@ public final class ParsingRule extends ParsingExpressionBase {
 	};
 
 	private final String name;
-	// FIXME: is there a way to make this final too ?
+	// TODO: is there a way to make this final too ?
 	private ParsingExpression expression;
 
 	ParsingRule(ParsingRuleBuilder builder) {
@@ -45,11 +46,6 @@ public final class ParsingRule extends ParsingExpressionBase {
 	@Override
 	public String buildGrammar() {
 		return name;
-	}
-
-	@Override
-	public void accept(Visitor visitor) {
-		visitor.visit(this);
 	}
 
 	public <T> T parse(CharSequence input) throws ParseException {
@@ -80,6 +76,16 @@ public final class ParsingRule extends ParsingExpressionBase {
 	@Override
 	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
 		return expression.parse(context);
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	@Override
+	public List<ParsingExpression> parts() {
+		return Collections.singletonList(expression);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import net.netnook.repeg.expressions.CompoundExpression;
 import net.netnook.repeg.expressions.OnSuccessHandler;
 import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -22,7 +23,7 @@ import net.netnook.repeg.expressions.RootContext;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class Predicate extends CompoundExpression {
+public final class Predicate extends ParsingExpressionBase implements CompoundExpression {
 
 	/**
 	 * Create a new {@link Predicate} expression which matches when the specified sub-expression matches.

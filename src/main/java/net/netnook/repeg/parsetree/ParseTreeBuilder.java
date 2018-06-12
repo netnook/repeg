@@ -48,7 +48,7 @@ public class ParseTreeBuilder implements ParseListener {
 	}
 
 	private List<ParseNode> popToMarker() {
-		// FIXME: consider a some stack implementation which can be reused between here and Context
+		// TODO: consider a some stack implementation which can be reused between here and Context
 		int count = sizeToMarker();
 
 		List<ParseNode> results = new ArrayList<>(count);

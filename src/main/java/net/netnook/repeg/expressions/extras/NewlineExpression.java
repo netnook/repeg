@@ -1,5 +1,6 @@
 package net.netnook.repeg.expressions.extras;
 
+import net.netnook.repeg.expressions.ParsingExpressionBase;
 import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
@@ -9,7 +10,7 @@ import net.netnook.repeg.expressions.SimpleExpression;
  * <p>
  * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
  */
-public final class NewlineExpression extends SimpleExpression {
+public final class NewlineExpression extends ParsingExpressionBase implements SimpleExpression {
 
 	private static final int LF = '\n';
 	private static final int CR = '\r';

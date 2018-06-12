@@ -1,6 +1,6 @@
 package net.netnook.repeg.expressions;
 
-abstract class ParsingExpressionBase implements ParsingExpression, ParsingExpressionBuilder {
+public abstract class ParsingExpressionBase implements ParsingExpression, ParsingExpressionBuilder {
 
 	private final OnSuccessHandler onSuccess;
 
