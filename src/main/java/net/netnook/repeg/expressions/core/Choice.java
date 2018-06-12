@@ -14,7 +14,7 @@ import net.netnook.repeg.expressions.RootContext;
 
 /**
  * Ordered choice expression i.e. (a | b | c).
- *
+ * <p>
  * This expression handles an ordered choice of sub-expressions, attempting to match each one in turn
  * and returning a match when the first sub-expression matches.  If none of the sub-expressions match, this
  * choice expression returns no-match.

@@ -27,7 +27,7 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		Proj() {
+		Proj {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
@@ -56,14 +56,16 @@ public class ParserFactory extends ParserFactoryBase {
 						endOfLineOrInput() //
 				);
 			}
-		}, //
+		},
+
 		ProjectName {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.replaceWith(context.getCharSequence().toString().trim()));
 			}
-		}, //
+		},
+
 		TaskLine {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -85,7 +87,8 @@ public class ParserFactory extends ParserFactoryBase {
 					context.replaceWith(task);
 				});
 			}
-		}, //
+		},
+
 		DoneField {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -96,7 +99,8 @@ public class ParserFactory extends ParserFactoryBase {
 						) //
 				).onSuccess(pushIfEmpty(Boolean.FALSE));
 			}
-		}, //
+		},
+
 		DueDateField {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -116,14 +120,16 @@ public class ParserFactory extends ParserFactoryBase {
 						}) //
 				).onSuccess(pushIfEmpty(null));
 			}
-		}, //
+		},
+
 		DescriptionField {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.push(context.getCharSequence().toString().trim()));
 			}
-		}, //
+		},
+
 		EmptyLines {
 			@Override
 			public ParsingExpressionBuilder expression() {

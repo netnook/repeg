@@ -43,7 +43,7 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		HeaderLine() {
+		HeaderLine {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //

@@ -31,7 +31,7 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		Period_Part() {
+		Period_Part {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
@@ -65,7 +65,8 @@ public class ParserFactory extends ParserFactoryBase {
 					context.replaceWith(Duration.ofSeconds(totalSeconds));
 				})).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
 			}
-		}, //
+		},
+
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {

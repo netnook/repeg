@@ -22,8 +22,7 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		//
-		Expression() {
+		Expression {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
@@ -60,7 +59,7 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		Term() {
+		Term {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
@@ -95,7 +94,8 @@ public class ParserFactory extends ParserFactoryBase {
 					context.replaceWith(result);
 				});
 			}
-		}, //
+		},
+
 		Factor {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -108,7 +108,8 @@ public class ParserFactory extends ParserFactoryBase {
 						zeroOrMore(whitespace()) //
 				); //
 			}
-		}, //
+		},
+
 		Parens {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -118,7 +119,8 @@ public class ParserFactory extends ParserFactoryBase {
 						one(')') //
 				);
 			}
-		}, //
+		},
+
 		Number {
 			@Override
 			public ParsingExpressionBuilder expression() {

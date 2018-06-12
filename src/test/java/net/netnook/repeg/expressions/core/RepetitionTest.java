@@ -202,29 +202,30 @@ public class RepetitionTest extends MatcherTestBase {
 	public void test_not_auto_replacement_by_charexpression() {
 		Repetition e;
 
-		e = (Repetition)Repetition.of(character('a').minCount(0)).count(5).build();
+		e = (Repetition) Repetition.of(character('a').minCount(0)).count(5).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(0);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(1);
-		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMinCount()).isEqualTo(0);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMaxCount()).isEqualTo(1);
+		assertThat(((CharacterExpression) e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (Repetition)Repetition.of(character('a').maxCount(2)).count(5).build();
+		e = (Repetition) Repetition.of(character('a').maxCount(2)).count(5).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(1);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(2);
-		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMinCount()).isEqualTo(1);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMaxCount()).isEqualTo(2);
+		assertThat(((CharacterExpression) e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (Repetition)Repetition.of(character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING)).count(5).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_FLOAT).build();
+		e = (Repetition) Repetition.of(character('a').onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING)).count(5).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_FLOAT)
+				.build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.PUSH_TEXT_AS_FLOAT);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMinCount()).isEqualTo(1);
-		assertThat(((CharacterExpression)e.parts().get(0)).getMaxCount()).isEqualTo(1);
-		assertThat(((CharacterExpression)e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMinCount()).isEqualTo(1);
+		assertThat(((CharacterExpression) e.parts().get(0)).getMaxCount()).isEqualTo(1);
+		assertThat(((CharacterExpression) e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 	}
 
 }
