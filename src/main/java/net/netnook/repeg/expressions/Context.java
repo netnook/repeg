@@ -69,14 +69,14 @@ public final class Context {
 
 	/**
 	 * Get an element from the stack which was added by the current expression or one of it's descendents.
-	 * <p>
-	 * Note: it is possible or generally not advised to use negative index as this would make the current
-	 * expression dependent on it's ancestor expressions.
 	 *
 	 * @param index the stack index, relative to the point when the current expression started.
 	 * @return element from the stack.
 	 */
 	public <T> T get(int index) {
+		if (index < 0) {
+			throw new IllegalArgumentException("Invalid index.  Must be >= 0");
+		}
 		return context.get(index + stackOffset);
 	}
 
