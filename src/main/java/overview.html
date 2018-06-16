@@ -1,0 +1,111 @@
+<html>
+<body>
+Parser library for creating parsers based on PEG principals.
+
+<p>
+	{@code repeg} offers the ability to create parsers based on <a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar" target="_blank">Parsing
+	Expression Grammar (PEG)</a> principals. The main entry point for uses of this library is the {@link net.netnook.repeg.ParserFactoryBase} class
+	from which parsers can be defined.
+</p>
+<h2>Example</h2>
+<p>
+	The following example defines a parser which parses durations based on ISO standards, including a
+	date part and time part, such as {@code P1Y2M3DT4H5M6S} (1 ywae, 2 months, 3 days, 4 hours, 5 minutes
+	and 6 seconds):
+<pre>
+// Extend ParserFactoryBase  to access utility functions
+public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
+
+	// This is the only method which must be implemented and it must return the starting rule.
+	&#64;Override
+	protected ParsingRuleBuilder getStartRule() {
+		return Rules.START;
+	}
+
+	// Create expression as enum implementing the ParsingRuleBuilder utility interface
+	public enum Rules implements {@link net.netnook.repeg.expressions.ParsingRuleBuilder} {
+		START {
+			&#64;Override
+			public ParsingExpressionBuilder expression() {
+				// Expression: 'P' Period_Part Time_Part EndOfInput
+				return sequence(
+					one('P'),
+					Period_Part,
+					Time_Part,
+					endOfInput()
+				).onSuccess(context -> {
+					// On success, retrieve period and duration parts (created by respective expressions),
+					// build a new IsoDuration result and replace stack content with this result. This
+					// will form the single result of the parser.
+					Period period = context.get(0);
+					Duration duration = context.get(1);
+					context.replaceWith(IsoDuration.of(period, duration));
+				});
+			}
+		},
+
+		Period_Part {
+			&#64;Override
+			public ParsingExpressionBuilder expression() {
+				// Expression: ('Y' Number)? ('M' Number)? ('D' Number)?
+				return sequence(
+					// Each optional element adds '0' to the stack as a default using
+					// a success handler created by {@link net.netnook.repeg.ParserFactoryBase#pushIfEmpty(Object)}.
+					optional(sequence(Number, one('Y'))).onSuccess(pushIfEmpty(0)),
+					optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)),
+					optional(sequence(Number, one('D'))).onSuccess(pushIfEmpty(0))
+				).onSuccess((context) -> {
+					// On success, retrieve individual values, create a Period result and replace stack
+					// content with this result.
+					int years = context.get(0);
+					int months = context.get(1);
+					int days = context.get(2);
+					context.replaceWith(Period.of(years, months, days));
+				});
+			}
+		},
+
+		Time_Part {
+			&#64;Override
+			public ParsingExpressionBuilder expression() {
+				// Expression: ('T' ('H' Number)? ('M' Number)? ('S' Number)? )?
+				return optional(
+					sequence(
+						one('T'),
+						optional(sequence(Number, one('H'))).onSuccess(pushIfEmpty(0)),
+						optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)),
+						optional(sequence(Number, one('S'))).onSuccess(pushIfEmpty(0))
+					).onSuccess(context -> {
+						// On success, retrieve individual values, create a Duration result and replace stack
+						// content with this result.
+						int hours = context.get(0);
+						int minutes = context.get(1);
+						int seconds = context.get(2);
+
+						int totalSeconds = (((hours * 60) + minutes) * 60) + seconds;
+						context.replaceWith(Duration.ofSeconds(totalSeconds));
+					})
+				// Push a 0 duration onto stack if there was not time part in the input.
+				).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
+			}
+		},
+
+		Number {
+			&#64;Override
+			public ParsingExpressionBuilder expression() {
+				// Find sequence of one ore more digits, then on success convert to an integer and push
+				// onto stack using the a success handler created by
+				// {@link net.netnook.repeg.ParserFactoryBase#pushTextAsInteger()}.
+				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
+			}
+		};
+	}
+}
+</pre>
+</p>
+<p>
+	More examples can be found in the src test folders in src/test/java/net/netnook/repeg/examples.
+</p>
+</body>
+</html>
+

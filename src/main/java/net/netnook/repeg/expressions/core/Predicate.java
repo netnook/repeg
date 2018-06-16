@@ -15,7 +15,7 @@ import net.netnook.repeg.expressions.RootContext;
  * Predicate expression e.g. '{@code &(a)}' (match), '{@code !(a)}' (no match).
  * <p>
  * This expression tests the current input for a match/no-match of a sub-expression
- * itself returning a match if the sub-expression matches (in the case of a &/match predicate)
+ * itself returning a match if the sub-expression matches (in the case of a &amp;/match predicate)
  * or if the sub-expression does not match (in the case of a !/no-match predicate).
  * <p>
  * This expression never consumes any input and always resets the stack to it's initial position

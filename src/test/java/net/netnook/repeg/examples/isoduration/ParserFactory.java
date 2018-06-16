@@ -51,19 +51,21 @@ public class ParserFactory extends ParserFactoryBase {
 		Time_Part {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return optional(sequence( //
-						one('T'), //
-						optional(sequence(Number, one('H'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
-						optional(sequence(Number, one('S'))).onSuccess(pushIfEmpty(0)) //
-				).onSuccess(context -> {
-					int hours = context.get(0);
-					int minutes = context.get(1);
-					int seconds = context.get(2);
+				return optional( //
+						sequence( //
+								one('T'), //
+								optional(sequence(Number, one('H'))).onSuccess(pushIfEmpty(0)), //
+								optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
+								optional(sequence(Number, one('S'))).onSuccess(pushIfEmpty(0)) //
+						).onSuccess(context -> {
+							int hours = context.get(0);
+							int minutes = context.get(1);
+							int seconds = context.get(2);
 
-					int totalSeconds = (((hours * 60) + minutes) * 60) + seconds;
-					context.replaceWith(Duration.ofSeconds(totalSeconds));
-				})).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
+							int totalSeconds = (((hours * 60) + minutes) * 60) + seconds;
+							context.replaceWith(Duration.ofSeconds(totalSeconds));
+						}) //
+				).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
 			}
 		},
 

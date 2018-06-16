@@ -31,6 +31,10 @@ task jmh(type: JavaExec, dependsOn: jmhClasses) {
 	classpath = sourceSets.jmh.compileClasspath + sourceSets.jmh.runtimeClasspath
 }
 
+javadoc {
+	options.overview = "src/main/java/overview.html"
+}
+
 test {
 	testLogging {
 		events "passed", "skipped", "failed"

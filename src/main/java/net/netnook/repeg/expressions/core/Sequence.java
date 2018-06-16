@@ -27,10 +27,9 @@ public final class Sequence extends ParsingExpressionBase implements CompoundExp
 	 * Create a new {@link Sequence} expression with the specified sub-expressions.
 	 *
 	 * @param expressions sub-expressions to match
-	 * @param <T>
 	 * @return the new {@link Sequence} expression.
 	 */
-	public static <T extends ParsingExpressionBuilder> Builder of(T... expressions) {
+	public static Builder of(ParsingExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
 	}
 

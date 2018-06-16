@@ -17,6 +17,9 @@ import net.netnook.repeg.expressions.core.StringExpression;
 import net.netnook.repeg.expressions.extras.FloatExpression;
 import net.netnook.repeg.expressions.extras.NewlineExpression;
 
+/**
+ * Base class for defining parsers.
+ */
 public abstract class ParserFactoryBase {
 
 	public ParsingRule build() {

@@ -70,6 +70,7 @@ public final class Context {
 	/**
 	 * Get an element from the stack which was added by the current expression or one of it's descendents.
 	 *
+	 * @param <T> expected result type (not enforced)
 	 * @param index the stack index, relative to the point when the current expression started.
 	 * @return element from the stack.
 	 */
@@ -84,6 +85,7 @@ public final class Context {
 	 * Get all elements from the stack which were added by the current expression or one of it's descendents.
 	 * <p>
 	 *
+	 * @param <T> expected result type (not enforced)
 	 * @return elements from the stack.
 	 */
 	public <T> List<T> getAll() {

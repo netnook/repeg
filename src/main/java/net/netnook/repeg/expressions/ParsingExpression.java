@@ -20,7 +20,7 @@ public interface ParsingExpression extends Visitable {
 	 * <p>
 	 * If a match has occurred (i.e. when this method returns {@code true}), the {@code context} must have been
 	 * moved to the first character following the match.  An expression may optionally add or manipulate elements
-	 * on the stack held by the {@context}.  A well behaved expression should however never attempt to modify any
+	 * on the stack held by the {@code context}.  A well behaved expression should however never attempt to modify any
 	 * stack contents not resulting from itself or any of it's descendent expressions.
 	 * <p>
 	 * If no match occurred (i.e. when this method returns {@code false}, the input position and stack must be
