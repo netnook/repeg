@@ -2,11 +2,11 @@ package net.netnook.repeg.examples.template.model;
 
 import java.io.PrintWriter;
 
-public class TemplateText extends TemplateNode {
+public class Text extends Node {
 
 	private String string;
 
-	public TemplateText(String string) {
+	public Text(String string) {
 		this.string = string;
 	}
 

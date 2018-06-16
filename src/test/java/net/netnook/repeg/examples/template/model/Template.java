@@ -3,16 +3,16 @@ package net.netnook.repeg.examples.template.model;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class Template extends TemplateNode {
-	private final List<TemplateNode> children;
+public class Template extends Node {
+	private final List<Node> children;
 
-	public Template(List<TemplateNode> children) {
+	public Template(List<Node> children) {
 		this.children = children;
 	}
 
 	@Override
 	public void render(Context ctxt, PrintWriter out) {
-		for (TemplateNode child : children) {
+		for (Node child : children) {
 			child.render(ctxt, out);
 		}
 	}

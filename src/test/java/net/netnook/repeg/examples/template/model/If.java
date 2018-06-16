@@ -3,11 +3,11 @@ package net.netnook.repeg.examples.template.model;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class TemplateIf extends TemplateNode {
+public class If extends Node {
 	private final String ref;
-	private final List<TemplateNode> children;
+	private final List<Node> children;
 
-	public TemplateIf(String ref, List<TemplateNode> children) {
+	public If(String ref, List<Node> children) {
 		this.ref = ref;
 		this.children = children;
 	}
@@ -18,7 +18,7 @@ public class TemplateIf extends TemplateNode {
 
 		boolean isTrue = Boolean.TRUE.equals(value);
 		if (isTrue) {
-			for (TemplateNode child : children) {
+			for (Node child : children) {
 				child.render(ctxt, out);
 			}
 		}

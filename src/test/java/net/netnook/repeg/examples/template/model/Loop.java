@@ -4,12 +4,12 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
-public class TemplateLoop extends TemplateNode {
+public class Loop extends Node {
 	private final String var;
 	private final String ref;
-	private final List<TemplateNode> children;
+	private final List<Node> children;
 
-	public TemplateLoop(String var, String ref, List<TemplateNode> children) {
+	public Loop(String var, String ref, List<Node> children) {
 		this.var = var;
 		this.ref = ref;
 		this.children = children;
@@ -20,7 +20,7 @@ public class TemplateLoop extends TemplateNode {
 		Collection collection = ctxt.resolve(ref);
 		for (Object element : collection) {
 			ctxt.set(var, element);
-			for (TemplateNode child : children) {
+			for (Node child : children) {
 				child.render(ctxt, out);
 			}
 			ctxt.clear(var);

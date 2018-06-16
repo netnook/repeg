@@ -1,6 +1,6 @@
 package net.netnook.repeg.examples.template.model;
 
-public class Trim {
+public class TrimSettings {
 	private boolean before;
 	private boolean after;
 	private boolean beforeChildren;

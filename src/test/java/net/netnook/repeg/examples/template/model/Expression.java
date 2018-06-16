@@ -2,10 +2,10 @@ package net.netnook.repeg.examples.template.model;
 
 import java.io.PrintWriter;
 
-public class TemplateExpression extends TemplateNode {
+public class Expression extends Node {
 	private final String ref;
 
-	public TemplateExpression(String ref) {
+	public Expression(String ref) {
 		this.ref = ref;
 	}
 

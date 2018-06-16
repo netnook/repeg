@@ -5,11 +5,11 @@ import java.util.List;
 
 import net.netnook.repeg.ParserFactoryBase;
 import net.netnook.repeg.examples.template.model.Template;
-import net.netnook.repeg.examples.template.model.TemplateExpression;
-import net.netnook.repeg.examples.template.model.TemplateIf;
-import net.netnook.repeg.examples.template.model.TemplateLoop;
-import net.netnook.repeg.examples.template.model.TemplateNode;
-import net.netnook.repeg.examples.template.model.TemplateText;
+import net.netnook.repeg.examples.template.model.Expression;
+import net.netnook.repeg.examples.template.model.If;
+import net.netnook.repeg.examples.template.model.Loop;
+import net.netnook.repeg.examples.template.model.Node;
+import net.netnook.repeg.examples.template.model.Text;
 import net.netnook.repeg.expressions.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.ParsingRuleBuilder;
 
@@ -25,10 +25,10 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
-						Nodes, //
+						NodesExpr, //
 						endOfInput() //
 				).onSuccess(context -> {
-					List<TemplateNode> nodes = context.get(0);
+					List<Node> nodes = context.get(0);
 					Template template = new Template(nodes);
 					template.preTrim();
 					context.replaceWith(template);
@@ -36,10 +36,10 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		Nodes {
+		NodesExpr {
 			@Override
 			public ParsingExpressionBuilder expression() {
-				return zeroOrMore(Node).onSuccess(context -> {
+				return zeroOrMore(NodeExpr).onSuccess(context -> {
 					int count = context.stackSize();
 					if (count == 0) {
 						context.replaceWith(Collections.emptyList());
@@ -52,28 +52,28 @@ public class ParserFactory extends ParserFactoryBase {
 			}
 		},
 
-		Node {
+		NodeExpr {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return choice( //
 						Text, //
-						ControlFlowNode, //
-						ExpressionNode //
+						ControlFlowExpr, //
+						ExpressionExpr //
 				);
 			}
 		},
 
-		ControlFlowNode {
+		ControlFlowExpr {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return choice( //
-						IfControlFlow, //
-						LoopControlFlow //
+						IfControlFlowExpr, //
+						LoopControlFlowExpr //
 				);
 			}
 		},
 
-		IfControlFlow {
+		IfControlFlowExpr {
 			// {% if x %} ... {% endif %}
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -87,7 +87,7 @@ public class ParserFactory extends ParserFactoryBase {
 						SkipMin1Whitespace, //
 						TrimControl, //
 						string("%}"), //
-						Nodes, //
+						NodesExpr, //
 						string("{%"), //
 						TrimControl, //
 						SkipMin1Whitespace, //
@@ -99,22 +99,22 @@ public class ParserFactory extends ParserFactoryBase {
 					boolean trimBefore = context.get(0);
 					String ref = context.get(1);
 					boolean trimBeforeChildren = context.get(2);
-					List<TemplateNode> children = context.get(3);
+					List<Node> children = context.get(3);
 					boolean trimAfterChildren = context.get(4);
 					boolean trimAfter = context.get(5);
 
-					TemplateIf node = new TemplateIf(ref, children);
-					node.getTrims().setBefore(trimBefore);
-					node.getTrims().setAfter(trimAfter);
-					node.getTrims().setBeforeChildren(trimBeforeChildren);
-					node.getTrims().setAfterChildren(trimAfterChildren);
+					If node = new If(ref, children);
+					node.getTrimSettings().setBefore(trimBefore);
+					node.getTrimSettings().setAfter(trimAfter);
+					node.getTrimSettings().setBeforeChildren(trimBeforeChildren);
+					node.getTrimSettings().setAfterChildren(trimAfterChildren);
 
 					context.replaceWith(node);
 				});
 			}
 		},
 
-		LoopControlFlow {
+		LoopControlFlowExpr {
 			// {% for x in y %} ... {% endfor %}
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -131,7 +131,7 @@ public class ParserFactory extends ParserFactoryBase {
 						SkipMin1Whitespace, //
 						TrimControl, //
 						string("%}"), //
-						Nodes, //
+						NodesExpr, //
 						string("{%"), //
 						TrimControl, //
 						SkipWhitespace, //
@@ -144,22 +144,22 @@ public class ParserFactory extends ParserFactoryBase {
 					String var = context.get(1);
 					String ref = context.get(2);
 					boolean trimBeforeChildren = context.get(3);
-					List<TemplateNode> children = context.get(4);
+					List<Node> children = context.get(4);
 					boolean trimAfterChildren = context.get(5);
 					boolean trimAfter = context.get(6);
 
-					TemplateLoop node = new TemplateLoop(var, ref, children);
-					node.getTrims().setBefore(trimBefore);
-					node.getTrims().setAfter(trimAfter);
-					node.getTrims().setBeforeChildren(trimBeforeChildren);
-					node.getTrims().setAfterChildren(trimAfterChildren);
+					Loop node = new Loop(var, ref, children);
+					node.getTrimSettings().setBefore(trimBefore);
+					node.getTrimSettings().setAfter(trimAfter);
+					node.getTrimSettings().setBeforeChildren(trimBeforeChildren);
+					node.getTrimSettings().setAfterChildren(trimAfterChildren);
 
 					context.replaceWith(node);
 				});
 			}
 		},
 
-		ExpressionNode {
+		ExpressionExpr {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return sequence( //
@@ -175,9 +175,9 @@ public class ParserFactory extends ParserFactoryBase {
 					String ref = context.get(1);
 					boolean trimAfter = context.get(2);
 
-					TemplateExpression node = new TemplateExpression(ref);
-					node.getTrims().setBefore(trimBefore);
-					node.getTrims().setAfter(trimAfter);
+					Expression node = new Expression(ref);
+					node.getTrimSettings().setBefore(trimBefore);
+					node.getTrimSettings().setAfter(trimAfter);
 
 					context.replaceWith(node);
 				});
@@ -225,7 +225,7 @@ public class ParserFactory extends ParserFactoryBase {
 								one(anyChar()) //
 						) //
 				).onSuccess(context -> {
-					context.push(new TemplateText(context.getCharSequence().toString()));
+					context.push(new Text(context.getCharSequence().toString()));
 				});
 			}
 		},
@@ -234,6 +234,7 @@ public class ParserFactory extends ParserFactoryBase {
 			@Override
 			public ParsingExpressionBuilder expression() {
 				return optional('-').onSuccess(context -> {
+					// Push "true" if there was a '-'.  Push "false" otherwise.
 					context.push(context.inputLength() > 0);
 				});
 			}
