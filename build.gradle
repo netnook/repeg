@@ -11,8 +11,6 @@ targetCompatibility = 1.8
 
 sourceSets {
 	jmh {
-		java.srcDirs = ['src/jmh/java']
-		resources.srcDirs = ['src/jmh/resources']
 		compileClasspath += sourceSets.main.runtimeClasspath
 		compileClasspath += sourceSets.test.runtimeClasspath
 	}
@@ -32,8 +30,6 @@ task jmh(type: JavaExec, dependsOn: jmhClasses) {
 	main = 'org.openjdk.jmh.Main'
 	classpath = sourceSets.jmh.compileClasspath + sourceSets.jmh.runtimeClasspath
 }
-
-classes.finalizedBy(jmhClasses)
 
 test {
 	testLogging {
