@@ -1,5 +1,8 @@
 package net.netnook.repeg.expressions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Context used by {@link OnSuccessHandler} to process matched input.
  * <p>
@@ -46,6 +49,15 @@ public final class Context {
 	}
 
 	/**
+	 * Get number of characters matched by the expression
+	 *
+	 * @return number of characters
+	 */
+	public int inputLength() {
+		return context.position() - inputOffset;
+	}
+
+	/**
 	 * Get the number of elements on the stack produced/added by the current expression and all it's
 	 * descendents.
 	 *
@@ -66,6 +78,21 @@ public final class Context {
 	 */
 	public <T> T get(int index) {
 		return context.get(index + stackOffset);
+	}
+
+	/**
+	 * Get all elements from the stack which were added by the current expression or one of it's descendents.
+	 * <p>
+	 *
+	 * @return elements from the stack.
+	 */
+	public <T> List<T> getAll() {
+		int count = stackSize();
+		List<T> result = new ArrayList<>(count);
+		for (int i = 0; i < count; i++) {
+			result.add(get(i));
+		}
+		return result;
 	}
 
 	/**

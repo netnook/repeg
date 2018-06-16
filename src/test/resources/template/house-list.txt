@@ -1,0 +1,5 @@
+Available houses:
+
+{% for house in houses -%}
+ * {{ house.address.city }}:  {{ house.area }} m2, {{ house.numberOfRooms }} room(s) {% if house.furnished %} (furnished) {%- endif %}: {{ house.monthlyRent }} €/month
+{% endfor %}

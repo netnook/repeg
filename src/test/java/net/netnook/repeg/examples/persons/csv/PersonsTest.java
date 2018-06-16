@@ -2,17 +2,12 @@ package net.netnook.repeg.examples.persons.csv;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-
 import org.assertj.core.data.Offset;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import net.netnook.repeg.examples._utils.ResourceLoader;
 import net.netnook.repeg.examples.persons.Person;
 import net.netnook.repeg.examples.persons.Person.Gender;
 import net.netnook.repeg.examples.persons.Persons;
@@ -29,7 +24,7 @@ public class PersonsTest {
 
 	@Test
 	public void test1() {
-		CharSequence input = loadData("persons/persons.csv");
+		CharSequence input = ResourceLoader.load("persons/persons.csv");
 		Persons persons = rule.parse(input);
 		assertThat(persons.getPersons()).hasSize(10000);
 
@@ -60,7 +55,7 @@ public class PersonsTest {
 	@Test
 	@Ignore
 	public void performance() {
-		CharSequence input = loadData("persons/persons.csv");
+		CharSequence input = ResourceLoader.load("persons/persons.csv");
 		System.out.println("#############################################");
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
@@ -71,27 +66,5 @@ public class PersonsTest {
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");
 		}
 		System.out.println("#############################################");
-	}
-
-	private CharSequence loadData(String resource) {
-		StringWriter out = new StringWriter();
-
-		try ( //
-			  InputStream is = getClass().getClassLoader().getResourceAsStream(resource); //
-			  InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8) //
-		) {
-			char[] buf = new char[1024];
-			while (true) {
-				int count = reader.read(buf, 0, 1024);
-				if (count < 0) {
-					break;
-				}
-				out.write(buf, 0, count);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
-		return out.toString();
 	}
 }

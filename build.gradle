@@ -24,7 +24,7 @@ dependencies {
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.7.0'
 	testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.8'
 
-	jmhImplementation group: 'org.openjdk.jmh',name: 'jmh-core', version: '1.21'
+	jmhImplementation group: 'org.openjdk.jmh', name: 'jmh-core', version: '1.21'
 	jmhImplementation group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: '1.21'
 }
 

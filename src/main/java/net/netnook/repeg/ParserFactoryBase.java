@@ -10,6 +10,7 @@ import net.netnook.repeg.expressions.core.CharacterExpression;
 import net.netnook.repeg.expressions.core.Choice;
 import net.netnook.repeg.expressions.core.EndOfInput;
 import net.netnook.repeg.expressions.core.Optional;
+import net.netnook.repeg.expressions.core.Predicate;
 import net.netnook.repeg.expressions.core.Repetition;
 import net.netnook.repeg.expressions.core.Sequence;
 import net.netnook.repeg.expressions.core.StringExpression;
@@ -84,6 +85,14 @@ public abstract class ParserFactoryBase {
 		return Optional.of(expression);
 	}
 
+	protected static Predicate.Builder match(ParsingExpressionBuilder expression) {
+		return Predicate.match(expression);
+	}
+
+	protected static Predicate.Builder not(ParsingExpressionBuilder expression) {
+		return Predicate.not(expression);
+	}
+
 	protected static StringExpression.Builder string(String string) {
 		return StringExpression.of(string);
 	}
@@ -101,6 +110,10 @@ public abstract class ParserFactoryBase {
 
 	protected static NewlineExpression.Builder newLine() {
 		return NewlineExpression.builder();
+	}
+
+	protected static CharMatcher anyChar() {
+		return CharMatcher.any();
 	}
 
 	protected static CharMatcher character(char c) {
