@@ -1,20 +1,20 @@
 package net.netnook.repeg.parsetree;
 
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.expressions.RootContext;
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
 
 public abstract class ParseNode {
 
-	protected final RootContext context;
 	protected final Expression expression;
 	protected final int startPos;
 	protected final int endPos;
+	protected final CharSequence text;
 
-	public ParseNode(RootContext context, Expression expression, int startPos, int endPos) {
-		this.context = context;
+	public ParseNode(Context context, Expression expression) {
 		this.expression = expression;
-		this.startPos = startPos;
-		this.endPos = endPos;
+		this.startPos = context.getStartPosition();
+		this.endPos = context.getCurrentPosition();
+		this.text = context.getCharSequence();
 	}
 
 	@Override

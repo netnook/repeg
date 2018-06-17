@@ -3,11 +3,11 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.exceptions.InvalidExpressionException;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -29,12 +29,12 @@ import net.netnook.repeg.expressions.RootContext;
 public final class Repetition extends ExpressionBase implements CompoundExpression {
 
 	/**
-	 * Same as {@link Repetition#zeroOrMore(ParsingExpressionBuilder)}.
+	 * Same as {@link Repetition#zeroOrMore(ExpressionBuilder)}.
 	 *
 	 * @param expression the sub-expression to match
 	 * @return the new {@link Repetition} expression.
 	 */
-	public static Builder of(ParsingExpressionBuilder expression) {
+	public static Builder of(ExpressionBuilder expression) {
 		return zeroOrMore(expression);
 	}
 
@@ -44,7 +44,7 @@ public final class Repetition extends ExpressionBase implements CompoundExpressi
 	 * @param expression the sub-expression to match
 	 * @return the new {@link Repetition} expression.
 	 */
-	public static Builder one(ParsingExpressionBuilder expression) {
+	public static Builder one(ExpressionBuilder expression) {
 		return new Builder() //
 				.minCount(1) //
 				.maxCount(1) //
@@ -57,7 +57,7 @@ public final class Repetition extends ExpressionBase implements CompoundExpressi
 	 * @param expression the sub-expression to match
 	 * @return the new {@link Repetition} expression.
 	 */
-	public static Builder zeroOrMore(ParsingExpressionBuilder expression) {
+	public static Builder zeroOrMore(ExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression);
 	}
@@ -68,18 +68,18 @@ public final class Repetition extends ExpressionBase implements CompoundExpressi
 	 * @param expression the sub-expression to match
 	 * @return the new {@link Repetition} expression.
 	 */
-	public static Builder oneOrMore(ParsingExpressionBuilder expression) {
+	public static Builder oneOrMore(ExpressionBuilder expression) {
 		return new Builder() //
 				.expression(expression) //
 				.minCount(1);
 	}
 
 	public static class Builder extends ExpressionBuilderBase {
-		private ParsingExpressionBuilder expression;
+		private ExpressionBuilder expression;
 		private int minCount = 0;
 		private int maxCount = Integer.MAX_VALUE;
 
-		public Builder expression(ParsingExpressionBuilder expression) {
+		public Builder expression(ExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}

@@ -18,7 +18,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 
 	// This is the only method which must be implemented and it must return the starting rule.
 	&#64;Override
-	protected ParsingRuleBuilder getStartRule() {
+	protected RuleEnum getStartRule() {
 		return Rules.START;
 	}
 
@@ -26,7 +26,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 	public enum Rules implements {@link net.netnook.repeg.RuleEnum} {
 		START {
 			&#64;Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				// Expression: 'P' Period_Part Time_Part EndOfInput
 				return sequence(
 					one('P'),
@@ -46,7 +46,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 
 		Period_Part {
 			&#64;Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				// Expression: ('Y' Number)? ('M' Number)? ('D' Number)?
 				return sequence(
 					// Each optional element adds '0' to the stack as a default using
@@ -67,7 +67,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 
 		Time_Part {
 			&#64;Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				// Expression: ('T' ('H' Number)? ('M' Number)? ('S' Number)? )?
 				return optional(
 					sequence(
@@ -92,7 +92,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 
 		Number {
 			&#64;Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				// Find sequence of one ore more digits, then on success convert to an integer and push
 				// onto stack using the a success handler created by
 				// {@link net.netnook.repeg.ParserFactoryBase#pushTextAsInteger()}.

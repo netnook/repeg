@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.Visitor;
@@ -25,7 +25,7 @@ public final class Rule extends ExpressionBase implements CompoundExpression {
 		return new Builder(ruleEnum);
 	}
 
-	public final static class Builder implements ParsingExpressionBuilder {
+	public final static class Builder implements ExpressionBuilder {
 
 		private final RuleEnum ruleEnum;
 
@@ -107,7 +107,6 @@ public final class Rule extends ExpressionBase implements CompoundExpression {
 		this.name = name;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}

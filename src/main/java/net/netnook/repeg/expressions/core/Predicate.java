@@ -3,10 +3,10 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -31,7 +31,7 @@ public final class Predicate extends ExpressionBase implements CompoundExpressio
 	 * @param expression the sub-expression to match.
 	 * @return the new {@link Predicate} expression.
 	 */
-	public static Builder match(ParsingExpressionBuilder expression) {
+	public static Builder match(ExpressionBuilder expression) {
 		return new Builder().expression(expression, false);
 	}
 
@@ -41,15 +41,15 @@ public final class Predicate extends ExpressionBase implements CompoundExpressio
 	 * @param expression the sub-expression to match.
 	 * @return the new {@link Predicate} expression.
 	 */
-	public static Builder not(ParsingExpressionBuilder expression) {
+	public static Builder not(ExpressionBuilder expression) {
 		return new Builder().expression(expression, true);
 	}
 
 	public static class Builder extends ExpressionBuilderBase {
-		private ParsingExpressionBuilder expression;
+		private ExpressionBuilder expression;
 		private boolean invert;
 
-		public Builder expression(ParsingExpressionBuilder expression, boolean invert) {
+		public Builder expression(ExpressionBuilder expression, boolean invert) {
 			super.onSuccess(OnSuccessHandler.CLEAR_STACK);
 			this.expression = expression;
 			this.invert = invert;

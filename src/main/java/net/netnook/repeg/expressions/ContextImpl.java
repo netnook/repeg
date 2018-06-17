@@ -21,6 +21,16 @@ final class ContextImpl implements Context {
 	}
 
 	@Override
+	public int getStartPosition() {
+		return inputOffset;
+	}
+
+	@Override
+	public int getCurrentPosition() {
+		return context.position();
+	}
+
+	@Override
 	public CharSequence getCharSequence() {
 		return context.getInput(inputOffset);
 	}

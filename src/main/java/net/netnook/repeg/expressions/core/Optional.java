@@ -3,10 +3,10 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -28,14 +28,14 @@ public final class Optional extends ExpressionBase implements CompoundExpression
 	 * @param expression the sub-expression to match.
 	 * @return the new {@link Optional} expression.
 	 */
-	public static Builder of(ParsingExpressionBuilder expression) {
+	public static Builder of(ExpressionBuilder expression) {
 		return new Builder().expression(expression);
 	}
 
 	public static class Builder extends ExpressionBuilderBase {
-		private ParsingExpressionBuilder expression;
+		private ExpressionBuilder expression;
 
-		public Builder expression(ParsingExpressionBuilder expression) {
+		public Builder expression(ExpressionBuilder expression) {
 			this.expression = expression;
 			return this;
 		}

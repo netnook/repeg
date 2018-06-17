@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.netnook.repeg.Context;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.examples.persons.Address;
 import net.netnook.repeg.examples.persons.Coordinates;
@@ -23,7 +23,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						HeaderLine, //
 						zeroOrMore(PersonLine), //
@@ -45,7 +45,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		HeaderLine {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						zeroOrMore(crlf().not()), //
 						one(crlf()) //
@@ -55,7 +55,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		PersonLine {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						zeroOrMore(character(',').not()).onSuccess(pushTextAsNullableString()), // first_name
 						one(','), //

@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.repeg.Expression;
 import net.netnook.repeg.chars.CharMatchers;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
 
 public class PredicateTest extends MatcherTestBase {

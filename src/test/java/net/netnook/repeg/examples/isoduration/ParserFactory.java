@@ -3,8 +3,8 @@ package net.netnook.repeg.examples.isoduration;
 import java.time.Duration;
 import java.time.Period;
 
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 
 public class ParserFactory extends ParserFactoryBase<IsoDuration> {
@@ -17,7 +17,7 @@ public class ParserFactory extends ParserFactoryBase<IsoDuration> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						one('P'), //
 						Period_Part, //
@@ -33,7 +33,7 @@ public class ParserFactory extends ParserFactoryBase<IsoDuration> {
 
 		Period_Part {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						// TODO: not 'T'
 						optional(sequence(Number, one('Y'))).onSuccess(pushIfEmpty(0)), //
@@ -50,7 +50,7 @@ public class ParserFactory extends ParserFactoryBase<IsoDuration> {
 
 		Time_Part {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return optional( //
 						sequence( //
 								one('T'), //
@@ -71,7 +71,7 @@ public class ParserFactory extends ParserFactoryBase<IsoDuration> {
 
 		Number {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
 			}
 		};

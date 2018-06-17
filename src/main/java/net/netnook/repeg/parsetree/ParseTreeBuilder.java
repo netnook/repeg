@@ -3,38 +3,34 @@ package net.netnook.repeg.parsetree;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.expressions.RootContext;
-import net.netnook.repeg.util.ParseListener;
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ParseListener;
 
 public class ParseTreeBuilder implements ParseListener {
 
 	private static class Marker {
-		private final int position;
-
-		private Marker(int position) {
-			this.position = position;
-		}
+		// empty
 	}
 
 	private static final int DEFAULT_INITIAL_STACK_CAPACITY = 64;
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
 
 	@Override
-	public void onExpressionEnter(Expression expression, RootContext context) {
-		push(new Marker(context.position()));
+	public void onExpressionEnter(Expression expression, Context context) {
+		push(new Marker());
 	}
 
 	@Override
-	public void onExpressionExit(Expression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
+	public void onExpressionExit(Expression expression, Context context, boolean success) {
 		List<ParseNode> children = popToMarker();
-		Marker marker = pop();
+		pop(); // pop marker
 
 		if (success) {
 			if (children.isEmpty()) {
-				push(new LeafNode(context, expression, marker.position, context.position()));
+				push(new LeafNode(context, expression));
 			} else {
-				push(new TreeNode(context, expression, marker.position, context.position(), children));
+				push(new TreeNode(context, expression, children));
 			}
 		}
 	}

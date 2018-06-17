@@ -2,8 +2,9 @@ package net.netnook.repeg.util;
 
 import java.util.function.Consumer;
 
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.expressions.RootContext;
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ParseListener;
 
 public class LoggingParseListener implements ParseListener {
 
@@ -33,27 +34,27 @@ public class LoggingParseListener implements ParseListener {
 	}
 
 	@Override
-	public void onExpressionEnter(Expression expression, RootContext context) {
+	public void onExpressionEnter(Expression expression, Context context) {
 		depth++;
 
 		StringBuilder buf = new StringBuilder();
 		appendPrefix(buf);
 		buf.append("ENTER ");
 		buf.append(expression.buildGrammar());
-		buf.append(" start=").append(context.position());
+		buf.append(" start=").append(context.getStartPosition());
 		print(buf.toString());
 	}
 
 	@Override
-	public void onExpressionExit(Expression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
+	public void onExpressionExit(Expression expression, Context context, boolean success) {
 		StringBuilder buf = new StringBuilder();
 		appendPrefix(buf);
 		buf.append("EXIT ");
 		buf.append(expression.buildGrammar());
-		buf.append(" start=").append(startPosition);
-		buf.append(" end=").append(context.position());
+		buf.append(" start=").append(context.getStartPosition());
+		buf.append(" end=").append(context.getCurrentPosition());
 		buf.append(" success=").append(success);
-		buf.append(" text='").append(context.getInput(startPosition)).append("'");
+		buf.append(" text='").append(context.getCharSequence()).append("'");
 		print(buf.toString());
 
 		depth--;

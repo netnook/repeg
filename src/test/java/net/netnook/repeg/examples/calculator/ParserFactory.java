@@ -1,7 +1,7 @@
 package net.netnook.repeg.examples.calculator;
 
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 
 public class ParserFactory extends ParserFactoryBase<Integer> {
@@ -14,7 +14,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						Expression, //
 						endOfInput() //
@@ -24,7 +24,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 
 		Expression {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						Term, //
 						zeroOrMore( //
@@ -61,7 +61,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 
 		Term {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						Factor, //
 						zeroOrMore( //
@@ -98,7 +98,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 
 		Factor {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						zeroOrMore(asciiWhitespace()), //
 						choice( //
@@ -112,7 +112,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 
 		Parens {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						one('('), //
 						Expression, //
@@ -123,7 +123,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 
 		Number {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
 			}
 		}

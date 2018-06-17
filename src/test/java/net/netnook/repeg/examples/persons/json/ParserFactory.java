@@ -3,8 +3,8 @@ package net.netnook.repeg.examples.persons.json;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.chars.CharMatchers;
 import net.netnook.repeg.examples.persons.Address;
@@ -23,7 +23,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						SkipWhitespace, //
 						one('{'), //
@@ -58,7 +58,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		PersonObject {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						one('{'), //
 						SkipWhitespace, //
@@ -105,7 +105,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		Gender_Rule {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("\"gender\"").onSuccess(push("gender")), //
 						SkipWhitespace, //
@@ -125,7 +125,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		AddressObject {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("\"address\""), //
 						SkipWhitespace, //
@@ -168,7 +168,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		CoordinatesObject {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("\"coordinates\""), //
 						SkipWhitespace, //
@@ -208,7 +208,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		Longitude {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("\"longitude\"").onSuccess(push("longitude")), //
 						SkipWhitespace, //
@@ -224,7 +224,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 
 		Latitude {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("\"latitude\"").onSuccess(push("latitude")), //
 						SkipWhitespace, //
@@ -239,7 +239,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 		}, //
 	}
 
-	private static ParsingExpressionBuilder stringField(String name) {
+	private static ExpressionBuilder stringField(String name) {
 		return sequence( //
 				string("\"" + name + "\"").onSuccess(push(name)), //
 				SkipWhitespace, //
@@ -254,5 +254,5 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 		);
 	}
 
-	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatchers.asciiWhitespace());
+	private static final ExpressionBuilder SkipWhitespace = zeroOrMore(CharMatchers.asciiWhitespace());
 }

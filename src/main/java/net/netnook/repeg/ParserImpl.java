@@ -4,11 +4,9 @@ import java.util.List;
 
 import net.netnook.repeg.exceptions.NoMatchException;
 import net.netnook.repeg.exceptions.ParseException;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.RootContext;
-import net.netnook.repeg.util.ParseListener;
 
-public final class ParserImpl<T> implements Parser<T> {
+final class ParserImpl<T> implements Parser<T> {
 
 	private final Expression expression;
 

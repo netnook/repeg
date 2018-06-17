@@ -7,9 +7,9 @@ import java.util.List;
 
 import net.netnook.repeg.Parser;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.core.Rule;
 import net.netnook.repeg.expressions.SimpleExpression;
 import net.netnook.repeg.expressions.Visitor;
+import net.netnook.repeg.expressions.core.Rule;
 
 public class GrammarBuilder {
 

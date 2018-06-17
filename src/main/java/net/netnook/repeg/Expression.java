@@ -1,18 +1,12 @@
-package net.netnook.repeg.expressions;
+package net.netnook.repeg;
+
+import net.netnook.repeg.expressions.RootContext;
+import net.netnook.repeg.expressions.Visitable;
 
 /**
  * Common interface for expressions.  All expressions used in this library must implement this interface.
  */
 public interface Expression extends Visitable {
-
-	/**
-	 * Get a name for this expression.  Used for debugging.
-	 *
-	 * @return expression name.
-	 */
-	default String getName() {
-		return getClass().getSimpleName();
-	}
 
 	/**
 	 * Parse the next input characters as indicated by the {@code context} and return whether or not the expression

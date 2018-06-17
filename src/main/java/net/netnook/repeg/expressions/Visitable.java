@@ -1,6 +1,6 @@
 package net.netnook.repeg.expressions;
 
-interface Visitable {
+public interface Visitable {
 
 	void accept(Visitor visitor);
 }

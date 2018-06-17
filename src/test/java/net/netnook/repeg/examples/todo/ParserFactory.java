@@ -3,8 +3,8 @@ package net.netnook.repeg.examples.todo;
 import java.time.LocalDate;
 import java.util.List;
 
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.examples.todo.model.Project;
 import net.netnook.repeg.examples.todo.model.Task;
@@ -19,7 +19,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						zeroOrMore(Proj), //
 						EmptyLines, //
@@ -30,7 +30,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		Proj {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						EmptyLines, //
 						ProjectNameLine, //
@@ -51,7 +51,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		ProjectNameLine {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						ProjectName, //
 						endOfLineOrInput() //
@@ -61,7 +61,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		ProjectName {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.replaceWith(context.getCharSequence().toString().trim()));
 			}
@@ -69,7 +69,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		TaskLine {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						oneOrMore(horizontalWhitespace()), //
 						DoneField, //
@@ -92,7 +92,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		DoneField {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return optional( //
 						sequence( //
 								string("(x)").onSuccess(push(Boolean.TRUE)), //
@@ -104,7 +104,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		DueDateField {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return optional( //
 						sequence( //
 								repeat(4, characterInRange('0', '9')).onSuccess(pushTextAsInteger()), //
@@ -125,7 +125,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		DescriptionField {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
 						.onSuccess(context -> context.push(context.getCharSequence().toString().trim()));
 			}
@@ -133,7 +133,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 		EmptyLines {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return zeroOrMore( //
 						sequence( //
 								zeroOrMore(horizontalWhitespace()), //

@@ -13,13 +13,6 @@ package net.netnook.repeg;
 public interface OnSuccessHandler {
 
 	/**
-	 * no-op handler.  Does nothing.
-	 */
-	OnSuccessHandler NO_OP = context -> {
-		// no-op
-	};
-
-	/**
 	 * Clear current stack content added by current expression of descendents.  See {@link Context#clearStack()}.
 	 */
 	OnSuccessHandler CLEAR_STACK = Context::clearStack;

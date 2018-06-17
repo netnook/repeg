@@ -1,14 +1,17 @@
 package net.netnook.repeg.expressions;
 
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.ParseListener;
 
-public abstract class ExpressionBase implements Expression, ParsingExpressionBuilder {
+public abstract class ExpressionBase implements Expression, ExpressionBuilder {
 
 	private final OnSuccessHandler onSuccess;
 
 	protected ExpressionBase(OnSuccessHandler onSuccess) {
-		this.onSuccess = (onSuccess == null) ? OnSuccessHandler.NO_OP : onSuccess;
+		this.onSuccess = onSuccess;
 	}
 
 	@Override
@@ -16,7 +19,7 @@ public abstract class ExpressionBase implements Expression, ParsingExpressionBui
 		return this;
 	}
 
-	protected Expression[] build(ParsingExpressionBuilder[] builders) {
+	protected Expression[] build(ExpressionBuilder[] builders) {
 		Expression[] results = new Expression[builders.length];
 		for (int i = 0; i < builders.length; i++) {
 			results[i] = builders[i].build();
@@ -29,32 +32,30 @@ public abstract class ExpressionBase implements Expression, ParsingExpressionBui
 	}
 
 	@Override
+	// FIXME: rename parse to something like parseInternal, and parseImpl to parse
 	public final boolean parse(RootContext context) {
 		int startPosition = context.position();
 		int startStackIdx = context.stackSize();
+		ParseListener listener = context.getListener();
 
-		onExpressionEnter(context);
+		Context handlerContext = context.slice(startPosition, startStackIdx);
+
+		listener.onExpressionEnter(this, handlerContext);
 
 		boolean success = parseImpl(context, startPosition, startStackIdx);
 
-		onExpressionExit(context, startPosition, startStackIdx, success);
+		handlerContext = context.slice(startPosition, startStackIdx);
+
+		if (success && onSuccess != null) {
+			onSuccess.accept(handlerContext);
+		}
+
+		listener.onExpressionExit(this, handlerContext, success);
 
 		return success;
 	}
 
 	protected abstract boolean parseImpl(RootContext context, int startPosition, int startStackIdx);
-
-	private void onExpressionEnter(RootContext context) {
-		context.getListener().onExpressionEnter(this, context);
-	}
-
-	private void onExpressionExit(RootContext context, int startPosition, int startStackIdx, boolean success) {
-		if (success) {
-			onSuccess.accept(context.slice(startPosition, startStackIdx));
-		}
-
-		context.getListener().onExpressionExit(this, context, startPosition, startStackIdx, success);
-	}
 
 	@Override
 	public String toString() {

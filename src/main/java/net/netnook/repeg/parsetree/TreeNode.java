@@ -2,15 +2,15 @@ package net.netnook.repeg.parsetree;
 
 import java.util.List;
 
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.expressions.RootContext;
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
 
 public class TreeNode extends ParseNode {
 
 	private final List<ParseNode> children;
 
-	public TreeNode(RootContext context, Expression expression, int startPos, int endPos, List<ParseNode> children) {
-		super(context, expression, startPos, endPos);
+	public TreeNode(Context context, Expression expression, List<ParseNode> children) {
+		super(context, expression);
 		this.children = children;
 	}
 
@@ -25,7 +25,7 @@ public class TreeNode extends ParseNode {
 				.append("expression=").append(expression.buildGrammar()) //
 				.append(", startPos=").append(startPos) //
 				.append(", endPos=").append(endPos) //
-				.append(", text='").append(context.getInput(startPos, endPos)).append("'"); //
+				.append(", text='").append(text).append("'"); //
 
 		String childPrefix = prefix + "  ";
 		for (ParseNode child : children) {

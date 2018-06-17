@@ -3,8 +3,8 @@ package net.netnook.repeg.examples.template;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.examples.template.model.Expression;
 import net.netnook.repeg.examples.template.model.If;
@@ -23,7 +23,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 	public enum Rules implements RuleEnum {
 		START {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						NodesExpr, //
 						endOfInput() //
@@ -38,7 +38,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		NodesExpr {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return zeroOrMore(NodeExpr).onSuccess(context -> {
 					int count = context.stackSize();
 					if (count == 0) {
@@ -54,7 +54,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		NodeExpr {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return choice( //
 						Text, //
 						ControlFlowExpr, //
@@ -65,7 +65,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		ControlFlowExpr {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return choice( //
 						IfControlFlowExpr, //
 						LoopControlFlowExpr //
@@ -76,7 +76,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 		IfControlFlowExpr {
 			// {% if x %} ... {% endif %}
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("{%"), //
 						TrimControl, //
@@ -117,7 +117,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 		LoopControlFlowExpr {
 			// {% for x in y %} ... {% endfor %}
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("{%"), //
 						TrimControl, //
@@ -161,7 +161,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		ExpressionExpr {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return sequence( //
 						string("{{"), //
 						TrimControl, //
@@ -186,7 +186,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		Ref {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore( //
 						choice( //
 								one(characterInRange('a', 'z')), //
@@ -202,7 +202,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		Var {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore( //
 						choice( //
 								one(characterInRange('a', 'z')), //
@@ -217,7 +217,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		Text {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore( //
 						sequence( //
 								not(string("{{")), //
@@ -232,7 +232,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		TrimControl {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return optional('-').onSuccess(context -> {
 					// Push "true" if there was a '-'.  Push "false" otherwise.
 					context.push(context.inputLength() > 0);
@@ -242,14 +242,14 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 
 		SkipWhitespace {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return zeroOrMore(horizontalWhitespace());
 			}
 		},
 
 		SkipMin1Whitespace {
 			@Override
-			public ParsingExpressionBuilder expression() {
+			public ExpressionBuilder expression() {
 				return oneOrMore(horizontalWhitespace());
 			}
 		}

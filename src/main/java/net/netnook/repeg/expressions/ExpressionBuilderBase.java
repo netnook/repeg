@@ -1,10 +1,11 @@
 package net.netnook.repeg.expressions;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.exceptions.InvalidExpressionException;
 
-public abstract class ExpressionBuilderBase implements ParsingExpressionBuilder {
+public abstract class ExpressionBuilderBase implements ExpressionBuilder {
 
 	private OnSuccessHandler onSuccess;
 	private Expression built;

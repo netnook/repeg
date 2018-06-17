@@ -1,11 +1,9 @@
 package net.netnook.repeg;
 
-import net.netnook.repeg.expressions.Expression;
-
 /**
  * Common interface for all expression builders.
  */
-public interface ParsingExpressionBuilder {
+public interface ExpressionBuilder {
 
 	/**
 	 * Build and return a {@link Expression} for this builder.

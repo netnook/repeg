@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.netnook.repeg.Context;
-import net.netnook.repeg.util.ParseListener;
+import net.netnook.repeg.ParseListener;
 
 public final class RootContext {
 
@@ -23,7 +23,7 @@ public final class RootContext {
 	public RootContext(CharSequence input, ParseListener listener) {
 		this.input = input;
 		this.position = 0;
-		this.listener = (listener == null) ? ParseListener.NO_OP : listener;
+		this.listener = listener;
 	}
 
 	public ParseListener getListener() {

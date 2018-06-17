@@ -1,8 +1,6 @@
 package net.netnook.repeg;
 
 import net.netnook.repeg.exceptions.ParseException;
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.util.ParseListener;
 
 /**
  * Parser interface.  Parsers are thread safe and can (should) be re-used when possible.

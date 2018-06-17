@@ -9,10 +9,11 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.expressions.Expression;
+import net.netnook.repeg.ParseListener;
 import net.netnook.repeg.expressions.RootContext;
-import net.netnook.repeg.util.ParseListener;
 
 public abstract class MatcherTestBase {
 
@@ -22,14 +23,14 @@ public abstract class MatcherTestBase {
 	private final class TestParseListener implements ParseListener {
 
 		@Override
-		public void onExpressionEnter(Expression expression, RootContext context) {
+		public void onExpressionEnter(Expression expression, Context context) {
 			// no-op
 		}
 
 		@Override
-		public void onExpressionExit(Expression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
+		public void onExpressionExit(Expression expression, Context context, boolean success) {
 			newOnStack.clear();
-			newOnStack.addAll(context.getStackFrom(startStackIdx));
+			newOnStack.addAll(context.getAll());
 		}
 	}
 

@@ -1,12 +1,12 @@
 package net.netnook.repeg.parsetree;
 
-import net.netnook.repeg.expressions.Expression;
-import net.netnook.repeg.expressions.RootContext;
+import net.netnook.repeg.Context;
+import net.netnook.repeg.Expression;
 
 public class LeafNode extends ParseNode {
 
-	public LeafNode(RootContext context, Expression expression, int startPos, int endPos) {
-		super(context, expression, startPos, endPos);
+	public LeafNode(Context context, Expression expression) {
+		super(context, expression);
 	}
 
 	@Override
@@ -16,7 +16,7 @@ public class LeafNode extends ParseNode {
 				.append("expression=").append(expression.buildGrammar()) //
 				.append(", startPos=").append(startPos) //
 				.append(", endPos=").append(endPos) //
-				.append(", text='").append(context.getInput(startPos, endPos)).append("'") //
+				.append(", text='").append(text).append("'") //
 				.append("}");
 	}
 }

@@ -25,6 +25,10 @@ import java.util.List;
  */
 public interface Context {
 
+	int getStartPosition();
+
+	int getCurrentPosition();
+
 	/**
 	 * Get the input sequence matched by the expression.
 	 *
@@ -63,6 +67,7 @@ public interface Context {
 	 * @param <T> expected result type (not enforced)
 	 * @return elements from the stack.
 	 */
+	// FIXME: naming ?!
 	<T> List<T> getAll();
 
 	/**
@@ -84,4 +89,5 @@ public interface Context {
 	 * Remove all elements on the stack which were added by the current expression or one of it's descendents.
 	 */
 	void clearStack();
+
 }

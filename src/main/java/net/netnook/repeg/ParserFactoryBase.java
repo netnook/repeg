@@ -24,11 +24,11 @@ public abstract class ParserFactoryBase<T> {
 
 	protected abstract RuleEnum getStartRule();
 
-	protected static Sequence.Builder sequence(ParsingExpressionBuilder... expressions) {
+	protected static Sequence.Builder sequence(ExpressionBuilder... expressions) {
 		return Sequence.of(expressions);
 	}
 
-	protected static Choice.Builder choice(ParsingExpressionBuilder... expressions) {
+	protected static Choice.Builder choice(ExpressionBuilder... expressions) {
 		return Choice.of(expressions);
 	}
 
@@ -48,7 +48,7 @@ public abstract class ParserFactoryBase<T> {
 		return zeroOrMore(CharacterExpression.using(charMatcher));
 	}
 
-	protected static Repetition.Builder zeroOrMore(ParsingExpressionBuilder expression) {
+	protected static Repetition.Builder zeroOrMore(ExpressionBuilder expression) {
 		return Repetition.zeroOrMore(expression);
 	}
 
@@ -60,7 +60,7 @@ public abstract class ParserFactoryBase<T> {
 		return oneOrMore(CharacterExpression.using(charMatcher));
 	}
 
-	protected static Repetition.Builder oneOrMore(ParsingExpressionBuilder expression) {
+	protected static Repetition.Builder oneOrMore(ExpressionBuilder expression) {
 		return Repetition.oneOrMore(expression);
 	}
 
@@ -68,7 +68,7 @@ public abstract class ParserFactoryBase<T> {
 		return repeat(times, CharacterExpression.using(charMatcher));
 	}
 
-	protected static Repetition.Builder repeat(int times, ParsingExpressionBuilder expression) {
+	protected static Repetition.Builder repeat(int times, ExpressionBuilder expression) {
 		return Repetition.of(expression).count(times);
 	}
 
@@ -80,15 +80,15 @@ public abstract class ParserFactoryBase<T> {
 		return optional(CharacterExpression.using(matcher));
 	}
 
-	protected static Optional.Builder optional(ParsingExpressionBuilder expression) {
+	protected static Optional.Builder optional(ExpressionBuilder expression) {
 		return Optional.of(expression);
 	}
 
-	protected static Predicate.Builder match(ParsingExpressionBuilder expression) {
+	protected static Predicate.Builder match(ExpressionBuilder expression) {
 		return Predicate.match(expression);
 	}
 
-	protected static Predicate.Builder not(ParsingExpressionBuilder expression) {
+	protected static Predicate.Builder not(ExpressionBuilder expression) {
 		return Predicate.not(expression);
 	}
 
@@ -100,7 +100,7 @@ public abstract class ParserFactoryBase<T> {
 		return EndOfInput.instance();
 	}
 
-	protected static ParsingExpressionBuilder endOfLineOrInput() {
+	protected static ExpressionBuilder endOfLineOrInput() {
 		return choice( //
 				newLine(), //
 				endOfInput() //

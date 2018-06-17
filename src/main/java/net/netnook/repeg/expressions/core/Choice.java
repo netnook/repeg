@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
@@ -30,14 +30,14 @@ public final class Choice extends ExpressionBase implements CompoundExpression {
 	 * @param expressions the sub-expressions to test for match in order.
 	 * @return the new {@link Choice} expression.
 	 */
-	public static Builder of(ParsingExpressionBuilder... expressions) {
+	public static Builder of(ExpressionBuilder... expressions) {
 		return new Builder().expressions(expressions);
 	}
 
 	public static class Builder extends ExpressionBuilderBase {
-		private ParsingExpressionBuilder[] expressions;
+		private ExpressionBuilder[] expressions;
 
-		public Builder expressions(ParsingExpressionBuilder[] expressions) {
+		public Builder expressions(ExpressionBuilder[] expressions) {
 			this.expressions = expressions;
 			return this;
 		}

@@ -5,16 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.repeg.Expression;
+import net.netnook.repeg.ExpressionBuilder;
 import net.netnook.repeg.OnSuccessHandler;
-import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.chars.CharMatchers;
-import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
 
 public class SequenceTest extends MatcherTestBase {
 
-	private ParsingExpressionBuilder isA;
-	private ParsingExpressionBuilder isB;
+	private ExpressionBuilder isA;
+	private ExpressionBuilder isB;
 
 	@Before
 	public void init() {
