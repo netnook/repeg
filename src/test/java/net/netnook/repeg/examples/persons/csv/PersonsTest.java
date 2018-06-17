@@ -7,25 +7,25 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.examples._utils.ResourceLoader;
 import net.netnook.repeg.examples.persons.Person;
 import net.netnook.repeg.examples.persons.Person.Gender;
 import net.netnook.repeg.examples.persons.Persons;
-import net.netnook.repeg.expressions.ParsingRule;
 
 public class PersonsTest {
 
-	private ParsingRule rule;
+	private Parser<Persons> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
 	public void test1() {
 		CharSequence input = ResourceLoader.load("persons/persons.csv");
-		Persons persons = rule.parse(input);
+		Persons persons = parser.parse(input);
 		assertThat(persons.getPersons()).hasSize(10000);
 
 		{
@@ -60,7 +60,7 @@ public class PersonsTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 100; i++) {
-				rule.parse(input);
+				parser.parse(input);
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");

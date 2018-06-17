@@ -1,11 +1,11 @@
 package net.netnook.repeg.parsetree;
 
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.RootContext;
 
 public class LeafNode extends ParseNode {
 
-	public LeafNode(RootContext context, ParsingExpression expression, int startPos, int endPos) {
+	public LeafNode(RootContext context, Expression expression, int startPos, int endPos) {
 		super(context, expression, startPos, endPos);
 	}
 

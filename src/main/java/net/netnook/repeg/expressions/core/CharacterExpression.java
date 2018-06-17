@@ -1,12 +1,12 @@
 package net.netnook.repeg.expressions.core;
 
-import net.netnook.repeg.expressions.InvalidExpressionException;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.chars.CharMatcher;
+import net.netnook.repeg.exceptions.InvalidExpressionException;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
-import net.netnook.repeg.expressions.chars.CharMatcher;
 
 /**
  * Character expression e.g. '{@code '[a]'}' (character 'a'), '{@code '[a-z]'}' (lower case ascii letter).
@@ -16,15 +16,15 @@ import net.netnook.repeg.expressions.chars.CharMatcher;
  * This expression will match only if the minimum number of repeats are matched (default 1) and will
  * never consume more than the maximum number of repetitions (default 1).
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class CharacterExpression extends ParsingExpressionBase implements SimpleExpression {
+public final class CharacterExpression extends ExpressionBase implements SimpleExpression {
 
 	public static Builder using(CharMatcher matcher) {
 		return new Builder().matcher(matcher);
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 		private CharMatcher matcher;
 		private int minCount = 1;
 		private int maxCount = 1;

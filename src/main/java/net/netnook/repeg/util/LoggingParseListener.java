@@ -2,7 +2,7 @@ package net.netnook.repeg.util;
 
 import java.util.function.Consumer;
 
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.RootContext;
 
 public class LoggingParseListener implements ParseListener {
@@ -33,7 +33,7 @@ public class LoggingParseListener implements ParseListener {
 	}
 
 	@Override
-	public void onExpressionEnter(ParsingExpression expression, RootContext context) {
+	public void onExpressionEnter(Expression expression, RootContext context) {
 		depth++;
 
 		StringBuilder buf = new StringBuilder();
@@ -45,7 +45,7 @@ public class LoggingParseListener implements ParseListener {
 	}
 
 	@Override
-	public void onExpressionExit(ParsingExpression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
+	public void onExpressionExit(Expression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
 		StringBuilder buf = new StringBuilder();
 		appendPrefix(buf);
 		buf.append("EXIT ");

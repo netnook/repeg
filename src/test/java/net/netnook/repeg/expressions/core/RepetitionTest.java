@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.InvalidExpressionException;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.chars.CharMatchers;
+import net.netnook.repeg.exceptions.InvalidExpressionException;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
-import net.netnook.repeg.expressions.chars.CharMatcher;
 
 public class RepetitionTest extends MatcherTestBase {
 
@@ -18,7 +18,7 @@ public class RepetitionTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.using(CharMatcher.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isA = CharacterExpression.using(CharMatchers.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 		buildContext("-aaabbb-").consumeChar();
 	}
 
@@ -131,7 +131,7 @@ public class RepetitionTest extends MatcherTestBase {
 
 	@Test
 	public void test_on_success() {
-		ParsingExpression expression = Repetition.of(isA) //
+		Expression expression = Repetition.of(isA) //
 				.minCount(1) //
 				.maxCount(2) //
 				.onSuccess(onSuccessCounter) //
@@ -185,33 +185,33 @@ public class RepetitionTest extends MatcherTestBase {
 	public void test_auto_replacement_by_charexpression() {
 		CharacterExpression e;
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a'))).build();
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a'))).build();
 		assertThat(e.getMinCount()).isEqualTo(0);
 		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a'))).minCount(5).build();
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a'))).minCount(5).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a'))).maxCount(8).build();
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a'))).maxCount(8).build();
 		assertThat(e.getMinCount()).isEqualTo(0);
 		assertThat(e.getMaxCount()).isEqualTo(8);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a'))).onSuccess(OnSuccessHandler.CLEAR_STACK).build();
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a'))).onSuccess(OnSuccessHandler.CLEAR_STACK).build();
 		assertThat(e.getMinCount()).isEqualTo(0);
 		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.CLEAR_STACK);
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a'))).minCount(3).maxCount(4).onSuccess(OnSuccessHandler.CLEAR_STACK)
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a'))).minCount(3).maxCount(4).onSuccess(OnSuccessHandler.CLEAR_STACK)
 				.build();
 		assertThat(e.getMinCount()).isEqualTo(3);
 		assertThat(e.getMaxCount()).isEqualTo(4);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.CLEAR_STACK);
 
-		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatcher.is('a')).minCount(1).maxCount(1).onSuccess(null)).onSuccess(
+		e = (CharacterExpression) Repetition.of(CharacterExpression.using(CharMatchers.is('a')).minCount(1).maxCount(1).onSuccess(null)).onSuccess(
 				OnSuccessHandler.CLEAR_STACK).build();
 		assertThat(e.getMinCount()).isEqualTo(0);
 		assertThat(e.getMaxCount()).isEqualTo(Integer.MAX_VALUE);
@@ -222,7 +222,7 @@ public class RepetitionTest extends MatcherTestBase {
 	public void test_not_auto_replacement_by_charexpression() {
 		Repetition e;
 
-		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatcher.is('a')).minCount(0)).count(5).build();
+		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatchers.is('a')).minCount(0)).count(5).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
@@ -230,7 +230,7 @@ public class RepetitionTest extends MatcherTestBase {
 		assertThat(((CharacterExpression) e.parts().get(0)).getMaxCount()).isEqualTo(1);
 		assertThat(((CharacterExpression) e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatcher.is('a')).maxCount(2)).count(5).build();
+		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatchers.is('a')).maxCount(2)).count(5).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);
 		assertThat(e.getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
@@ -238,7 +238,7 @@ public class RepetitionTest extends MatcherTestBase {
 		assertThat(((CharacterExpression) e.parts().get(0)).getMaxCount()).isEqualTo(2);
 		assertThat(((CharacterExpression) e.parts().get(0)).getOnSuccess()).isSameAs(OnSuccessHandler.NO_OP);
 
-		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatcher.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING)).count(5).onSuccess(
+		e = (Repetition) Repetition.of(CharacterExpression.using(CharMatchers.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING)).count(5).onSuccess(
 				OnSuccessHandler.PUSH_TEXT_AS_FLOAT).build();
 		assertThat(e.getMinCount()).isEqualTo(5);
 		assertThat(e.getMaxCount()).isEqualTo(5);

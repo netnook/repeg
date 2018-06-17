@@ -1,8 +1,10 @@
 package net.netnook.repeg.expressions;
 
+import net.netnook.repeg.expressions.core.Rule;
+
 public interface Visitor {
 
-	void visit(ParsingRule expression);
+	void visit(Rule expression);
 
 	void visit(CompoundExpression expression);
 

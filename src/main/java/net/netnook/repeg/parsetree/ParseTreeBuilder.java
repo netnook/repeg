@@ -3,7 +3,7 @@ package net.netnook.repeg.parsetree;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.util.ParseListener;
 
@@ -21,12 +21,12 @@ public class ParseTreeBuilder implements ParseListener {
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
 
 	@Override
-	public void onExpressionEnter(ParsingExpression expression, RootContext context) {
+	public void onExpressionEnter(Expression expression, RootContext context) {
 		push(new Marker(context.position()));
 	}
 
 	@Override
-	public void onExpressionExit(ParsingExpression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
+	public void onExpressionExit(Expression expression, RootContext context, int startPosition, int startStackIdx, boolean success) {
 		List<ParseNode> children = popToMarker();
 		Marker marker = pop();
 

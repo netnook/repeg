@@ -23,7 +23,7 @@ public class ParserFactory extends {@link net.netnook.repeg.ParserFactoryBase} {
 	}
 
 	// Create expression as enum implementing the ParsingRuleBuilder utility interface
-	public enum Rules implements {@link net.netnook.repeg.expressions.ParsingRuleBuilder} {
+	public enum Rules implements {@link net.netnook.repeg.RuleEnum} {
 		START {
 			&#64;Override
 			public ParsingExpressionBuilder expression() {

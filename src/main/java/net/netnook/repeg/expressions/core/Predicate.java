@@ -3,12 +3,12 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.expressions.Expression;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
 /**
@@ -21,9 +21,9 @@ import net.netnook.repeg.expressions.RootContext;
  * This expression never consumes any input and always resets the stack to it's initial position
  * irrespective of the matching result of the sub-expression.
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class Predicate extends ParsingExpressionBase implements CompoundExpression {
+public final class Predicate extends ExpressionBase implements CompoundExpression {
 
 	/**
 	 * Create a new {@link Predicate} expression which matches when the specified sub-expression matches.
@@ -45,7 +45,7 @@ public final class Predicate extends ParsingExpressionBase implements CompoundEx
 		return new Builder().expression(expression, true);
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 		private boolean invert;
 
@@ -67,7 +67,7 @@ public final class Predicate extends ParsingExpressionBase implements CompoundEx
 		}
 	}
 
-	protected final ParsingExpression expression;
+	protected final Expression expression;
 	protected final boolean invert;
 
 	private Predicate(Builder builder) {
@@ -77,7 +77,7 @@ public final class Predicate extends ParsingExpressionBase implements CompoundEx
 	}
 
 	@Override
-	public List<ParsingExpression> parts() {
+	public List<Expression> parts() {
 		return Collections.singletonList(expression);
 	}
 

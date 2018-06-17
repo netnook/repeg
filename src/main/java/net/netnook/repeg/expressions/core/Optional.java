@@ -3,12 +3,12 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.ParsingExpressionBuilder;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.expressions.Expression;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
 /**
@@ -18,9 +18,9 @@ import net.netnook.repeg.expressions.RootContext;
  * but always returning a positive match.  A {@link Optional} expression's {@link OnSuccessHandler} will
  * always be called.
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class Optional extends ParsingExpressionBase implements CompoundExpression {
+public final class Optional extends ExpressionBase implements CompoundExpression {
 
 	/**
 	 * Create a new {@link Optional} expression for the specified sub-expression.
@@ -32,7 +32,7 @@ public final class Optional extends ParsingExpressionBase implements CompoundExp
 		return new Builder().expression(expression);
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 
 		public Builder expression(ParsingExpressionBuilder expression) {
@@ -52,7 +52,7 @@ public final class Optional extends ParsingExpressionBase implements CompoundExp
 		}
 	}
 
-	private final ParsingExpression expression;
+	private final Expression expression;
 
 	private Optional(Builder builder) {
 		super(builder.getOnSuccess());
@@ -60,7 +60,7 @@ public final class Optional extends ParsingExpressionBase implements CompoundExp
 	}
 
 	@Override
-	public List<ParsingExpression> parts() {
+	public List<Expression> parts() {
 		return Collections.singletonList(expression);
 	}
 

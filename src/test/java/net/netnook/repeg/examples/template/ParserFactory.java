@@ -4,23 +4,23 @@ import java.util.Collections;
 import java.util.List;
 
 import net.netnook.repeg.ParserFactoryBase;
-import net.netnook.repeg.examples.template.model.Template;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.examples.template.model.Expression;
 import net.netnook.repeg.examples.template.model.If;
 import net.netnook.repeg.examples.template.model.Loop;
 import net.netnook.repeg.examples.template.model.Node;
+import net.netnook.repeg.examples.template.model.Template;
 import net.netnook.repeg.examples.template.model.Text;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingRuleBuilder;
 
-public class ParserFactory extends ParserFactoryBase {
+public class ParserFactory extends ParserFactoryBase<Template> {
 
 	@Override
-	protected ParsingRuleBuilder getStartRule() {
+	protected RuleEnum getStartRule() {
 		return Rules.START;
 	}
 
-	public enum Rules implements ParsingRuleBuilder {
+	public enum Rules implements RuleEnum {
 		START {
 			@Override
 			public ParsingExpressionBuilder expression() {

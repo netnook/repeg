@@ -3,13 +3,13 @@ package net.netnook.repeg.expressions.core;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.exceptions.InvalidExpressionException;
 import net.netnook.repeg.expressions.CompoundExpression;
-import net.netnook.repeg.expressions.InvalidExpressionException;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.expressions.Expression;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 
 /**
@@ -24,9 +24,9 @@ import net.netnook.repeg.expressions.RootContext;
  * By default, the minimum repetition count is  {@code 0} and the maximum number of repetitions
  * is {@code Integer.MAX_VALUE}.
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class Repetition extends ParsingExpressionBase implements CompoundExpression {
+public final class Repetition extends ExpressionBase implements CompoundExpression {
 
 	/**
 	 * Same as {@link Repetition#zeroOrMore(ParsingExpressionBuilder)}.
@@ -74,7 +74,7 @@ public final class Repetition extends ParsingExpressionBase implements CompoundE
 				.minCount(1);
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 		private ParsingExpressionBuilder expression;
 		private int minCount = 0;
 		private int maxCount = Integer.MAX_VALUE;
@@ -115,7 +115,7 @@ public final class Repetition extends ParsingExpressionBase implements CompoundE
 		}
 
 		@Override
-		protected ParsingExpression doBuild() {
+		protected Expression doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
@@ -137,7 +137,7 @@ public final class Repetition extends ParsingExpressionBase implements CompoundE
 		}
 	}
 
-	private final ParsingExpression expression;
+	private final Expression expression;
 	private final int minCount;
 	private final int maxCount;
 
@@ -161,7 +161,7 @@ public final class Repetition extends ParsingExpressionBase implements CompoundE
 	}
 
 	@Override
-	public List<ParsingExpression> parts() {
+	public List<Expression> parts() {
 		return Collections.singletonList(expression);
 	}
 

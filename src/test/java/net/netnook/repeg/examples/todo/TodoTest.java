@@ -9,19 +9,19 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.examples.todo.model.Project;
-import net.netnook.repeg.expressions.ParsingRule;
 import net.netnook.repeg.util.GrammarBuilder;
 
 public class TodoTest {
 
 	private static final char NEWLINE = '\n';
 
-	private ParsingRule rule;
+	private Parser<List<Project>> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class TodoTest {
 		System.out.println("##################");
 
 		//List<Project> projects = rule.parse(input, LoggingParseListener.builder().build());
-		List<Project> projects = rule.parse(input);
+		List<Project> projects = parser.parse(input);
 
 		assertThat(projects).hasSize(3);
 		{
@@ -105,7 +105,7 @@ public class TodoTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 10000; i++) {
-				rule.parse(input);
+				parser.parse(input);
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");
@@ -116,7 +116,7 @@ public class TodoTest {
 	@Test
 	@Ignore
 	public void printGrammar() {
-		String grammar = GrammarBuilder.buildGrammar(rule);
+		String grammar = GrammarBuilder.buildGrammar(parser);
 		System.out.println(grammar);
 	}
 }

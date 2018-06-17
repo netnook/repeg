@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.chars.CharMatchers;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
-import net.netnook.repeg.expressions.chars.CharMatcher;
 
 public class ChoiceTest extends MatcherTestBase {
 
@@ -18,8 +18,8 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.using(CharMatcher.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
-		isB = CharacterExpression.using(CharMatcher.is('b')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isA = CharacterExpression.using(CharMatchers.is('a')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
+		isB = CharacterExpression.using(CharMatchers.is('b')).onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING);
 		buildContext("-abcd-").consumeChar();
 	}
 
@@ -39,7 +39,7 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_a_or_b() {
-		ParsingExpression expression = Choice.of(isA, isB).build();
+		Expression expression = Choice.of(isA, isB).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -56,7 +56,7 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_b_or_a() {
-		ParsingExpression expression = Choice.of(isB, isA).build();
+		Expression expression = Choice.of(isB, isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack("a");
@@ -73,7 +73,7 @@ public class ChoiceTest extends MatcherTestBase {
 
 	@Test
 	public void test_on_success() {
-		ParsingExpression expression = Choice.of(isA, isB) //
+		Expression expression = Choice.of(isA, isB) //
 				.onSuccess(onSuccessCounter) //
 				.build();
 

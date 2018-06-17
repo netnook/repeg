@@ -5,12 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.repeg.OnSuccessHandler;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
 import net.netnook.repeg.expressions.extras.NewlineExpression;
 
 public class NewlineExpressionTest extends MatcherTestBase {
 
-	private ParsingExpression expression;
+	private Expression expression;
 
 	@Before
 	public void init() {

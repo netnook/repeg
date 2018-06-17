@@ -1,16 +1,17 @@
 package net.netnook.repeg.expressions.extras;
 
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
 /**
  * An expression which matches any of the common newline sequences '\n', '\r\n' or '\r'.
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class NewlineExpression extends ParsingExpressionBase implements SimpleExpression {
+public final class NewlineExpression extends ExpressionBase implements SimpleExpression {
 
 	private static final int LF = '\n';
 	private static final int CR = '\r';
@@ -19,7 +20,7 @@ public final class NewlineExpression extends ParsingExpressionBase implements Si
 		return new Builder();
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 
 		private Builder() {
 			// no-op

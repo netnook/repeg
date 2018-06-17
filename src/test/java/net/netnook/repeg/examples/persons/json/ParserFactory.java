@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.netnook.repeg.ParserFactoryBase;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.RuleEnum;
+import net.netnook.repeg.chars.CharMatchers;
 import net.netnook.repeg.examples.persons.Address;
 import net.netnook.repeg.examples.persons.Coordinates;
 import net.netnook.repeg.examples.persons.Person;
 import net.netnook.repeg.examples.persons.Person.Gender;
 import net.netnook.repeg.examples.persons.Persons;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingRuleBuilder;
-import net.netnook.repeg.expressions.chars.CharMatcher;
 
-public class ParserFactory extends ParserFactoryBase {
+public class ParserFactory extends ParserFactoryBase<Persons> {
 
 	@Override
-	protected ParsingRuleBuilder getStartRule() {
+	protected RuleEnum getStartRule() {
 		return Rules.START;
 	}
 
-	public enum Rules implements ParsingRuleBuilder {
+	public enum Rules implements RuleEnum {
 		START {
 			@Override
 			public ParsingExpressionBuilder expression() {
@@ -254,5 +254,5 @@ public class ParserFactory extends ParserFactoryBase {
 		);
 	}
 
-	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatcher.asciiWhitespace());
+	private static final ParsingExpressionBuilder SkipWhitespace = zeroOrMore(CharMatchers.asciiWhitespace());
 }

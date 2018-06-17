@@ -2,14 +2,14 @@ package net.netnook.repeg.parsetree;
 
 import java.util.List;
 
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions.RootContext;
 
 public class TreeNode extends ParseNode {
 
 	private final List<ParseNode> children;
 
-	public TreeNode(RootContext context, ParsingExpression expression, int startPos, int endPos, List<ParseNode> children) {
+	public TreeNode(RootContext context, Expression expression, int startPos, int endPos, List<ParseNode> children) {
 		super(context, expression, startPos, endPos);
 		this.children = children;
 	}

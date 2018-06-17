@@ -1,7 +1,7 @@
 package net.netnook.repeg.expressions.extras;
 
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
@@ -13,7 +13,7 @@ import net.netnook.repeg.expressions.SimpleExpression;
  * This expression has a default {@link OnSuccessHandler} which converts the matched input to
  * a {@link Float} and pushes it onto the stack.
  */
-public final class FloatExpression extends ParsingExpressionBase implements SimpleExpression {
+public final class FloatExpression extends ExpressionBase implements SimpleExpression {
 
 	private static final FloatExpression INSTANCE = new FloatExpression();
 

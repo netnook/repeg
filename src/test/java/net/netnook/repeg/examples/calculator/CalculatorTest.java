@@ -6,18 +6,18 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.ParsingRule;
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.parsetree.ParseTreeBuilder;
 import net.netnook.repeg.util.GrammarBuilder;
 import net.netnook.repeg.util.LoggingParseListener;
 
 public class CalculatorTest {
 
-	private ParsingRule rule;
+	private Parser<Integer> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class CalculatorTest {
 	}
 
 	private void test(String input, int expected) {
-		int result = rule.parse(input);
+		int result = parser.parse(input);
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -78,7 +78,7 @@ public class CalculatorTest {
 	@Ignore
 	public void parseTree() {
 		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
-		int result = rule.parse("11 * 2 + 333", parseTreeBuilder);
+		int result = parser.parse("11 * 2 + 333", parseTreeBuilder);
 		assertThat(result).isEqualTo(355);
 		System.out.println("tree: " + parseTreeBuilder.getParseTree());
 	}
@@ -86,7 +86,7 @@ public class CalculatorTest {
 	@Test
 	@Ignore
 	public void parseWithLogging() {
-		rule.parse("1 * 2 + 3", LoggingParseListener.builder().build());
+		parser.parse("1 * 2 + 3", LoggingParseListener.builder().build());
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class CalculatorTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 10000; i++) {
-				rule.parse("(1 + 2) * 3");
+				parser.parse("(1 + 2) * 3");
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");
@@ -107,7 +107,7 @@ public class CalculatorTest {
 	@Test
 	@Ignore
 	public void printGrammar() {
-		String grammar = GrammarBuilder.buildGrammar(rule);
+		String grammar = GrammarBuilder.buildGrammar(parser);
 		System.out.println(grammar);
 	}
 }

@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.chars.CharMatchers;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
-import net.netnook.repeg.expressions.chars.CharMatcher;
 
 public class PredicateTest extends MatcherTestBase {
 
@@ -15,7 +15,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Before
 	public void init() {
-		isA = CharacterExpression.using(CharMatcher.is('a'));
+		isA = CharacterExpression.using(CharMatchers.is('a'));
 		buildContext("-abcd-").consumeChar();
 	}
 
@@ -35,7 +35,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Test
 	public void test_match() {
-		ParsingExpression expression = Predicate.match(isA).build();
+		Expression expression = Predicate.match(isA).build();
 
 		assertThat(expression.parse(context)).isTrue();
 		assertNewOnStack();
@@ -52,7 +52,7 @@ public class PredicateTest extends MatcherTestBase {
 
 	@Test
 	public void test_not() {
-		ParsingExpression expression = Predicate.not(isA).build();
+		Expression expression = Predicate.not(isA).build();
 
 		assertThat(expression.parse(context)).isFalse();
 		assertNewOnStack();

@@ -11,25 +11,25 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.examples._utils.ResourceLoader;
 import net.netnook.repeg.examples.persons.Person;
 import net.netnook.repeg.examples.persons.Person.Gender;
 import net.netnook.repeg.examples.persons.Persons;
-import net.netnook.repeg.expressions.ParsingRule;
 
 public class PersonsTest {
 
-	private ParsingRule rule;
+	private Parser<Persons> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
 	public void test1() {
 		CharSequence input = ResourceLoader.load("persons/persons.json");
-		Persons persons = rule.parse(input);
+		Persons persons = parser.parse(input);
 		assertThat(persons.getPersons()).hasSize(10000);
 
 		{
@@ -64,7 +64,7 @@ public class PersonsTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 100; i++) {
-				Persons persons = rule.parse(input);
+				Persons persons = parser.parse(input);
 				assertThat(persons.getPersons()).hasSize(10000);
 			}
 			long endTime = System.currentTimeMillis();

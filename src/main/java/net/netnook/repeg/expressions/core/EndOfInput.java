@@ -1,6 +1,6 @@
 package net.netnook.repeg.expressions.core;
 
-import net.netnook.repeg.expressions.ParsingExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 import net.netnook.repeg.expressions.Visitor;
@@ -8,7 +8,7 @@ import net.netnook.repeg.expressions.Visitor;
 /**
  * An expression which matches when the end of the input has been reached.
  */
-public final class EndOfInput extends ParsingExpressionBase implements SimpleExpression {
+public final class EndOfInput extends ExpressionBase implements SimpleExpression {
 
 	private static final EndOfInput EOI = new EndOfInput();
 

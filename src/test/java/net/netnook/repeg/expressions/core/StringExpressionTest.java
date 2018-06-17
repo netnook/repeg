@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpression;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.expressions.Expression;
 import net.netnook.repeg.expressions._util.MatcherTestBase;
 
 public class StringExpressionTest extends MatcherTestBase {
@@ -18,7 +18,7 @@ public class StringExpressionTest extends MatcherTestBase {
 
 	@Test
 	public void test_one() {
-		ParsingExpression expression = StringExpression.of("one") //
+		Expression expression = StringExpression.of("one") //
 				.onSuccess(OnSuccessHandler.PUSH_TEXT_AS_STRING) //
 				.build();
 

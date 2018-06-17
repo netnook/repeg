@@ -9,17 +9,17 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import net.netnook.repeg.expressions.ParsingRule;
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.parsetree.ParseTreeBuilder;
 import net.netnook.repeg.util.GrammarBuilder;
 
 public class IsoDurationTest {
 
-	private ParsingRule rule;
+	private Parser<IsoDuration> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class IsoDurationTest {
 	}
 
 	private void test(String input, IsoDuration expected) {
-		IsoDuration result = rule.parse(input);
+		IsoDuration result = parser.parse(input);
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -82,7 +82,7 @@ public class IsoDurationTest {
 	@Ignore
 	public void parseTree() {
 		ParseTreeBuilder parseTreeBuilder = new ParseTreeBuilder();
-		IsoDuration result = rule.parse("P1Y2M3DT4H5M6S", parseTreeBuilder);
+		IsoDuration result = parser.parse("P1Y2M3DT4H5M6S", parseTreeBuilder);
 		assertThat(result).isEqualTo(isoDuration(1, 2, 3, 4, 5, 6));
 		System.out.println("tree: " + parseTreeBuilder.getParseTree());
 	}
@@ -94,7 +94,7 @@ public class IsoDurationTest {
 		for (int round = 0; round < 10; round++) {
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < 10000; i++) {
-				rule.parse("P1Y2M3DT4H5M6S");
+				parser.parse("P1Y2M3DT4H5M6S");
 			}
 			long endTime = System.currentTimeMillis();
 			System.out.println("Time taken: " + (endTime - startTime) + " millis");
@@ -105,7 +105,7 @@ public class IsoDurationTest {
 	@Test
 	@Ignore
 	public void printGrammar() {
-		String grammar = GrammarBuilder.buildGrammar(rule);
+		String grammar = GrammarBuilder.buildGrammar(parser);
 		System.out.println(grammar);
 	}
 }

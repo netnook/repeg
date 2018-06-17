@@ -1,21 +1,22 @@
 package net.netnook.repeg.examples.todo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import net.netnook.repeg.ParserFactoryBase;
+import net.netnook.repeg.ParsingExpressionBuilder;
+import net.netnook.repeg.RuleEnum;
 import net.netnook.repeg.examples.todo.model.Project;
 import net.netnook.repeg.examples.todo.model.Task;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingRuleBuilder;
 
-public class ParserFactory extends ParserFactoryBase {
+public class ParserFactory extends ParserFactoryBase<List<Project>> {
 
 	@Override
-	protected ParsingRuleBuilder getStartRule() {
+	protected RuleEnum getStartRule() {
 		return Rules.START;
 	}
 
-	public enum Rules implements ParsingRuleBuilder {
+	public enum Rules implements RuleEnum {
 		START {
 			@Override
 			public ParsingExpressionBuilder expression() {

@@ -11,26 +11,26 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.netnook.repeg.Parser;
 import net.netnook.repeg.examples._utils.ResourceLoader;
 import net.netnook.repeg.examples.template.data.House;
 import net.netnook.repeg.examples.template.data.HouseRepository;
 import net.netnook.repeg.examples.template.model.Context;
 import net.netnook.repeg.examples.template.model.Template;
-import net.netnook.repeg.expressions.ParsingRule;
 
 public class TemplateTest {
 
-	private ParsingRule rule;
+	private Parser<Template> parser;
 
 	@Before
 	public void init() {
-		rule = new ParserFactory().build();
+		parser = new ParserFactory().build();
 	}
 
 	@Test
 	public void test_render() {
 		CharSequence input = ResourceLoader.load("template/house-list.txt");
-		Template template = rule.parse(input);
+		Template template = parser.parse(input);
 
 		List<House> houses = new HouseRepository().getHouses();
 

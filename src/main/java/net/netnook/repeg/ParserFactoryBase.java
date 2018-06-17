@@ -1,11 +1,7 @@
 package net.netnook.repeg;
 
-import net.netnook.repeg.expressions.Context;
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpressionBuilder;
-import net.netnook.repeg.expressions.ParsingRule;
-import net.netnook.repeg.expressions.ParsingRuleBuilder;
-import net.netnook.repeg.expressions.chars.CharMatcher;
+import net.netnook.repeg.chars.CharMatcher;
+import net.netnook.repeg.chars.CharMatchers;
 import net.netnook.repeg.expressions.core.CharacterExpression;
 import net.netnook.repeg.expressions.core.Choice;
 import net.netnook.repeg.expressions.core.EndOfInput;
@@ -20,13 +16,13 @@ import net.netnook.repeg.expressions.extras.NewlineExpression;
 /**
  * Base class for defining parsers.
  */
-public abstract class ParserFactoryBase {
+public abstract class ParserFactoryBase<T> {
 
-	public ParsingRule build() {
-		return getStartRule().build();
+	public Parser<T> build() {
+		return new ParserImpl<T>(getStartRule().build());
 	}
 
-	protected abstract ParsingRuleBuilder getStartRule();
+	protected abstract RuleEnum getStartRule();
 
 	protected static Sequence.Builder sequence(ParsingExpressionBuilder... expressions) {
 		return Sequence.of(expressions);
@@ -37,7 +33,7 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static Repetition.Builder one(char c) {
-		return one(CharMatcher.is(c));
+		return one(CharMatchers.is(c));
 	}
 
 	protected static Repetition.Builder one(CharMatcher charMatcher) {
@@ -45,7 +41,7 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static Repetition.Builder zeroOrMore(char c) {
-		return zeroOrMore(CharMatcher.is(c));
+		return zeroOrMore(CharMatchers.is(c));
 	}
 
 	protected static Repetition.Builder zeroOrMore(CharMatcher charMatcher) {
@@ -57,7 +53,7 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static Repetition.Builder oneOrMore(char c) {
-		return oneOrMore(CharMatcher.is(c));
+		return oneOrMore(CharMatchers.is(c));
 	}
 
 	protected static Repetition.Builder oneOrMore(CharMatcher charMatcher) {
@@ -77,7 +73,7 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static Optional.Builder optional(char c) {
-		return optional(CharMatcher.is(c));
+		return optional(CharMatchers.is(c));
 	}
 
 	protected static Optional.Builder optional(CharMatcher matcher) {
@@ -116,31 +112,31 @@ public abstract class ParserFactoryBase {
 	}
 
 	protected static CharMatcher anyChar() {
-		return CharMatcher.any();
+		return CharMatchers.any();
 	}
 
 	protected static CharMatcher character(char c) {
-		return CharMatcher.is(c);
+		return CharMatchers.is(c);
 	}
 
 	protected static CharMatcher characterIn(String characters) {
-		return CharMatcher.in(characters);
+		return CharMatchers.in(characters);
 	}
 
 	protected static CharMatcher characterInRange(char from, char to) {
-		return CharMatcher.inRange(from, to);
+		return CharMatchers.inRange(from, to);
 	}
 
 	protected static CharMatcher crlf() {
-		return CharMatcher.crlf();
+		return CharMatchers.crlf();
 	}
 
 	protected static CharMatcher asciiWhitespace() {
-		return CharMatcher.asciiWhitespace();
+		return CharMatchers.asciiWhitespace();
 	}
 
 	protected static CharMatcher horizontalWhitespace() {
-		return CharMatcher.horizontalWhitespace();
+		return CharMatchers.horizontalWhitespace();
 	}
 
 	protected static FloatExpression parseFloat() {

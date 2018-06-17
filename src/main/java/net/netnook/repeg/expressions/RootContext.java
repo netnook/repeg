@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import net.netnook.repeg.Context;
 import net.netnook.repeg.util.ParseListener;
 
 public final class RootContext {
@@ -12,7 +13,7 @@ public final class RootContext {
 	public static final int END_OF_INPUT = -1;
 	private static final int DEFAULT_INITIAL_STACK_CAPACITY = 64;
 
-	private final Context slice = new Context(this);
+	private final ContextImpl slice = new ContextImpl(this);
 	private final CharSequence input;
 	private final ArrayList<Object> stack = new ArrayList<>(DEFAULT_INITIAL_STACK_CAPACITY);
 	private final ParseListener listener;
@@ -81,8 +82,13 @@ public final class RootContext {
 		return (T) stack.get(index);
 	}
 
-	// FIXME: naming
-	public Collection<?> getStack(int startIdx) {
+	/**
+	 * Visible for testing
+	 *
+	 * @param startIdx start index
+	 * @return stack contents
+	 */
+	public Collection<?> getStackFrom(int startIdx) {
 		int len = stack.size() - startIdx;
 		if (len == 0) {
 			return Collections.emptyList();

@@ -1,8 +1,8 @@
 package net.netnook.repeg.expressions.core;
 
-import net.netnook.repeg.expressions.OnSuccessHandler;
-import net.netnook.repeg.expressions.ParsingExpressionBase;
-import net.netnook.repeg.expressions.ParsingExpressionBuilderBase;
+import net.netnook.repeg.OnSuccessHandler;
+import net.netnook.repeg.expressions.ExpressionBase;
+import net.netnook.repeg.expressions.ExpressionBuilderBase;
 import net.netnook.repeg.expressions.RootContext;
 import net.netnook.repeg.expressions.SimpleExpression;
 
@@ -11,9 +11,9 @@ import net.netnook.repeg.expressions.SimpleExpression;
  * <p>
  * This expression matches the specified string in the input.
  * <p>
- * This expression has no default {@link net.netnook.repeg.expressions.OnSuccessHandler}.
+ * This expression has no default {@link OnSuccessHandler}.
  */
-public final class StringExpression extends ParsingExpressionBase implements SimpleExpression {
+public final class StringExpression extends ExpressionBase implements SimpleExpression {
 
 	/**
 	 * Create new {@link StringExpression} for the specified string.
@@ -25,7 +25,7 @@ public final class StringExpression extends ParsingExpressionBase implements Sim
 		return new Builder(str);
 	}
 
-	public static class Builder extends ParsingExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase {
 
 		private String str;
 
