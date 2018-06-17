@@ -31,7 +31,7 @@ public final class EndOfInput extends ExpressionBase implements SimpleExpression
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		return context.charAt(startPosition) == RootContext.END_OF_INPUT;
 	}
 }

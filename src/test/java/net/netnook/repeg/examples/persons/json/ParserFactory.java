@@ -42,7 +42,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						SkipWhitespace, //
 						endOfInput() //
 				).onSuccess(context -> {
-					int count = context.stackSize();
+					int count = context.size();
 					List<Person> list = new ArrayList<>(count);
 
 					for (int i = 0; i < count; i++) {
@@ -78,7 +78,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Person person = new Person();
-					int count = context.stackSize();
+					int count = context.size();
 					for (int i = 0; i < count; i += 2) {
 						String prop = context.get(i);
 						Object value = context.get(i + 1);
@@ -113,7 +113,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						SkipWhitespace, //
 						one('"'), //
 						zeroOrMore(character('"').not()).onSuccess(context -> {
-							context.push(Gender.valueOf(context.getCharSequence().toString()));
+							context.push(Gender.valueOf(context.getCurrentText().toString()));
 						}), //
 						one('"'), //
 						SkipWhitespace, //
@@ -146,7 +146,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Address address = new Address();
-					int count = context.stackSize();
+					int count = context.size();
 					for (int i = 0; i < count; i += 2) {
 						String prop = context.get(i);
 						String value = context.get(i + 1);
@@ -188,7 +188,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						SkipWhitespace //
 				).onSuccess(context -> { //
 					Coordinates coordinates = new Coordinates();
-					int count = context.stackSize();
+					int count = context.size();
 					for (int i = 0; i < count; i += 2) {
 						String prop = context.get(i);
 						Float value = context.get(i + 1);

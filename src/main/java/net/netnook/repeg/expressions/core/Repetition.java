@@ -123,13 +123,17 @@ public final class Repetition extends ExpressionBase implements CompoundExpressi
 			if (expression instanceof CharacterExpression.Builder) {
 				CharacterExpression.Builder characterExpression = (CharacterExpression.Builder) expression;
 
-				if (characterExpression.hasDefaults()) {
-					// FIXME: Should clone the builder ?
-					// TODO: Test this
-					characterExpression.minCount(minCount);
-					characterExpression.maxCount(maxCount);
-					characterExpression.onSuccess(getOnSuccess());
-					return characterExpression.build();
+				// Only if condition is met do we try and optimise
+				boolean replaceWithCharExpression = characterExpression.getOnSuccess() == null //
+						&& characterExpression.getMinCount() == 1 //
+						&& characterExpression.getMaxCount() == 1;
+
+				if (replaceWithCharExpression) {
+					CharacterExpression.Builder clone = characterExpression.clone();
+					clone.minCount(minCount);
+					clone.maxCount(maxCount);
+					clone.onSuccess(getOnSuccess());
+					return clone.build();
 				}
 			}
 
@@ -181,7 +185,7 @@ public final class Repetition extends ExpressionBase implements CompoundExpressi
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		int successCount = 0;
 
 		while (successCount < maxCount) {

@@ -12,9 +12,9 @@ public abstract class ParseNode {
 
 	public ParseNode(Context context, Expression expression) {
 		this.expression = expression;
-		this.startPos = context.getStartPosition();
-		this.endPos = context.getCurrentPosition();
-		this.text = context.getCharSequence();
+		this.startPos = context.getInputStartPosition();
+		this.endPos = context.getInputEndPosition();
+		this.text = context.getCurrentText();
 	}
 
 	@Override

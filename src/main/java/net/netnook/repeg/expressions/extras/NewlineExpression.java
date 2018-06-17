@@ -42,7 +42,7 @@ public final class NewlineExpression extends ExpressionBase implements SimpleExp
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		int c1 = context.charAt(startPosition);
 
 		// TODO: compare this to unicode line termination

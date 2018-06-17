@@ -9,12 +9,12 @@ import java.util.List;
  * expression.  When called, the {@link Context} contains both the input position before the expression was evaluated
  * (i.e. the start position) as well as the input position after the expression (and all of it's sub-expressions)
  * was evaluated.  The full input text which was matched by the current expression (including all sub-expressions)
- * can be retrieved using the {@link Context#getCharSequence()} method.
+ * can be retrieved using the {@link Context#getCurrentText()} method.
  * <p>
  * An {@link OnSuccessHandler} may be used in expressions to process the current input and add or modify a stack
  * used to build up the output of the parser.  To this end, the {@link Context} also contains the starting position/size
  * of the stack before the expression (or any of it's sub-expressions) were evaluated. An {@link OnSuccessHandler} can
- * simply add an element to the stack (e.g. convert the current input sequence from {@link Context#getCharSequence()} to
+ * simply add an element to the stack (e.g. convert the current input sequence from {@link Context#getCurrentText()} to
  * an Integer and {@link Context#push(Object) push} it onto the stack) or retrieve elements from the stack which were added
  * by sub-expressions using {@link Context#get(int) get(index)}, process them in some way, and then replace them with some
  * computed value using {@link Context#replaceWith(Object) replace(object)}.
@@ -25,23 +25,23 @@ import java.util.List;
  */
 public interface Context {
 
-	int getStartPosition();
+	int getInputStartPosition();
 
-	int getCurrentPosition();
+	int getInputEndPosition();
 
 	/**
 	 * Get the input sequence matched by the expression.
 	 *
 	 * @return matched char sequence
 	 */
-	CharSequence getCharSequence();
+	CharSequence getCurrentText();
 
 	/**
 	 * Get number of characters matched by the expression
 	 *
 	 * @return number of characters
 	 */
-	int inputLength();
+	int getCurrentTextLength();
 
 	/**
 	 * Get the number of elements on the stack produced/added by the current expression and all it's
@@ -49,7 +49,7 @@ public interface Context {
 	 *
 	 * @return size of the stack.
 	 */
-	int stackSize();
+	int size();
 
 	/**
 	 * Get an element from the stack which was added by the current expression or one of it's descendents.
@@ -67,7 +67,6 @@ public interface Context {
 	 * @param <T> expected result type (not enforced)
 	 * @return elements from the stack.
 	 */
-	// FIXME: naming ?!
 	<T> List<T> getAll();
 
 	/**
@@ -88,6 +87,5 @@ public interface Context {
 	/**
 	 * Remove all elements on the stack which were added by the current expression or one of it's descendents.
 	 */
-	void clearStack();
-
+	void clear();
 }

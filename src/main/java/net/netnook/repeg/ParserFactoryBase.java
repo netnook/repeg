@@ -149,7 +149,7 @@ public abstract class ParserFactoryBase<T> {
 
 	public static OnSuccessHandler pushIfEmpty(Object defaultValue) {
 		return (Context context) -> {
-			if (context.stackSize() == 0) {
+			if (context.size() == 0) {
 				context.push(defaultValue);
 			}
 		};

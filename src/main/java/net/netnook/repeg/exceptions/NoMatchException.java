@@ -5,4 +5,7 @@ package net.netnook.repeg.exceptions;
  */
 public final class NoMatchException extends ParseException {
 
+	public NoMatchException(String message) {
+		super(message);
+	}
 }

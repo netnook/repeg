@@ -73,7 +73,7 @@ public final class Sequence extends ExpressionBase implements CompoundExpression
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		for (Expression expression : expressions) {
 			boolean success = expression.parse(context);
 			if (!success) {

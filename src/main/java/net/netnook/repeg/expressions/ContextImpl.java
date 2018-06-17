@@ -21,27 +21,27 @@ final class ContextImpl implements Context {
 	}
 
 	@Override
-	public int getStartPosition() {
+	public int getInputStartPosition() {
 		return inputOffset;
 	}
 
 	@Override
-	public int getCurrentPosition() {
+	public int getInputEndPosition() {
 		return context.position();
 	}
 
 	@Override
-	public CharSequence getCharSequence() {
+	public CharSequence getCurrentText() {
 		return context.getInput(inputOffset);
 	}
 
 	@Override
-	public int inputLength() {
+	public int getCurrentTextLength() {
 		return context.position() - inputOffset;
 	}
 
 	@Override
-	public int stackSize() {
+	public int size() {
 		return context.stackSize() - stackOffset;
 	}
 
@@ -55,7 +55,7 @@ final class ContextImpl implements Context {
 
 	@Override
 	public <T> List<T> getAll() {
-		int count = stackSize();
+		int count = size();
 		List<T> result = new ArrayList<>(count);
 		for (int i = 0; i < count; i++) {
 			result.add(get(i));
@@ -65,7 +65,7 @@ final class ContextImpl implements Context {
 
 	@Override
 	public void replaceWith(Object object) {
-		clearStack();
+		clear();
 		push(object);
 	}
 
@@ -75,7 +75,7 @@ final class ContextImpl implements Context {
 	}
 
 	@Override
-	public void clearStack() {
+	public void clear() {
 		context.truncateStack(stackOffset);
 	}
 }

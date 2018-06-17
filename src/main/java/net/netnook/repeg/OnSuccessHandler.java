@@ -13,27 +13,27 @@ package net.netnook.repeg;
 public interface OnSuccessHandler {
 
 	/**
-	 * Clear current stack content added by current expression of descendents.  See {@link Context#clearStack()}.
+	 * Clear current stack content added by current expression of descendents.  See {@link Context#clear()}.
 	 */
-	OnSuccessHandler CLEAR_STACK = Context::clearStack;
+	OnSuccessHandler CLEAR_STACK = Context::clear;
 
 	/**
 	 * Get a {@link CharSequence} of the current input and push it onto the stack.
 	 */
-	OnSuccessHandler PUSH_TEXT = context -> context.push(context.getCharSequence());
+	OnSuccessHandler PUSH_TEXT = context -> context.push(context.getCurrentText());
 
 	/**
 	 * Convert current input to a {@link String} and push it onto the stack.
 	 */
 	OnSuccessHandler PUSH_TEXT_AS_STRING = context -> {
-		context.push(context.getCharSequence().toString());
+		context.push(context.getCurrentText().toString());
 	};
 
 	/**
 	 * Convert current input to a {@link String} and push it onto the stack.  Pushes null if current input has 0 length.
 	 */
 	OnSuccessHandler PUSH_TEXT_AS_NULLABLE_STRING = context -> {
-		CharSequence text = context.getCharSequence();
+		CharSequence text = context.getCurrentText();
 		if (text.length() > 0) {
 			context.push(text.toString());
 		} else {
@@ -45,7 +45,7 @@ public interface OnSuccessHandler {
 	 * Convert current input to an {@link Integer} using {@link Integer new Integer(String)} and push it onto the stack.
 	 */
 	OnSuccessHandler PUSH_TEXT_AS_INTEGER = context -> {
-		String text = context.getCharSequence().toString();
+		String text = context.getCurrentText().toString();
 		context.push(new Integer(text));
 	};
 
@@ -53,7 +53,7 @@ public interface OnSuccessHandler {
 	 * Convert current input to an {@link Float} using {@link Float new Float(String)} and push it onto the stack.
 	 */
 	OnSuccessHandler PUSH_TEXT_AS_FLOAT = context -> {
-		String text = context.getCharSequence().toString();
+		String text = context.getCurrentText().toString();
 		context.push(new Float(text));
 	};
 
@@ -61,7 +61,7 @@ public interface OnSuccessHandler {
 	 * Convert current input to an {@link Float} using {@link Float new Float(String)} and push it onto the stack.  Pushes null if current input has 0 length.
 	 */
 	OnSuccessHandler PUSH_TEXT_AS_NULLABLE_FLOAT = context -> {
-		CharSequence text = context.getCharSequence();
+		CharSequence text = context.getCurrentText();
 		if (text.length() > 0) {
 			context.push(new Float(text.toString()));
 		} else {

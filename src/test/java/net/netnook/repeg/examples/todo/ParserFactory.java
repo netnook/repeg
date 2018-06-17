@@ -39,7 +39,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 					Project project = new Project();
 					project.setName(context.get(0));
 
-					int count = context.stackSize() - 1;
+					int count = context.size() - 1;
 					for (int i = 0; i < count; i++) {
 						project.addTask(context.get(i + 1));
 					}
@@ -63,7 +63,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 			@Override
 			public ExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
-						.onSuccess(context -> context.replaceWith(context.getCharSequence().toString().trim()));
+						.onSuccess(context -> context.replaceWith(context.getCurrentText().toString().trim()));
 			}
 		},
 
@@ -127,7 +127,7 @@ public class ParserFactory extends ParserFactoryBase<List<Project>> {
 			@Override
 			public ExpressionBuilder expression() {
 				return oneOrMore(crlf().not()) //
-						.onSuccess(context -> context.push(context.getCharSequence().toString().trim()));
+						.onSuccess(context -> context.push(context.getCurrentText().toString().trim()));
 			}
 		},
 

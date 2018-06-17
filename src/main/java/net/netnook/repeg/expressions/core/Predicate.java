@@ -82,7 +82,7 @@ public final class Predicate extends ExpressionBase implements CompoundExpressio
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		boolean match = expression.parse(context);
 
 		boolean success = invert ^ match;

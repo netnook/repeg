@@ -34,7 +34,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 								) //
 						) //
 				).onSuccess((context) -> {
-					int count = context.stackSize();
+					int count = context.size();
 
 					if (count % 2 != 1) {
 						throw new IllegalStateException("Expected odd number of children but found " + count);
@@ -71,7 +71,7 @@ public class ParserFactory extends ParserFactoryBase<Integer> {
 								) //
 						) //
 				).onSuccess((context) -> {
-					int count = context.stackSize();
+					int count = context.size();
 
 					if (count % 2 != 1) {
 						throw new IllegalStateException("Expected odd number of children but found " + count);

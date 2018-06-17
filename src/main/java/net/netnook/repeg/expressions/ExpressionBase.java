@@ -32,7 +32,6 @@ public abstract class ExpressionBase implements Expression, ExpressionBuilder {
 	}
 
 	@Override
-	// FIXME: rename parse to something like parseInternal, and parseImpl to parse
 	public final boolean parse(RootContext context) {
 		int startPosition = context.position();
 		int startStackIdx = context.stackSize();
@@ -42,7 +41,7 @@ public abstract class ExpressionBase implements Expression, ExpressionBuilder {
 
 		listener.onExpressionEnter(this, handlerContext);
 
-		boolean success = parseImpl(context, startPosition, startStackIdx);
+		boolean success = doParse(context, startPosition, startStackIdx);
 
 		handlerContext = context.slice(startPosition, startStackIdx);
 
@@ -55,7 +54,7 @@ public abstract class ExpressionBase implements Expression, ExpressionBuilder {
 		return success;
 	}
 
-	protected abstract boolean parseImpl(RootContext context, int startPosition, int startStackIdx);
+	protected abstract boolean doParse(RootContext context, int startPosition, int startStackIdx);
 
 	@Override
 	public String toString() {

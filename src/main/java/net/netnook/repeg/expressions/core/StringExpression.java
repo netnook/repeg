@@ -58,7 +58,7 @@ public final class StringExpression extends ExpressionBase implements SimpleExpr
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		int pos = startPosition;
 		for (int i = 0; i < str.length(); i++, pos++) {
 			if (context.charAt(pos) != str.charAt(i)) {

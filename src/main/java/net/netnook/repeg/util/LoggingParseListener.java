@@ -41,7 +41,7 @@ public class LoggingParseListener implements ParseListener {
 		appendPrefix(buf);
 		buf.append("ENTER ");
 		buf.append(expression.buildGrammar());
-		buf.append(" start=").append(context.getStartPosition());
+		buf.append(" start=").append(context.getInputStartPosition());
 		print(buf.toString());
 	}
 
@@ -51,10 +51,10 @@ public class LoggingParseListener implements ParseListener {
 		appendPrefix(buf);
 		buf.append("EXIT ");
 		buf.append(expression.buildGrammar());
-		buf.append(" start=").append(context.getStartPosition());
-		buf.append(" end=").append(context.getCurrentPosition());
+		buf.append(" start=").append(context.getInputStartPosition());
+		buf.append(" end=").append(context.getInputEndPosition());
 		buf.append(" success=").append(success);
-		buf.append(" text='").append(context.getCharSequence()).append("'");
+		buf.append(" text='").append(context.getCurrentText()).append("'");
 		print(buf.toString());
 
 		depth--;

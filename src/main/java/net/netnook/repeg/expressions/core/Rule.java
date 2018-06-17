@@ -125,7 +125,7 @@ public final class Rule extends ExpressionBase implements CompoundExpression {
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		return expression.parse(context);
 	}
 

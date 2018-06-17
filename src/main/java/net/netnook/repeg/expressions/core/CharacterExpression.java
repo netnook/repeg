@@ -24,7 +24,7 @@ public final class CharacterExpression extends ExpressionBase implements SimpleE
 		return new Builder().matcher(matcher);
 	}
 
-	public static class Builder extends ExpressionBuilderBase {
+	public static class Builder extends ExpressionBuilderBase implements Cloneable {
 		private CharMatcher matcher;
 		private int minCount = 1;
 		private int maxCount = 1;
@@ -32,6 +32,18 @@ public final class CharacterExpression extends ExpressionBase implements SimpleE
 		public Builder matcher(CharMatcher matcher) {
 			this.matcher = matcher;
 			return this;
+		}
+
+		public int getMinCount() {
+			return minCount;
+		}
+
+		public int getMaxCount() {
+			return maxCount;
+		}
+
+		public CharMatcher getMatcher() {
+			return matcher;
 		}
 
 		@Override
@@ -65,9 +77,21 @@ public final class CharacterExpression extends ExpressionBase implements SimpleE
 			return this;
 		}
 
+		Builder minCount(long minCount) {
+			validate(minCount >= 0, "Invalid expression: min count must be >= 0");
+			this.minCount = (int) Math.min(Integer.MAX_VALUE, minCount);
+			return this;
+		}
+
 		Builder maxCount(int maxCount) {
 			validate(maxCount >= 1, "Invalid expression: max count must be >= 1");
 			this.maxCount = maxCount;
+			return this;
+		}
+
+		Builder maxCount(long maxCount) {
+			validate(maxCount >= 1, "Invalid expression: max count must be >= 1");
+			this.maxCount = (int) Math.min(Integer.MAX_VALUE, maxCount);
 			return this;
 		}
 
@@ -76,20 +100,20 @@ public final class CharacterExpression extends ExpressionBase implements SimpleE
 			return this;
 		}
 
-		@Deprecated
-			// FIXME: not good ????
-		boolean hasDefaults() {
-			return minCount == 1 //
-					&& maxCount == 1 //
-					&& getOnSuccess() == null;
-		}
-
 		@Override
 		protected CharacterExpression doBuild() {
 			if (minCount > maxCount) {
 				throw new InvalidExpressionException("Invalid expression: minCount > maxCount");
 			}
 			return new CharacterExpression(this);
+		}
+
+		public Builder clone() {
+			try {
+				return (Builder) super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException("Clone not supported ?", e);
+			}
 		}
 	}
 
@@ -113,7 +137,7 @@ public final class CharacterExpression extends ExpressionBase implements SimpleE
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 
 		int pos = startPosition;
 		// TODO: better way to handle int overrun ? (see java ArrayList index checking for solution)

@@ -70,7 +70,7 @@ public final class Optional extends ExpressionBase implements CompoundExpression
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		boolean success = expression.parse(context);
 		if (!success) {
 			context.resetTo(startPosition, startStackIdx);

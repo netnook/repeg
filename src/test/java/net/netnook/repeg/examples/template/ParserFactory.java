@@ -40,7 +40,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 			@Override
 			public ExpressionBuilder expression() {
 				return zeroOrMore(NodeExpr).onSuccess(context -> {
-					int count = context.stackSize();
+					int count = context.size();
 					if (count == 0) {
 						context.replaceWith(Collections.emptyList());
 					} else if (count == 1) {
@@ -195,7 +195,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 								one(characterIn("._")) //
 						) //
 				).onSuccess(context -> {
-					context.push(context.getCharSequence().toString());
+					context.push(context.getCurrentText().toString());
 				});
 			}
 		},
@@ -210,7 +210,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 								one(characterInRange('0', '9')) //
 						) //
 				).onSuccess(context -> {
-					context.push(context.getCharSequence().toString());
+					context.push(context.getCurrentText().toString());
 				});
 			}
 		},
@@ -225,7 +225,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 								one(anyChar()) //
 						) //
 				).onSuccess(context -> {
-					context.push(new Text(context.getCharSequence().toString()));
+					context.push(new Text(context.getCurrentText().toString()));
 				});
 			}
 		},
@@ -235,7 +235,7 @@ public class ParserFactory extends ParserFactoryBase<Template> {
 			public ExpressionBuilder expression() {
 				return optional('-').onSuccess(context -> {
 					// Push "true" if there was a '-'.  Push "false" otherwise.
-					context.push(context.inputLength() > 0);
+					context.push(context.getCurrentTextLength() > 0);
 				});
 			}
 		},

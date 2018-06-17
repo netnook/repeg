@@ -31,7 +31,7 @@ public final class FloatExpression extends ExpressionBase implements SimpleExpre
 	}
 
 	@Override
-	protected boolean parseImpl(RootContext context, int startPosition, int startStackIdx) {
+	protected boolean doParse(RootContext context, int startPosition, int startStackIdx) {
 		int pos = startPosition;
 		int c = context.charAt(pos);
 

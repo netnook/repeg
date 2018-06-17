@@ -25,9 +25,12 @@ final class ParserImpl<T> implements Parser<T> {
 
 		boolean success = expression.parse(context);
 
-		// FIXME: check that end of input was reached ?
 		if (!success) {
-			throw new NoMatchException();
+			throw new NoMatchException("Input does not match start expression.");
+		}
+
+		if (context.position() < input.length()) {
+			throw new NoMatchException("Trailing characters after " + context.position());
 		}
 
 		List<Object> stack = context.getStack();

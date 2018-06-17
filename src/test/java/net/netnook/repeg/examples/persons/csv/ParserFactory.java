@@ -29,7 +29,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 						zeroOrMore(PersonLine), //
 						endOfInput() //
 				).onSuccess(context -> {
-					int count = context.stackSize();
+					int count = context.size();
 					List<Person> list = new ArrayList<>(count);
 
 					for (int i = 0; i < count; i++) {
@@ -114,7 +114,7 @@ public class ParserFactory extends ParserFactoryBase<Persons> {
 	}
 
 	private static void convertToGender(Context context) {
-		CharSequence text = context.getCharSequence();
+		CharSequence text = context.getCurrentText();
 		if (text.length() > 0) {
 			context.push(Gender.valueOf(text.toString()));
 		} else {
