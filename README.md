@@ -1,5 +1,7 @@
 # repeg
 
+![](https://github.com/netnook/repeg/workflows/build/badge.svg)
+
 `repeg` is a java library to for creating parsers based on the principals of [Parsing Expression Grammars (PEG)](https://en.wikipedia.org/wiki/Parsing_expression_grammar).
 
 This project was created back in 2010 but was cleaned up and published in 2019.  Since it has only just been made public,
