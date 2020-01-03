@@ -1,3 +1,15 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+
+	dependencies {
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.10'
+	}
+}
+
+apply plugin: 'org.asciidoctor.convert'
+
 repositories {
 	mavenCentral()
 }
@@ -38,5 +50,25 @@ javadoc {
 test {
 	testLogging {
 		events "passed", "skipped", "failed"
+	}
+}
+
+asciidoctor {
+	sourceDir = file('docs')
+	sources {
+		include 'index.adoc'
+	}
+	outputDir = file('build/docs')
+	attributes 'toc': 'left',
+			'numbered': true,
+			'icons': 'font',
+			'source-highlighter': 'prettify',
+			'stylesdir': 'resources',
+			'stylesheet': 'style.css',
+			'linkcss': true
+
+	resources {
+		from 'docs/resources'
+		into 'resources'
 	}
 }
