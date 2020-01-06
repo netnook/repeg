@@ -8,15 +8,16 @@ buildscript {
 	}
 }
 
+apply plugin: 'java'
+apply plugin: 'maven-publish'
 apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'signing'
 
 repositories {
 	mavenCentral()
 }
 
 group 'net.netnook.repeg'
-
-apply plugin: 'java'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -27,7 +28,6 @@ sourceSets {
 		compileClasspath += sourceSets.test.runtimeClasspath
 	}
 }
-
 
 dependencies {
 	testImplementation group: 'junit', name: 'junit', version: '4.11'
@@ -71,4 +71,77 @@ asciidoctor {
 		from 'docs/resources'
 		into 'resources'
 	}
+}
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives javadocJar, sourcesJar
+}
+
+publishing {
+	publications {
+		repeg(MavenPublication) {
+			artifactId = 'repeg'
+
+			from components.java
+			artifact tasks.sourcesJar
+			artifact tasks.javadocJar
+
+			pom {
+				name = "${groupId}:${artifactId}".toString()
+				description = 'PEG based parser builder'
+				url = 'https://netnook.github.io/repeg/'
+				licenses {
+					license {
+						name = 'The Apache License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+				developers {
+					developer {
+						name = 'Andrew Fowler'
+						email = 'andrew.fowler@netnook.net'
+					}
+				}
+				scm {
+					connection = 'scm:git:git@github.com:netnook/repeg.git'
+					developerConnection = 'scm:git:git@github.com:netnook/repeg.git'
+					url = 'https://github.com/netnook/repeg'
+				}
+			}
+		}
+	}
+
+	repositories {
+		maven {
+			name = 'ossrhSnapshots'
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
+			credentials {
+				username project.ossrhUsername
+				password project.ossrhPassword
+			}
+		}
+		maven {
+			name = 'ossrhStaging'
+			url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+			credentials {
+				username project.ossrhUsername
+				password project.ossrhPassword
+			}
+		}
+	}
+}
+
+signing {
+	useGpgCmd()
+	sign publishing.publications.repeg
 }
