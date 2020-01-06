@@ -121,21 +121,23 @@ publishing {
 		}
 	}
 
-	repositories {
-		maven {
-			name = 'ossrhSnapshots'
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-			credentials {
-				username project.ossrhUsername
-				password project.ossrhPassword
+	if (project.hasProperty('ossrhUsername')) {
+		repositories {
+			maven {
+				name = 'ossrhSnapshots'
+				url = "https://oss.sonatype.org/content/repositories/snapshots/"
+				credentials {
+					username project.ossrhUsername
+					password project.ossrhPassword
+				}
 			}
-		}
-		maven {
-			name = 'ossrhStaging'
-			url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials {
-				username project.ossrhUsername
-				password project.ossrhPassword
+			maven {
+				name = 'ossrhStaging'
+				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				credentials {
+					username project.ossrhUsername
+					password project.ossrhPassword
+				}
 			}
 		}
 	}
