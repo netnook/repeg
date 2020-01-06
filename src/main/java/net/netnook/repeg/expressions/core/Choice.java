@@ -26,8 +26,10 @@ public final class Choice extends ExpressionBase implements CompoundExpression {
 
 	/**
 	 * Create a new {@link Choice} expression for the specified sub-expressions.
+	 * <p>
+	 * Each sub-expression is tested in turn and a Choice matches if one of these sub-expressions match.
 	 *
-	 * @param expressions the sub-expressions to test for match in order.
+	 * @param expressions the sub-expressions to match in order.
 	 * @return the new {@link Choice} expression.
 	 */
 	public static Builder of(ExpressionBuilder... expressions) {
