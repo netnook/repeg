@@ -156,6 +156,7 @@ public abstract class ParserFactoryBase<T> {
      * Creates a new {@link Repetition} expression with min and max count of {@code times}
      * containing as a sub-expression the specified {@link CharMatcher}.
      *
+     * @param times       number of times to repeat character.
      * @param charMatcher character matcher to perform match.
      * @return the new {@link Repetition} expression.
      */
@@ -169,6 +170,7 @@ public abstract class ParserFactoryBase<T> {
      * Creates a new {@link Repetition} expression with min and max count of {@code times}
      * containing the specified sub-expression.
      *
+     * @param times      number of times to repeat expression.
      * @param expression expression to repeatedly match.
      * @return the new {@link Repetition} expression.
      */
@@ -295,6 +297,7 @@ public abstract class ParserFactoryBase<T> {
     /**
      * Create {@link CharMatcher} which matches the specified character.
      *
+     * @param c character to match.
      * @return the new character matcher.
      */
     protected static CharMatcher character(char c) {
@@ -304,6 +307,7 @@ public abstract class ParserFactoryBase<T> {
     /**
      * Create {@link CharMatcher} which matches any of the characters in the specified string.
      *
+     * @param characters string containing characters to match.
      * @return the new character matcher.
      */
     protected static CharMatcher characterIn(String characters) {
@@ -313,6 +317,8 @@ public abstract class ParserFactoryBase<T> {
     /**
      * Create {@link CharMatcher} which matches any of the characters in the specified range (inclusive).
      *
+     * @param from start of character range to match (inclusive).
+     * @param to   end of character range to match (inclusive).
      * @return the new character matcher.
      */
     protected static CharMatcher characterInRange(char from, char to) {
