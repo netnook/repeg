@@ -1,0 +1,8 @@
+net.netnook.repeg
+net.netnook.repeg.chars
+net.netnook.repeg.exceptions
+net.netnook.repeg.expressions
+net.netnook.repeg.expressions.core
+net.netnook.repeg.expressions.extras
+net.netnook.repeg.parsetree
+net.netnook.repeg.util

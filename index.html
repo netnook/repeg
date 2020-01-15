@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>repeg</title>
+<link rel="stylesheet" href="resources/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>repeg</h1>
+<div class="details">
+<span id="revnumber">version 0.1.0</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_quick_links">Quick Links</a></li>
+<li><a href="#_requirements">Requirements</a></li>
+<li><a href="#_main_features">Main features</a></li>
+<li><a href="#_future_plans">Future plans</a></li>
+<li><a href="#_examples">Examples</a></li>
+<li><a href="#_test">Test</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>repeg</code> is a java library to for creating parsers based on the principals of <a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammars (PEG)</a>.</p>
+</div>
+<div class="paragraph">
+<p>This project was created back in 2010 but was cleaned up and published in 2019.  Since it has only just been made public,
+consider this project in beta phase.</p>
+</div>
+<div class="paragraph">
+<p><strong>Work is ongoing to get this library published to maven central.  First full release ETA end Q1-2020</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://github.com/netnook/repeg/workflows/build/badge.svg" alt="badge">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quick_links">Quick Links</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/netnook/repeg">Github</a></p>
+</li>
+<li>
+<p><a href="javadoc/index.html">Javadoc</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Java 1.8 or higher.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_main_features">Main features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Parsers/Expressions are defined in code (java) using fluent API.  Ease of use and understanding are primary objectives of this project.</p>
+</li>
+<li>
+<p>Zero transitive dependencies - <code>repeg</code> does not require and further libraries</p>
+</li>
+<li>
+<p>Plain old java (i.e. no byte code magic) so easy to integrate in restricted environments.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_future_plans">Future plans</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Ability to define parsers in a dedicated DSL</p>
+</li>
+<li>
+<p>Generate standalone parser with no dependencies to <code>repeg</code></p>
+</li>
+<li>
+<p>Built-in support for indented languages (such as python or yaml)</p>
+</li>
+<li>
+<p>Investigate ratpack style parsing (Tests so far do not suggest much need for this.  I would welcome any feedback and examples of
+languages where ratpack parsing may be of an advantage).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This project comes with several examples which you can use to get you started:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/calculator/ParserFactory.java">Calculator</a> - parse and evaluate simple maths expressions such as <code>(7+2)*5</code>.</p>
+</li>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/template/ParserFactory.java">Template</a> - a very simple template language mimicking the style of jtwig.</p>
+</li>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/todo/ParserFactory.java">Todo</a> - a parser for a text based todo list.</p>
+</li>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/isoduration/ParserFactory.java">IsoDuration</a> - a (partial) implementation of a parser for ISO durations such as <code>P1Y6MT7M3S</code>.</p>
+</li>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/persons/csv/ParserFactory.java">Persons (CSV)</a> - an parser for CSV file containing person information.</p>
+</li>
+<li>
+<p><a href="https://github.com/netnook/repeg/blob/master/src/test/java/net/netnook/repeg/examples/persons/json/ParserFactory.java">Persons (JSON)</a> - same as above, but parsing JSON input.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note:  The last 3 examples are provided to show what <strong>can</strong> be done but not necessarily what <strong>should</strong> be done with <code>repeg</code>.  A
+parser for an ISO Duration can be hand-made relatively easily and will deliver much better performance.  For common formats such
+as CSV and JSON, there are plenty of specialised parsers/libraries available which will handle corner-cases better than the
+examples and perform much better at the same time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test">Test</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class ParserFactory extends ParserFactoryBase&lt;IsoDuration&gt; {
+
+	@Override
+	protected RuleEnum getStartRule() {
+		return Rules.START;
+	}
+
+	public enum Rules implements RuleEnum {
+		START {
+			@Override
+			public ExpressionBuilder expression() {
+				return sequence( //
+						one('P'), //
+						Period_Part, //
+						Time_Part, //
+						endOfInput() //
+				).onSuccess(context -&gt; {
+					Period period = context.get(0);
+					Duration duration = context.get(1);
+					context.replaceWith(IsoDuration.of(period, duration));
+				});
+			}
+		},
+
+		Period_Part {
+			@Override
+			public ExpressionBuilder expression() {
+				return sequence( //
+						// TODO: not 'T'
+						optional(sequence(Number, one('Y'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
+						optional(sequence(Number, one('D'))).onSuccess(pushIfEmpty(0)) //
+				).onSuccess((context) -&gt; {
+					int years = context.get(0);
+					int months = context.get(1);
+					int days = context.get(2);
+					context.replaceWith(Period.of(years, months, days));
+				});
+			}
+		},
+
+		Time_Part {
+			@Override
+			public ExpressionBuilder expression() {
+				return optional( //
+						sequence( //
+								one('T'), //
+								optional(sequence(Number, one('H'))).onSuccess(pushIfEmpty(0)), //
+								optional(sequence(Number, one('M'))).onSuccess(pushIfEmpty(0)), //
+								optional(sequence(Number, one('S'))).onSuccess(pushIfEmpty(0)) //
+						).onSuccess(context -&gt; {
+							int hours = context.get(0);
+							int minutes = context.get(1);
+							int seconds = context.get(2);
+
+							int totalSeconds = (((hours * 60) + minutes) * 60) + seconds;
+							context.replaceWith(Duration.ofSeconds(totalSeconds));
+						}) //
+				).onSuccess(pushIfEmpty(Duration.ofSeconds(0)));
+			}
+		},
+
+		Number {
+			@Override
+			public ExpressionBuilder expression() {
+				return oneOrMore(characterInRange('0', '9')).onSuccess(pushTextAsInteger());
+			}
+		};
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.0<br>
+Last updated 2020-01-15 20:50:13 +0100
+</div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>prettyPrint()</script>
+</body>
+</html>
