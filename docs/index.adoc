@@ -1,3 +1,5 @@
+:github-src-url: https://github.com/netnook/repeg/blob/master
+
 = repeg
 
 `repeg` is a java library to for creating parsers based on the principals of https://en.wikipedia.org/wiki/Parsing_expression_grammar[Parsing Expression Grammars (PEG)].
@@ -6,6 +8,14 @@ This project was created back in 2010 but was cleaned up and published in 2019. 
 consider this project in beta phase.
 
 *Work is ongoing to get this library published to maven central.  First full release ETA end Q1-2020*
+
+
+image::https://github.com/netnook/repeg/workflows/build/badge.svg[]
+
+== Quick Links
+
+* link:https://github.com/netnook/repeg[Github]
+* link:javadoc/index.html[Javadoc]
 
 == Requirements
 
@@ -29,12 +39,13 @@ languages where ratpack parsing may be of an advantage).
 
 This project comes with several examples which you can use to get you started:
 
-* link:src/test/java/net/netnook/repeg/examples/calculator/ParserFactory.java[Calculator] - parse and evaluate simple maths expressions such as `(7+2)*5`.
-* link:src/test/java/net/netnook/repeg/examples/template/ParserFactory.java[Template] - a very simple template language mimicking the style of jtwig.
-* link:src/test/java/net/netnook/repeg/examples/todo/ParserFactory.java[Todo] - a parser for a text based todo list.
-* link:src/test/java/net/netnook/repeg/examples/isoduration/ParserFactory.java[IsoDuration] - a (partial) implementation of a parser for ISO durations such as `P1Y6MT7M3S`.
-* link:src/test/java/net/netnook/repeg/examples/persons/csv/ParserFactory.java[Persons (CSV)] - an parser for CSV file containing person information.
-* link:src/test/java/net/netnook/repeg/examples/persons/json/ParserFactory.java[Persons (JSON)] - same as above, but parsing JSON input.
+
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/calculator/ParserFactory.java[Calculator] - parse and evaluate simple maths expressions such as `(7+2)*5`.
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/template/ParserFactory.java[Template] - a very simple template language mimicking the style of jtwig.
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/todo/ParserFactory.java[Todo] - a parser for a text based todo list.
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/isoduration/ParserFactory.java[IsoDuration] - a (partial) implementation of a parser for ISO durations such as `P1Y6MT7M3S`.
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/persons/csv/ParserFactory.java[Persons (CSV)] - an parser for CSV file containing person information.
+* link:{github-src-url}/src/test/java/net/netnook/repeg/examples/persons/json/ParserFactory.java[Persons (JSON)] - same as above, but parsing JSON input.
 
 Note:  The last 3 examples are provided to show what *can* be done but not necessarily what *should* be done with `repeg`.  A
 parser for an ISO Duration can be hand-made relatively easily and will deliver much better performance.  For common formats such

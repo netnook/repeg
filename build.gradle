@@ -58,9 +58,9 @@ asciidoctor {
 	sources {
 		include 'index.adoc'
 	}
-	outputDir = file('build/docs')
+	outputDir = file('build/asciidoc')
 	attributes 'toc': 'left',
-			'numbered': true,
+			'numbered': false,
 			'icons': 'font',
 			'source-highlighter': 'prettify',
 			'stylesdir': 'resources',
@@ -72,6 +72,14 @@ asciidoctor {
 		into 'resources'
 	}
 }
+
+task site(type: Copy, dependsOn: [ asciidoctor, javadoc] ) {
+	from ("$buildDir/asciidoc/html5")
+	from ("$buildDir/docs")
+	into "$projectDir/tmp/site"
+}
+
+
 
 task javadocJar(type: Jar) {
 	classifier = 'javadoc'
